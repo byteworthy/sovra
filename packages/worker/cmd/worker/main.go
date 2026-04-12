@@ -12,6 +12,7 @@ import (
 	workergrpc "github.com/byteswarm/worker/internal/grpc"
 	workerhttp "github.com/byteswarm/worker/internal/http"
 	mcpserver "github.com/byteswarm/worker/internal/mcp"
+	socketioserver "github.com/byteswarm/worker/internal/socketio"
 )
 
 func main() {
@@ -40,6 +41,10 @@ func main() {
 
 	// Start MCP server in the background.
 	go mcpserver.StartMCPServer(cfg.MCPPort, pool, cfg)
+
+	// Start Socket.IO server for real-time workspace collaboration.
+	// Serves on cfg.SocketIOPort (default 3002). Includes /internal/broadcast endpoint.
+	go func() { socketioserver.StartSocketIOServer(cfg.SocketIOPort, "*") }()
 
 	// Block until SIGINT or SIGTERM.
 	quit := make(chan os.Signal, 1)
