@@ -126,3 +126,15 @@
 .agent-status-running {
   animation: statusPulse 2s ease-in-out infinite;
 }
+
+@keyframes statusFlash {
+  0% { border-color: rgba(59, 130, 246, 0.8); }
+  100% { border-color: var(--border); }
+}
+.status-flash {
+  animation: statusFlash 0.6s ease-out;
+}
+
+.status-pulse {
+  animation: statusPulse 1.2s ease-in-out infinite;
+}
