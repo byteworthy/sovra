@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import { cn } from '@/lib/utils';
+import { PostHogProvider } from '@/components/providers/PostHogProvider';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -19,7 +20,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={cn(inter.className, 'min-h-screen bg-background font-sans antialiased')}>{children}</body>
+      <body className={cn(inter.className, 'min-h-screen bg-background font-sans antialiased')}>
+        <PostHogProvider>{children}</PostHogProvider>
+      </body>
     </html>
   );
 }
