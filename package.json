@@ -8,10 +8,13 @@
     "build": "pnpm -r build",
     "lint": "pnpm -r lint",
     "test": "pnpm -r test",
-    "typecheck": "pnpm -r typecheck",
-    "db:generate": "pnpm --filter web supabase gen types typescript --outdir packages/shared/types",
-    "db:push": "pnpm --filter web supabase db push",
-    "db:migrate": "pnpm --filter web supabase migration new"
+    "type-check": "pnpm -r type-check",
+    "go:build": "cd packages/worker && go build ./cmd/worker",
+    "go:test": "cd packages/worker && go test ./...",
+    "go:dev": "cd packages/worker && air -c .air.toml",
+    "go:lint": "cd packages/worker && go vet ./...",
+    "db:generate": "supabase gen types typescript --local > packages/shared/types/database.ts",
+    "db:reset": "supabase db reset"
   },
   "packageManager": "pnpm@9.0.0",
   "engines": {

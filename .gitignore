@@ -62,3 +62,18 @@ service-account-key.json
 
 # Planning (optional - uncomment if using local-only planning)
 # .planning/
+
+# Go binaries
+packages/worker/bin/
+packages/worker/tmp/
+
+# Air hot reload
+/tmp/air/
+
+# Supabase local
+.supabase/
+
+# Environment
+.env
+.env.local
+.env*.local
