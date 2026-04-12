@@ -37,7 +37,7 @@ export function useWorkspaceSocket(tenantId: string, workspaceId: string) {
     socket.io.on('reconnect_attempt', () => setConnectionStatus('reconnecting'))
 
     socket.on('workspace:joined', () => {
-      // Room joined confirmation — no-op, connection status already set
+      // Room joined confirmation. Connection status already set on connect event.
     })
 
     socket.on('agent:status', (data: { agentId: string; status: 'idle' | 'running' | 'error' }) => {

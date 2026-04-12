@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { LayoutDashboard, Bot, Users, Settings } from 'lucide-react'
+import { LayoutDashboard, Bot, Network, Users, Settings } from 'lucide-react'
 import { useTenant } from '@/lib/tenant/context'
 import { cn } from '@/lib/utils'
 
@@ -18,6 +18,7 @@ interface NavItem {
 const NAV_ITEMS: NavItem[] = [
   { label: 'Dashboard', icon: LayoutDashboard, path: 'dashboard' },
   { label: 'Agents', icon: Bot, path: 'agents', disabled: false },
+  { label: 'Workspaces', icon: Network, path: 'workspaces' },
   { label: 'Members', icon: Users, path: 'members' },
   { label: 'Settings', icon: Settings, path: 'settings', disabled: true },
 ]
