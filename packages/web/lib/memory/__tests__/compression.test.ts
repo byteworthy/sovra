@@ -62,14 +62,13 @@ describe('snipMessages', () => {
   })
 
   it('preserves order of remaining messages', () => {
+    // 9 non-system messages in order:
+    // userMsg1, assistantMsg1, userMsg2, assistantMsg2, userMsg3, assistantMsg3, userMsg4, assistantMsg4, userMsg5
+    // last 3: userMsg4, assistantMsg4, userMsg5
     const result = snipMessages(allMessages, 3)
-    expect(result[1]).toEqual(assistantMsg4)
-    expect(result[2]).toEqual(userMsg4)
-    // Actually last 3: assistantMsg4, userMsg5 - let me recalculate
-    // non-system messages: 9 total, last 3: assistantMsg4, userMsg4, userMsg5 -- no
-    // non-system in order: userMsg1..userMsg5, assistantMsg1..assistantMsg4
-    // order: userMsg1, assistantMsg1, userMsg2, assistantMsg2, userMsg3, assistantMsg3, userMsg4, assistantMsg4, userMsg5
-    // last 3: userMsg4(7th), assistantMsg4(8th), userMsg5(9th) -- indices 6,7,8
+    expect(result[1]).toEqual(userMsg4)
+    expect(result[2]).toEqual(assistantMsg4)
+    expect(result[3]).toEqual(userMsg5)
   })
 
   it('returns all messages if fewer than maxMessages exist', () => {
