@@ -68,8 +68,8 @@ Plans:
 - [x] 02-01-PLAN.md - Auth types + AuthAdapter interface + Supabase adapter + client/server factories + PKCE callback
 - [x] 02-02-PLAN.md - RBAC migration (roles, permissions, invitations) + TenantResolver implementations + TenantContext
 - [x] 02-03-PLAN.md - RBAC permission checker + root middleware + tenant creation + invitation system
-- [ ] 02-04-PLAN.md - Schema push + motion utilities + UI primitives + auth pages (split-screen, glass morphism, all states)
-- [ ] 02-05-PLAN.md - Tenant layout + sidebar + tenant switcher + member management + onboarding wizard + toasts
+- [x] 02-04-PLAN.md - Schema push + motion utilities + UI primitives + auth pages (split-screen, glass morphism, all states)
+- [x] 02-05-PLAN.md - Tenant layout + sidebar + tenant switcher + member management + onboarding wizard + toasts
 
 **Requirements:**
 - AUTH-01: Email/password signup and login
