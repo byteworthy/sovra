@@ -1,4 +1,5 @@
 import type { NextConfig } from 'next'
+import { withSentryConfig } from '@sentry/nextjs'
 
 const nextConfig: NextConfig = {
   output: 'standalone',
@@ -13,6 +14,8 @@ const nextConfig: NextConfig = {
     serverActions: {
       bodySizeLimit: '2mb',
     },
+    // Required for Sentry distributed tracing in Next.js 15
+    clientTraceMetadata: ['sentry-trace', 'baggage'],
   },
   logging: {
     fetches: {
@@ -21,4 +24,11 @@ const nextConfig: NextConfig = {
   },
 }
 
-export default nextConfig
+export default withSentryConfig(nextConfig, {
+  org: process.env.SENTRY_ORG,
+  project: process.env.SENTRY_PROJECT,
+  // Suppress source map upload output when not in CI
+  silent: !process.env.CI,
+  // Disable automatic releases — let the CI pipeline manage this
+  autoInstrumentServerFunctions: false,
+})
