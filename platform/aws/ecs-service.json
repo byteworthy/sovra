@@ -1,0 +1,58 @@
+{
+  "services": [
+    {
+      "serviceName": "byteswarm-web",
+      "clusterArn": "arn:aws:ecs:${AWS_REGION}:${AWS_ACCOUNT_ID}:cluster/byteswarm",
+      "taskDefinition": "byteswarm-web",
+      "desiredCount": 1,
+      "launchType": "FARGATE",
+      "platformVersion": "LATEST",
+      "networkConfiguration": {
+        "awsvpcConfiguration": {
+          "subnets": ["${SUBNET_ID_1}", "${SUBNET_ID_2}"],
+          "securityGroups": ["${WEB_SECURITY_GROUP_ID}"],
+          "assignPublicIp": "ENABLED"
+        }
+      },
+      "loadBalancers": [
+        {
+          "targetGroupArn": "arn:aws:elasticloadbalancing:${AWS_REGION}:${AWS_ACCOUNT_ID}:targetgroup/byteswarm-web/${TARGET_GROUP_ID}",
+          "containerName": "byteswarm-web",
+          "containerPort": 3000
+        }
+      ],
+      "healthCheckGracePeriodSeconds": 60,
+      "deploymentConfiguration": {
+        "maximumPercent": 200,
+        "minimumHealthyPercent": 50,
+        "deploymentCircuitBreaker": {
+          "enable": true,
+          "rollback": true
+        }
+      }
+    },
+    {
+      "serviceName": "byteswarm-worker",
+      "clusterArn": "arn:aws:ecs:${AWS_REGION}:${AWS_ACCOUNT_ID}:cluster/byteswarm",
+      "taskDefinition": "byteswarm-worker",
+      "desiredCount": 1,
+      "launchType": "FARGATE",
+      "platformVersion": "LATEST",
+      "networkConfiguration": {
+        "awsvpcConfiguration": {
+          "subnets": ["${SUBNET_ID_1}", "${SUBNET_ID_2}"],
+          "securityGroups": ["${WORKER_SECURITY_GROUP_ID}"],
+          "assignPublicIp": "ENABLED"
+        }
+      },
+      "deploymentConfiguration": {
+        "maximumPercent": 200,
+        "minimumHealthyPercent": 50,
+        "deploymentCircuitBreaker": {
+          "enable": true,
+          "rollback": true
+        }
+      }
+    }
+  ]
+}

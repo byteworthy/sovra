@@ -1,0 +1,76 @@
+{
+  "family": "byteswarm-worker",
+  "networkMode": "awsvpc",
+  "requiresCompatibilities": ["FARGATE"],
+  "cpu": "512",
+  "memory": "1024",
+  "executionRoleArn": "arn:aws:iam::${AWS_ACCOUNT_ID}:role/ecsTaskExecutionRole",
+  "taskRoleArn": "arn:aws:iam::${AWS_ACCOUNT_ID}:role/byteswarm-worker-task-role",
+  "containerDefinitions": [
+    {
+      "name": "byteswarm-worker",
+      "image": "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/byteswarm-worker:${IMAGE_TAG}",
+      "essential": true,
+      "portMappings": [
+        {
+          "containerPort": 8080,
+          "protocol": "tcp"
+        },
+        {
+          "containerPort": 50051,
+          "protocol": "tcp"
+        }
+      ],
+      "environment": [
+        {
+          "name": "GO_ENV",
+          "value": "production"
+        },
+        {
+          "name": "HTTP_PORT",
+          "value": "8080"
+        },
+        {
+          "name": "GRPC_PORT",
+          "value": "50051"
+        },
+        {
+          "name": "AGENT_WORKSPACE_PATH",
+          "value": "/tmp/agent-workspace"
+        }
+      ],
+      "secrets": [
+        {
+          "name": "DATABASE_URL",
+          "valueFrom": "arn:aws:secretsmanager:${AWS_REGION}:${AWS_ACCOUNT_ID}:secret:byteswarm/DATABASE_URL"
+        },
+        {
+          "name": "OPENAI_API_KEY",
+          "valueFrom": "arn:aws:secretsmanager:${AWS_REGION}:${AWS_ACCOUNT_ID}:secret:byteswarm/OPENAI_API_KEY"
+        },
+        {
+          "name": "BRAVE_SEARCH_API_KEY",
+          "valueFrom": "arn:aws:secretsmanager:${AWS_REGION}:${AWS_ACCOUNT_ID}:secret:byteswarm/BRAVE_SEARCH_API_KEY"
+        }
+      ],
+      "healthCheck": {
+        "command": [
+          "CMD-SHELL",
+          "wget --spider -q http://localhost:8080/health || exit 1"
+        ],
+        "interval": 30,
+        "timeout": 10,
+        "retries": 3,
+        "startPeriod": 10
+      },
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/byteswarm-worker",
+          "awslogs-region": "${AWS_REGION}",
+          "awslogs-stream-prefix": "ecs"
+        }
+      }
+    }
+  ]
+}

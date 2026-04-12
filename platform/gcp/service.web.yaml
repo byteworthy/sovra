@@ -1,0 +1,81 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: byteswarm-web
+  annotations:
+    run.googleapis.com/ingress: all
+    run.googleapis.com/launch-stage: GA
+spec:
+  template:
+    metadata:
+      annotations:
+        autoscaling.knative.dev/minScale: "1"
+        autoscaling.knative.dev/maxScale: "10"
+        run.googleapis.com/cpu-throttling: "false"
+    spec:
+      containerConcurrency: 80
+      timeoutSeconds: 300
+      securityContext:
+        runAsNonRoot: true
+      containers:
+        - image: gcr.io/${PROJECT_ID}/byteswarm-web:${VERSION}
+          ports:
+            - containerPort: 3000
+          resources:
+            limits:
+              cpu: "1"
+              memory: 1Gi
+          env:
+            - name: NODE_ENV
+              value: production
+            - name: PORT
+              value: "3000"
+            - name: HOSTNAME
+              value: "0.0.0.0"
+            - name: NEXT_PUBLIC_SUPABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: byteswarm-secrets
+                  key: NEXT_PUBLIC_SUPABASE_URL
+            - name: NEXT_PUBLIC_SUPABASE_ANON_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: byteswarm-secrets
+                  key: NEXT_PUBLIC_SUPABASE_ANON_KEY
+            - name: SUPABASE_SERVICE_ROLE_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: byteswarm-secrets
+                  key: SUPABASE_SERVICE_ROLE_KEY
+            - name: OPENAI_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: byteswarm-secrets
+                  key: OPENAI_API_KEY
+            - name: ANTHROPIC_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: byteswarm-secrets
+                  key: ANTHROPIC_API_KEY
+            - name: STRIPE_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: byteswarm-secrets
+                  key: STRIPE_SECRET_KEY
+            - name: STRIPE_WEBHOOK_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: byteswarm-secrets
+                  key: STRIPE_WEBHOOK_SECRET
+          livenessProbe:
+            httpGet:
+              path: /api/health
+              port: 3000
+            initialDelaySeconds: 40
+            periodSeconds: 30
+          startupProbe:
+            httpGet:
+              path: /api/health
+              port: 3000
+            failureThreshold: 10
+            periodSeconds: 10
