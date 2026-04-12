@@ -108,13 +108,13 @@ created: 2026-04-12
 |-----------|-------|--------|
 | Conversation list panel width | 280px (`w-70`) | Fixed sidebar-within-sidebar — narrow enough not to crowd chat |
 | Chat message max-width | `max-w-[720px]` | Readable prose line length cap |
-| User message bubble padding | `px-4 py-2.5` (16px/10px) | Compact but not cramped |
+| User message bubble padding | `px-4 py-2` (16px/8px) | Compact but not cramped |
 | Assistant message padding | `px-4 py-3` | Slightly more generous for longer output |
 | Chat input area height | `min-h-[56px] max-h-[200px]` (auto-grows) | Textarea expands up to 200px |
 | Chat input outer padding | `p-4` | Consistent with card padding |
 | Agent config sheet width | `w-[480px]` (desktop) | Wide enough for sliders + selects |
 | Agent card height | `h-[88px]` minimum | Card in agent list, enough for name + model + status |
-| Tool badge padding | `px-2 py-0.5` | Compact pill |
+| Tool badge padding | `px-2 py-1` | Compact pill |
 | Config tab content padding | `p-6` | Matches card padding xl |
 
 ---
@@ -142,10 +142,10 @@ created: 2026-04-12
 | Chat page heading (conversation title) | Heading | `text-xl font-semibold tracking-tight` |
 | Chat message user | Body | `text-sm` |
 | Chat message assistant | Body | `text-sm leading-7` (relaxed line height for readability) |
-| Chat timestamp | `text-[11px]` | `text-[11px] text-muted-foreground/60` |
-| Code block content | `text-[13px] font-mono` | Geist Mono or `ui-monospace, monospace` |
-| Inline code | `text-[13px] font-mono` | Same as code block |
-| Tool call label | `text-[11px] font-semibold uppercase tracking-wider` | Micro-label above tool call pill |
+| Chat timestamp | Supporting subvariant | `text-xs text-muted-foreground/60` |
+| Code block content | Body mono | `text-sm font-mono` (Geist Mono or `ui-monospace, monospace`) |
+| Inline code | Body mono | `text-sm font-mono` |
+| Tool call label | Supporting subvariant | `text-xs font-semibold uppercase tracking-wider` |
 | Config sheet section heading | Label | `text-sm font-semibold` |
 | Config input label | Label | `text-sm font-semibold` |
 | Temperature / token value readout | `text-sm font-mono` | Numeric readout next to slider |
@@ -154,7 +154,7 @@ created: 2026-04-12
 | Empty state heading | Heading | `text-xl font-semibold` |
 | Empty state body | Supporting | `text-sm text-muted-foreground` |
 
-> 4-size scale unchanged: 14px → 20px → 24px → 32px. 2-weight scale unchanged: 400 → 600. Code content uses monospace stack — not a new scale entry, just a font-family swap.
+> 4-size scale unchanged: 14px → 20px → 24px → 32px. 2-weight scale unchanged: 400 → 600. `text-xs` (12px) is a subvariant within the 14px scale slot — used for timestamps, captions, and micro-labels at reduced opacity. Code content uses monospace stack — not a new scale entry, just a font-family swap on the 14px size.
 
 ---
 
@@ -383,12 +383,12 @@ hover:
 focus-visible (keyboard):
   ring-2 ring-ring ring-offset-2 ring-offset-background
 
-Status dot variants:
+Status dot variants (aria-label="Agent status: {status}"):
   idle:    w-2 h-2 rounded-full bg-zinc-500
   running: w-2 h-2 rounded-full bg-blue-500 + CSS pulse animation
   error:   w-2 h-2 rounded-full bg-red-500
 
-Actions menu (MoreHorizontal icon, top-right on hover):
+Actions menu (MoreHorizontal icon, top-right on hover, aria-label="Agent actions"):
   Dropdown items: "Open chat", "Edit", "Duplicate", "Delete"
   Delete: red text, separator above it
   Trigger: icon button 28px, appears on card hover (opacity 0→1, 100ms)
@@ -422,9 +422,9 @@ Context menu (right-click or MoreHorizontal on hover):
 ```tsx
 // Right-aligned, max-w-[80%]
 Layout: flex justify-end
-Bubble: bg-[#1E3A5F] text-foreground rounded-2xl rounded-br-sm px-4 py-2.5 text-sm
+Bubble: bg-[#1E3A5F] text-foreground rounded-2xl rounded-br-sm px-4 py-2 text-sm
 
-Timestamp: text-[11px] text-muted-foreground/60 mt-1 text-right
+Timestamp: text-xs text-muted-foreground/60 mt-1 text-right
   (shown on hover of message group, not always visible)
 ```
 
@@ -445,23 +445,23 @@ Completed state: cursor disappears (AnimatePresence opacity 0)
 Code blocks (within markdown):
   bg-[#0D0D0F] border border-border rounded-lg
   Font: Geist Mono or `font-mono`
-  Text: text-[13px]
+  Text: text-sm font-mono
   Padding: px-4 py-3
   Copy button: top-right, appears on hover (Copy icon, 16px, becomes Check icon for 2s)
-  Language label: top-left, text-[11px] text-muted-foreground/60 uppercase
+  Language label: top-left, text-xs text-muted-foreground/60 uppercase
 
 Inline code:
-  bg-zinc-800 rounded px-1.5 py-0.5 font-mono text-[13px] text-foreground/90
+  bg-zinc-800 rounded px-2 py-1 font-mono text-sm text-foreground/90
 
 Tool call pill (shown when agent invokes a tool):
   Collapsible pill above the response
   Default state (collapsed): single line
     ToolIcon + "Called {tool_name}" text + ChevronDown icon
-    bg-primary/8 border border-primary/20 rounded-lg px-3 py-1.5
-    text-[11px] font-semibold uppercase tracking-wider text-primary
+    bg-primary/8 border border-primary/20 rounded-lg px-3 py-1
+    text-xs font-semibold uppercase tracking-wider text-primary
   Expanded state: shows tool input/output
     bg-[#0D0D0F] rounded-b-lg px-4 py-3 border-t border-border/50
-    font-mono text-[13px] text-muted-foreground
+    font-mono text-sm font-mono text-muted-foreground
 
 Timestamp: same as user bubble, hover-reveal
 ```
@@ -496,7 +496,6 @@ Autofocus: On conversation load, textarea autofocused.
 ### AgentStatusBadge
 
 ```tsx
-// Reusable badge showing agent run state
 // Props: status: 'idle' | 'running' | 'error'
 
 idle:    <Badge variant="secondary"> dot + "Idle" </Badge>
@@ -684,10 +683,10 @@ Sub:  "Tools become available when you add MCP integrations in Phase 4." (text-x
 | Delete conversation menu | Delete conversation |
 | Delete conversation confirm heading | Delete this conversation? |
 | Delete conversation confirm body | Your message history will be permanently deleted. |
-| Delete conversation CTA | Delete |
+| Delete conversation CTA | Delete conversation |
 | Rename conversation menu item | Rename |
 | Rename conversation input label | Conversation name |
-| Rename save CTA | Save |
+| Rename save CTA | Rename |
 | Empty chat heading | Start a conversation |
 | Empty chat body | Send a message to {agent_name} to begin. |
 | No conversations yet | No conversations yet |
