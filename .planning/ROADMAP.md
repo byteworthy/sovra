@@ -62,13 +62,14 @@ Plans:
 
 **Goal:** Implement authentication, multi-tenancy, and RBAC
 
-**Plans:** 4 plans
+**Plans:** 5 plans
 
 Plans:
 - [ ] 02-01-PLAN.md — Auth types + AuthAdapter interface + Supabase adapter + client/server factories + PKCE callback
 - [ ] 02-02-PLAN.md — RBAC migration (roles, permissions, invitations) + TenantResolver implementations + TenantContext
 - [ ] 02-03-PLAN.md — RBAC permission checker + root middleware + tenant creation + invitation system
-- [ ] 02-04-PLAN.md — Schema push + auth UI pages + tenant layout + invite page + visual verification
+- [ ] 02-04-PLAN.md — Schema push + motion utilities + UI primitives + auth pages (split-screen, glass morphism, all states)
+- [ ] 02-05-PLAN.md — Tenant layout + sidebar + tenant switcher + member management + onboarding wizard + toasts
 
 **Requirements:**
 - AUTH-01: Email/password signup and login
