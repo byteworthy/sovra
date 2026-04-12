@@ -52,4 +52,10 @@ export const VARIANTS = {
     exit: { opacity: 0, y: 8, scale: 0.95 },
     transition: TRANSITIONS.springFast,
   },
+  // Phase 5: conflict resolution card enter (slides in as feed item with extra emphasis)
+  conflictEnter: {
+    initial: { opacity: 0, y: 12, scale: 0.98 },
+    animate: { opacity: 1, y: 0, scale: 1 },
+    transition: { duration: 0.25, ease } satisfies Transition,
+  },
 }
