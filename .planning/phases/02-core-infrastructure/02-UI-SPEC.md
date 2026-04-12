@@ -144,12 +144,15 @@ box-shadow:
 | Role | Size | Weight | Line Height | Letter Spacing | Tailwind |
 |------|------|--------|-------------|----------------|---------|
 | Body | 14px | 400 | 1.5 | 0 | `text-sm` |
-| Label | 14px | 500 | 1.4 | 0 | `text-sm font-medium` |
-| Supporting | 13px | 400 | 1.4 | 0 | `text-xs` |
-| Heading sm | 16px | 600 | 1.3 | -0.01em | `text-base font-semibold tracking-tight` |
-| Heading md | 20px | 600 | 1.25 | -0.015em | `text-xl font-semibold tracking-tight` |
-| Heading lg | 24px | 700 | 1.2 | -0.02em | `text-2xl font-bold tracking-tight` |
-| Display | 32px | 700 | 1.1 | -0.025em | `text-3xl font-bold tracking-tighter` |
+| Label | 14px | 600 | 1.4 | 0 | `text-sm font-semibold` |
+| Supporting | 14px | 400 | 1.4 | 0 | `text-sm text-muted-foreground` |
+| Heading | 20px | 600 | 1.25 | -0.015em | `text-xl font-semibold tracking-tight` |
+| Heading lg | 24px | 600 | 1.2 | -0.02em | `text-2xl font-semibold tracking-tight` |
+| Display | 32px | 600 | 1.1 | -0.025em | `text-3xl font-semibold tracking-tighter` |
+
+> **4-size scale:** 14px (body/label/supporting) → 20px (heading) → 24px (heading lg) → 32px (display)
+> **2-weight scale:** 400 (body/supporting) → 600 (label/heading/display)
+> Supporting text differentiates via `text-muted-foreground` color, not size. Section titles use `font-semibold` on 14px, not a separate 16px size.
 
 **Font stack update for `globals.css`:**
 ```css
@@ -162,14 +165,14 @@ body {
 ```
 
 **Page-specific assignments:**
-- Auth card heading ("Sign in to AgentForge"): Heading lg — `text-2xl font-bold tracking-tight`
+- Auth card heading ("Sign in to AgentForge"): Heading lg — `text-2xl font-semibold tracking-tight`
 - Auth card sub-copy: Body — `text-sm text-muted-foreground`
-- Brand panel headline: Display — `text-3xl font-bold tracking-tighter`
-- Form labels: Label — `text-sm font-medium`
+- Brand panel headline: Display — `text-3xl font-semibold tracking-tighter`
+- Form labels: Label — `text-sm font-semibold`
 - Input placeholder: Body — `text-sm` with `text-muted-foreground` on the input element
 - Error messages: Supporting — `text-xs text-destructive`
-- Nav items (sidebar): Label — `text-sm font-medium`
-- Member name: Label — `text-sm font-medium`
+- Nav items (sidebar): Label — `text-sm font-semibold`
+- Member name: Label — `text-sm font-semibold`
 - Member email: Supporting — `text-xs text-muted-foreground`
 
 ---
@@ -254,8 +257,16 @@ Card content (p-8 desktop, p-6 mobile):
 Mobile (< 768px): Sidebar slides in as sheet overlay. Hamburger in main header.
 ```
 
+**Dashboard home page focal point:**
+Primary visual anchor is a welcome card spanning full content width (`max-w-5xl`):
+- Heading lg: `Welcome to {tenant_name}` — primary focal point
+- Supporting: `Get started by creating your first agent or inviting your team.`
+- Two ghost CTAs: `Create an agent →` (links to Phase 3 — disabled in Phase 2, shows tooltip "Coming in next release") and `Invite team members →` (links to `/t/{slug}/members`)
+- Card uses `bg-gradient-to-br from-blue-500/10 to-violet-500/10 border border-border/50 rounded-xl p-8`
+- Entrance: `fadeInUp` (400ms, 100ms delay after layout mount)
+
 **Sidebar nav item states:**
-- Default: `flex h-10 items-center gap-2 rounded-md px-3 text-sm font-medium text-muted-foreground hover:bg-accent/50 hover:text-foreground transition-colors duration-150`
+- Default: `flex h-10 items-center gap-2 rounded-md px-3 text-sm font-semibold text-muted-foreground hover:bg-accent/50 hover:text-foreground transition-colors duration-150`
 - Active: `bg-accent/10 text-primary` + `before:content-[''] before:absolute before:left-0 before:h-5 before:w-0.5 before:rounded-full before:bg-primary` (left accent bar)
 - Hover: background `bg-zinc-800/50`
 
@@ -409,7 +420,7 @@ disabled:  opacity-50 cursor-not-allowed bg-muted/30
 ### OAuth Button — All States
 
 ```tsx
-default:   h-10 variant="outline" flex items-center gap-2 text-sm font-medium
+default:   h-10 variant="outline" flex items-center gap-2 text-sm font-semibold
            border-border bg-background/50 hover:bg-accent/50 hover:border-zinc-600
            icon: SVG logo 18px, no animation
 hover:     bg-zinc-800/50 border-zinc-600 transition-all duration-150
@@ -488,13 +499,13 @@ Step 2: Invite your team (optional)
   ├── Email input (can add multiple, comma-separated)
   ├── Role select (default: member)
   ├── "Send invites →" CTA
-  └── "Skip for now →" ghost link
+  └── "Skip invites for now →" ghost link
 
 Step 3: You're ready
   ├── Success animation (check mark with scale spring)
   ├── "Your workspace is ready" heading
   ├── Summary: workspace name, members invited
-  └── "Go to dashboard →" CTA (primary)
+  └── "Open your dashboard →" CTA (primary)
 ```
 
 **Wizard layout:** Same split-screen as auth pages — brand panel left, wizard card right. Step indicator: 3 dots at top of card, filled dot = current step. Transition between steps: slide left (current out) + slide right (next in), `translateX(100%→0)` with AnimatePresence mode="wait".
@@ -577,7 +588,7 @@ CTA:       "Create workspace" — Button default
 ### OAuth Flow
 
 ```
-1. "Continue with Google" clicked
+1. "Sign in with Google" clicked
 2. Button: Loader2 spinner, "Connecting..."
 3. Both OAuth buttons disabled
 4. Redirect to Supabase OAuth flow (browser navigation)
@@ -641,9 +652,9 @@ CTA:       "Create workspace" — Button default
 |---------|------|
 | Login page heading | Sign in |
 | Login page subheading | Welcome back to AgentForge |
-| Login primary CTA | Continue |
-| Login Google OAuth | Continue with Google |
-| Login GitHub OAuth | Continue with GitHub |
+| Login primary CTA | Sign in |
+| Login Google OAuth | Sign in with Google |
+| Login GitHub OAuth | Sign in with GitHub |
 | Login OAuth separator | or |
 | Login footer link | Don't have an account? **Sign up** |
 | Signup page heading | Create your account |
@@ -670,10 +681,10 @@ CTA:       "Create workspace" — Button default
 | Onboarding step 2 heading | Invite your team |
 | Onboarding step 2 subheading | Add teammates so you can build together. You can always do this later. |
 | Onboarding step 2 CTA | Send invites |
-| Onboarding step 2 skip | Skip for now |
+| Onboarding step 2 skip | Skip invites for now |
 | Onboarding step 3 heading | You're all set |
 | Onboarding step 3 body | **{workspace name}** is ready. Start by creating your first AI agent. |
-| Onboarding step 3 CTA | Go to dashboard |
+| Onboarding step 3 CTA | Open your dashboard |
 | Tenant creation dialog heading | Create a workspace |
 | Tenant creation CTA | Create workspace |
 | Invite members heading | Team members |
@@ -682,7 +693,7 @@ CTA:       "Create workspace" — Button default
 | Invite link copied toast | Invite link copied to clipboard |
 | Invitation accepted heading | Welcome to {tenant name} |
 | Invitation accepted body | You now have access as **{role}** |
-| Invitation accepted CTA | Go to dashboard |
+| Invitation accepted CTA | Open your dashboard |
 | Invitation expired heading | This invitation has expired |
 | Invitation expired body | Ask the workspace owner to send you a new invitation. |
 | Invitation invalid heading | Invitation not found |
