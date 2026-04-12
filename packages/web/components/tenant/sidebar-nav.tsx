@@ -17,7 +17,7 @@ interface NavItem {
 
 const NAV_ITEMS: NavItem[] = [
   { label: 'Dashboard', icon: LayoutDashboard, path: 'dashboard' },
-  { label: 'Agents', icon: Bot, path: 'agents', disabled: true },
+  { label: 'Agents', icon: Bot, path: 'agents', disabled: false },
   { label: 'Members', icon: Users, path: 'members' },
   { label: 'Settings', icon: Settings, path: 'settings', disabled: true },
 ]
