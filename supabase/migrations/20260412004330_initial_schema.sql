@@ -1,5 +1,5 @@
 -- ============================================================
--- AgentForge Initial Schema
+-- ByteSwarm Initial Schema
 -- Phase 1 Plan 3 — 14 tables, pgvector, HNSW, RLS
 -- ============================================================
 
