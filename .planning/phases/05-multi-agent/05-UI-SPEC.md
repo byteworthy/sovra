@@ -86,7 +86,7 @@ created: 2026-04-12
 - 10% accent: `--primary` (#3B82F6) — reserved exclusively for:
   1. Primary CTA buttons ("Create workspace", "Add agent", "Save settings")
   2. Active sidebar nav item — inherited Phase 2 pattern (Workspaces nav item active state)
-  3. Focus rings on all interactive elements
+  3. Focus ring outline on keyboard-focused interactive elements (2px ring, standard browser behavior)
   4. Socket connected status dot
   5. Workspace detail: active agent highlight border
   6. "Start collaboration" button in workspace header
@@ -120,7 +120,7 @@ created: 2026-04-12
 | Agent-to-agent message log item | `py-3 px-4` | Log entry within workspace activity feed |
 | Memory strategy config sheet width | `w-[480px]` (desktop) | Matches Phase 3 agent config sheet width for consistency |
 | Workspace creation dialog | `max-w-[520px]` | Wider than agent dialog — needs mode select + agent assignment |
-| Vote badge | `px-2 py-0.5` | Compact inline vote indicator |
+| Vote badge | `px-2 py-1` | Compact inline vote indicator |
 | Context compression progress bar height | `h-1` | Subtle, 4px bar below token count readout |
 | Workspace list grid gap | `gap-4` | Matches agent grid gap from Phase 3 |
 
@@ -128,16 +128,16 @@ created: 2026-04-12
 
 ## Typography
 
-**All Phase 2/3 typography tokens carry forward. No changes to the 4-size scale.**
+**Phase 5 active scale: 12/14/20/24px (4 sizes). Display (32px) is not used in any Phase 5 component and is excluded from this phase's active scale.**
 
 | Role | Size | Weight | Line Height | Letter Spacing | Tailwind |
 |------|------|--------|-------------|----------------|---------|
+| Caption | 12px | 400 | 1.4 | 0 | `text-xs` |
 | Body | 14px | 400 | 1.5 | 0 | `text-sm` |
 | Label | 14px | 600 | 1.4 | 0 | `text-sm font-semibold` |
 | Supporting | 14px | 400 | 1.4 | 0 | `text-sm text-muted-foreground` |
 | Heading | 20px | 600 | 1.25 | -0.015em | `text-xl font-semibold tracking-tight` |
 | Heading lg | 24px | 600 | 1.2 | -0.02em | `text-2xl font-semibold tracking-tight` |
-| Display | 32px | 600 | 1.1 | -0.025em | `text-3xl font-semibold tracking-tighter` |
 
 **Phase 5 type assignments:**
 
@@ -163,7 +163,7 @@ created: 2026-04-12
 | Empty state heading | Heading | `text-xl font-semibold` |
 | Empty state body | Supporting | `text-sm text-muted-foreground` |
 
-> 4-size scale unchanged: 14px → 20px → 24px → 32px. 2-weight scale unchanged: 400 → 600. `text-xs` (12px) continues as the caption/timestamp subvariant within the 14px slot.
+> Phase 5 active scale: 12px (Caption) / 14px (Body, Label, Supporting) / 20px (Heading) / 24px (Heading lg). 2-weight scale unchanged: 400 / 600. Display (32px) is available globally but unused in Phase 5 components.
 
 ---
 
@@ -194,11 +194,13 @@ Empty state (when no workspaces exist):
 
 ### Workspace Detail Page (`/t/{slug}/workspaces/{workspaceId}`)
 
+**Primary visual anchor: Activity feed** -- widest column, highest information density, receives auto-scroll attention. Agent panel and shared memory panel are secondary.
+
 ```
 Full viewport minus sidebar:
 ┌────────────────────────────────────────────────────────────────────────┐
 │  Workspace header (h-14, border-b border-border)                       │
-│  [← Back] "Workspace name" (Heading lg)    [mode badge]  [Settings]   │
+│  [← Back] "Workspace name" (Heading lg)    [mode badge]  [Settings (aria-label="Workspace settings")]   │
 │  Socket status indicator (top-right area, after settings button)       │
 ├──────────────────────────────────────────────────────────────────────  │
 │                                                                         │
@@ -218,7 +220,7 @@ Full viewport minus sidebar:
 │  │  │  "Shared Memory" label (Label) + memory strategy tag        │  │ │
 │  │  │  + [compression indicator] right-aligned                    │  │ │
 │  │  │  Scrollable list of MemoryEntry items                       │  │ │
-│  │  │  Collapse toggle (ChevronDown icon, bottom strip)           │  │ │
+│  │  │  Collapse toggle (ChevronDown icon, aria-label="Collapse shared memory" / "Expand shared memory")  │  │ │
 │  │  └─────────────────────────────────────────────────────────────┘  │ │
 │  └────────────────────────────────────────────────────────────────────┘ │
 │                                                                         │
@@ -233,7 +235,7 @@ Full viewport minus sidebar:
 
 Mobile (< 768px):
   Agent panel hidden behind sheet.
-  Workspace header gains [Agents] icon button (right of settings) to open sheet.
+  Workspace header gains [Agents] icon button (aria-label="View agents", right of settings) to open sheet.
   Shared memory panel collapses to 48px strip (tap to expand to full-screen overlay).
 ```
 
@@ -248,7 +250,7 @@ Sheet slides in from the right, width 480px desktop / full-screen mobile
 
 Sheet structure:
 ┌─ Sheet header ─────────────────────────────────────────────────────┐
-│ "Workspace settings" (Heading)                  [X close]          │
+│ "Workspace settings" (Heading)                  [X close (aria-label="Close")]          │
 └─────────────────────────────────────────────────────────────────────┘
 
 Tabs (3 tabs):
@@ -304,7 +306,7 @@ Trigger: "+ Create workspace" button on workspaces list page
 Dialog (centered overlay, max-w-[520px], glass morphism card):
 
 ┌─ Dialog ───────────────────────────────────────────────────────────┐
-│ "New workspace" (Heading)                         [X close]        │
+│ "New workspace" (Heading)                         [X close (aria-label="Close")]        │
 │────────────────────────────────────────────────────────────────────│
 │ Workspace name input (required, autofocused)                       │
 │ Description textarea (optional, 2 rows)                            │
@@ -430,7 +432,7 @@ focus-visible:
   ring-2 ring-ring ring-offset-2 ring-offset-background
 
 Collaboration mode badge (variants):
-  round_robin:   bg-violet-500/15 text-violet-400 px-2 py-0.5 rounded-full text-xs font-semibold
+  round_robin:   bg-violet-500/15 text-violet-400 px-2 py-1 rounded-full text-xs font-semibold
   parallel:      bg-green-500/12  text-green-400  (same padding/shape)
   sequential:    bg-amber-500/12  text-amber-400  (same)
   hierarchical:  bg-orange-500/12 text-orange-400 (same)
@@ -500,7 +502,7 @@ default:
   Expand toggle: "Show more" (text-xs text-primary, appears if content > 2 lines)
 
 Strategy tag:
-  conversation: bg-blue-500/10   text-blue-300  rounded text-xs px-1.5 py-0.5
+  conversation: bg-blue-500/10   text-blue-300  rounded text-xs px-2 py-1
   summary:      bg-violet-500/10 text-violet-300 (same)
   vector:       bg-green-500/10  text-green-300  (same)
   hybrid:       bg-amber-500/10  text-amber-300  (same)
@@ -510,7 +512,7 @@ Strategy tag:
 
 ```tsx
 // Persistent in workspace detail header, right side, before settings button
-// flex items-center gap-1.5
+// flex items-center gap-2
 
 connected:
   Dot: w-2 h-2 rounded-full bg-green-500 (solid, no animation)
@@ -580,6 +582,7 @@ No em dashes anywhere. Plain language. Verb + noun CTAs.
 | Delete workspace: cancel button | "Keep workspace" |
 | Remove agent from workspace | "Remove agent from this workspace?" |
 | Remove agent: confirm button | "Remove agent" |
+| Remove agent: cancel button | "Keep agent" |
 | Conflict resolution: pending | "Agents are voting on the best response." |
 | Conflict resolution: resolved | "Conflict resolved." |
 | Context compression: active tooltip | "Context compression active. Older messages condensed to stay within token limits." |
