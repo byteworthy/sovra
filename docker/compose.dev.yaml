@@ -26,16 +26,23 @@ services:
     ports:
       - "8080:8080"
       - "50051:50051"
+      - "3001:3001"
     volumes:
       - ../packages/worker:/app
       - go-cache:/root/.cache/go
+      - agent-workspace:/tmp/agent-workspace
     environment:
       - DATABASE_URL=postgresql://postgres:postgres@host.docker.internal:54322/postgres
       - HTTP_PORT=8080
       - GRPC_PORT=50051
+      - MCP_PORT=3001
       - GO_ENV=development
+      - AGENT_WORKSPACE_PATH=/tmp/agent-workspace
+      - BRAVE_SEARCH_API_KEY=${BRAVE_SEARCH_API_KEY:-}
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
     extra_hosts:
       - "host.docker.internal:host-gateway"
 
 volumes:
   go-cache:
+  agent-workspace:

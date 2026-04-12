@@ -11,6 +11,7 @@ import (
 	"github.com/byteswarm/worker/internal/db"
 	workergrpc "github.com/byteswarm/worker/internal/grpc"
 	workerhttp "github.com/byteswarm/worker/internal/http"
+	mcpserver "github.com/byteswarm/worker/internal/mcp"
 )
 
 func main() {
@@ -36,6 +37,9 @@ func main() {
 
 	// Start gRPC server in the background.
 	go workergrpc.StartServer(cfg.GRPCPort, pool)
+
+	// Start MCP server in the background.
+	go mcpserver.StartMCPServer(cfg.MCPPort, pool, cfg)
 
 	// Block until SIGINT or SIGTERM.
 	quit := make(chan os.Signal, 1)

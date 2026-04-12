@@ -29,11 +29,18 @@ services:
     ports:
       - "8080:8080"
       - "50051:50051"
+      - "3001:3001"
+    volumes:
+      - agent-workspace:/tmp/agent-workspace
     environment:
       - DATABASE_URL=${DATABASE_URL}
       - HTTP_PORT=8080
       - GRPC_PORT=50051
+      - MCP_PORT=3001
       - GO_ENV=production
+      - AGENT_WORKSPACE_PATH=/tmp/agent-workspace
+      - BRAVE_SEARCH_API_KEY=${BRAVE_SEARCH_API_KEY:-}
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "wget", "--spider", "-q", "http://localhost:8080/health"]
@@ -44,3 +51,6 @@ services:
     depends_on:
       web:
         condition: service_started
+
+volumes:
+  agent-workspace:
