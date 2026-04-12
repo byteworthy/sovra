@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach } from 'vitest'
+import { describe, it, expect, beforeEach, vi } from 'vitest'
 
 // Use dynamic import to reset module state between tests
 let registryModule: typeof import('@/lib/ai/registry')

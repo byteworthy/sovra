@@ -91,6 +91,24 @@
   .btn-gradient-border {
     border-top: 1px solid rgba(255, 255, 255, 0.12);
   }
+
+  .streaming-cursor {
+    animation: blink 1s step-end infinite;
+  }
+
+  .agent-status-running {
+    animation: pulse-dot 1.5s ease-in-out infinite;
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(1.2); }
+  }
 }
 
 @keyframes blink {
