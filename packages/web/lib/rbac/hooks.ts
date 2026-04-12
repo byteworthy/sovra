@@ -52,7 +52,8 @@ export function useRole(): { role: string | null; loading: boolean } {
         .eq('tenant_id', tenantId)
         .maybeSingle()
         .then(({ data: tuData }) => {
-          setRole((tuData as Record<string, unknown> | null)?.roles?.name as string ?? null)
+          const rolesData = (tuData as { roles?: { name?: string } | null } | null)?.roles
+          setRole(rolesData?.name ?? null)
           setLoading(false)
         })
     })
