@@ -232,6 +232,16 @@ Plans:
 
 **Goal:** Add billing, admin, deployment configs, and monitoring
 
+**Plans:** 6 plans
+
+Plans:
+- [ ] 06-01-PLAN.md - Billing backend: Lemon Squeezy SDK, plans, webhook, portal, health endpoint, migration
+- [ ] 06-02-PLAN.md - API key generation, authentication, rate limiting, CRUD routes
+- [ ] 06-03-PLAN.md - Admin dashboard: service client, queries, layout, all admin pages
+- [ ] 06-04-PLAN.md - Tenant settings UI: billing page, API keys page
+- [ ] 06-05-PLAN.md - Monitoring: Sentry integration, PostHog provider, custom events
+- [ ] 06-06-PLAN.md - Deployment configs (Railway/AWS/GCP), CI/CD, environment docs
+
 **Requirements:**
 - BILL-01: Subscription management (Lemon Squeezy)
 - BILL-02: Plan definitions (free, pro, enterprise)
@@ -286,4 +296,4 @@ Plans:
 
 ---
 *Roadmap created: 2026-04-11*
-*Last updated: 2026-04-12 after Phase 5 planning*
+*Last updated: 2026-04-12 after Phase 6 planning*
