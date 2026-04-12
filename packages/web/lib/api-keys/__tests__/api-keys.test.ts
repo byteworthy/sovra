@@ -51,6 +51,7 @@ function makeSupabaseForAuth(
   }
 
   const chain = {
+    select: vi.fn().mockReturnThis(),
     eq: vi.fn().mockReturnThis(),
     is: vi.fn().mockReturnThis(),
     single: vi.fn().mockResolvedValue({ data: row, error }),
@@ -151,6 +152,7 @@ describe('authenticateApiKey', () => {
     const updateSpy = vi.fn().mockReturnValue(updateChain)
 
     const chain = {
+      select: vi.fn().mockReturnThis(),
       eq: vi.fn().mockReturnThis(),
       is: vi.fn().mockReturnThis(),
       single: vi.fn().mockResolvedValue({ data: validRow, error: null }),
@@ -316,3 +318,4 @@ describe('withApiKeyAuth', () => {
     expect(handler).not.toHaveBeenCalled()
   })
 })
+

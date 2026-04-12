@@ -18,6 +18,7 @@ export async function authenticateApiKey(
 
   const { data, error } = await supabase
     .from('api_keys')
+    .select('id, tenant_id, permissions, expires_at, revoked_at')
     .eq('key_prefix', prefix)
     .eq('key_hash', hash)
     .is('revoked_at', null)
