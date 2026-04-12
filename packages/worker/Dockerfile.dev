@@ -1,0 +1,15 @@
+FROM golang:1.22-alpine
+
+RUN go install github.com/air-verse/air@v1.65.0
+
+WORKDIR /app
+
+# Cache dependencies before copying source
+COPY go.mod go.sum ./
+RUN go mod download
+
+COPY . .
+
+EXPOSE 8080 50051
+
+CMD ["air", "-c", ".air.toml"]

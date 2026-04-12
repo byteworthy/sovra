@@ -1,0 +1,45 @@
+package main
+
+import (
+	"context"
+	"log"
+	"os"
+	"os/signal"
+	"syscall"
+
+	"github.com/agentforge/worker/internal/config"
+	"github.com/agentforge/worker/internal/db"
+	workergrpc "github.com/agentforge/worker/internal/grpc"
+	workerhttp "github.com/agentforge/worker/internal/http"
+)
+
+func main() {
+	cfg := config.Load()
+
+	log.Printf("starting agentforge worker (env=%s)", cfg.Environment)
+
+	// Connect to database.
+	// SECURITY: Never log cfg.DatabaseURL — only log connection status.
+	pool, err := db.NewPool(context.Background(), cfg.DatabaseURL)
+	if err != nil {
+		log.Printf("warning: database connection failed: %v", err)
+		log.Println("worker starting without database — health checks will report degraded")
+		// Start without DB — allows container health checks to work during Supabase startup.
+		pool = nil
+	} else {
+		log.Println("database connected")
+		defer pool.Close()
+	}
+
+	// Start HTTP health server in the background.
+	go workerhttp.StartHealthServer(cfg.HTTPPort, pool)
+
+	// Start gRPC server in the background.
+	go workergrpc.StartServer(cfg.GRPCPort, pool)
+
+	// Block until SIGINT or SIGTERM.
+	quit := make(chan os.Signal, 1)
+	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
+	sig := <-quit
+	log.Printf("received signal %s, shutting down", sig)
+}
