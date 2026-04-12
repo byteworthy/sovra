@@ -1,0 +1,41 @@
+name: agentforge-dev
+
+services:
+  web:
+    build:
+      context: ../packages/web
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - ../packages/web:/app
+      - ../packages/shared:/shared
+      - /app/node_modules
+      - /app/.next
+    environment:
+      - NODE_ENV=development
+      - NEXT_PUBLIC_SUPABASE_URL=http://host.docker.internal:54321
+      - NEXT_PUBLIC_SUPABASE_ANON_KEY=${SUPABASE_ANON_KEY:-your-anon-key}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  worker:
+    build:
+      context: ../packages/worker
+      dockerfile: Dockerfile.dev
+    ports:
+      - "8080:8080"
+      - "50051:50051"
+    volumes:
+      - ../packages/worker:/app
+      - go-cache:/root/.cache/go
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@host.docker.internal:54322/postgres
+      - HTTP_PORT=8080
+      - GRPC_PORT=50051
+      - GO_ENV=development
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+volumes:
+  go-cache:
