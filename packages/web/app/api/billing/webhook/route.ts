@@ -4,23 +4,18 @@ import { verifyWebhookSignature, handleWebhookEvent } from '@/lib/billing/webhoo
 
 export async function POST(req: NextRequest): Promise<Response> {
   const rawBody = await req.text()
-  const signature = req.headers.get('X-Signature') ?? ''
+  const signature = req.headers.get('stripe-signature') ?? ''
 
-  const secret = process.env.LEMONSQUEEZY_WEBHOOK_SECRET ?? ''
-  if (!verifyWebhookSignature(rawBody, signature, secret)) {
-    return new Response('Forbidden', { status: 403 })
+  const secret = process.env.STRIPE_WEBHOOK_SECRET ?? ''
+  if (!secret) {
+    return new Response('Webhook secret not configured', { status: 500 })
   }
 
-  let payload: { meta?: { event_name?: string }; data?: unknown }
+  let event
   try {
-    payload = JSON.parse(rawBody)
+    event = verifyWebhookSignature(rawBody, signature, secret)
   } catch {
-    return new Response('Bad Request', { status: 400 })
-  }
-
-  const eventName = payload.meta?.event_name
-  if (!eventName) {
-    return new Response('Bad Request: missing event_name', { status: 400 })
+    return new Response('Forbidden', { status: 403 })
   }
 
   const supabase = createClient(
@@ -28,7 +23,7 @@ export async function POST(req: NextRequest): Promise<Response> {
     process.env.SUPABASE_SERVICE_ROLE_KEY!
   )
 
-  await handleWebhookEvent(eventName, payload.data as Record<string, unknown> ?? {}, supabase)
+  await handleWebhookEvent(event, supabase)
 
   return new Response('OK', { status: 200 })
 }

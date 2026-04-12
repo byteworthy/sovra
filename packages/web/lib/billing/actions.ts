@@ -1,6 +1,5 @@
 import type { SupabaseClient } from '@supabase/supabase-js'
-import { getSubscription } from '@lemonsqueezy/lemonsqueezy.js'
-import { configureLemonSqueezy } from './client'
+import { getStripe } from './client'
 
 export async function getSubscriptionForTenant(
   supabase: SupabaseClient,
@@ -42,12 +41,35 @@ export async function getUsageForTenant(
   }
 }
 
-export async function getCustomerPortalUrl(
-  lsSubscriptionId: string
+export async function createCheckoutSession(
+  tenantId: string,
+  priceId: string,
+  planName: string,
+  returnUrl: string
 ): Promise<string | null> {
-  configureLemonSqueezy()
-  const { data, error } = await getSubscription(lsSubscriptionId)
-  if (error || !data) return null
-  const urls = data.data?.attributes?.urls as Record<string, string> | undefined
-  return urls?.customer_portal ?? null
+  const stripe = getStripe()
+
+  const session = await stripe.checkout.sessions.create({
+    mode: 'subscription',
+    line_items: [{ price: priceId, quantity: 1 }],
+    success_url: `${returnUrl}?session_id={CHECKOUT_SESSION_ID}`,
+    cancel_url: returnUrl,
+    metadata: { tenant_id: tenantId, plan: planName },
+  })
+
+  return session.url
+}
+
+export async function createPortalSession(
+  stripeCustomerId: string,
+  returnUrl: string
+): Promise<string | null> {
+  const stripe = getStripe()
+
+  const session = await stripe.billingPortal.sessions.create({
+    customer: stripeCustomerId,
+    return_url: returnUrl,
+  })
+
+  return session.url
 }

@@ -1,7 +1,7 @@
 import { NextRequest } from 'next/server'
 import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
-import { getSubscriptionForTenant, getCustomerPortalUrl } from '@/lib/billing/actions'
+import { getSubscriptionForTenant, createPortalSession } from '@/lib/billing/actions'
 
 export async function POST(req: NextRequest): Promise<Response> {
   const cookieStore = await cookies()
@@ -17,7 +17,7 @@ export async function POST(req: NextRequest): Promise<Response> {
               cookieStore.set(name, value, options)
             )
           } catch {
-            // Read-only context (e.g. Server Component) - ignore
+            // Read-only context -- ignore
           }
         },
       },
@@ -39,10 +39,15 @@ export async function POST(req: NextRequest): Promise<Response> {
     return Response.json({ error: 'No active subscription found' }, { status: 404 })
   }
 
-  const lsId = subscription.lemon_squeezy_id as string
-  const portalUrl = await getCustomerPortalUrl(lsId)
+  const customerId = subscription.stripe_customer_id as string
+  if (!customerId) {
+    return Response.json({ error: 'No Stripe customer linked' }, { status: 404 })
+  }
+
+  const returnUrl = req.headers.get('referer') ?? process.env.NEXT_PUBLIC_APP_URL ?? ''
+  const portalUrl = await createPortalSession(customerId, returnUrl)
   if (!portalUrl) {
-    return Response.json({ error: 'Customer portal URL not available' }, { status: 404 })
+    return Response.json({ error: 'Could not create portal session' }, { status: 500 })
   }
 
   return Response.json({ url: portalUrl })

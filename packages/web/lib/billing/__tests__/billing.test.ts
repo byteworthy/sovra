@@ -39,15 +39,15 @@ describe('getPlanLimits', () => {
   })
 })
 
-describe('configureLemonSqueezy', () => {
-  it('throws when LEMONSQUEEZY_API_KEY is missing', async () => {
-    const originalKey = process.env.LEMONSQUEEZY_API_KEY
-    delete process.env.LEMONSQUEEZY_API_KEY
-    // Reset module to clear init guard
+describe('getStripe', () => {
+  it('throws when STRIPE_SECRET_KEY is missing', async () => {
+    const originalKey = process.env.STRIPE_SECRET_KEY
+    delete process.env.STRIPE_SECRET_KEY
     vi.resetModules()
-    const { configureLemonSqueezy } = await import('../client')
-    expect(() => configureLemonSqueezy()).toThrow(/LEMONSQUEEZY_API_KEY/)
-    process.env.LEMONSQUEEZY_API_KEY = originalKey
+    const { getStripe, _resetStripeInstance } = await import('../client')
+    _resetStripeInstance()
+    expect(() => getStripe()).toThrow(/STRIPE_SECRET_KEY/)
+    process.env.STRIPE_SECRET_KEY = originalKey
     vi.resetModules()
   })
 })
@@ -63,78 +63,57 @@ describe('GET /api/health', () => {
 })
 
 // ============================================================
-// Task 2: Webhook signature verification + event handling
+// Task 2: Webhook verification + event handling (Stripe)
 // ============================================================
-
-describe('verifyWebhookSignature', () => {
-  it('returns true for valid HMAC-SHA256 signature', async () => {
-    const { verifyWebhookSignature } = await import('../webhook')
-    const { createHmac } = await import('crypto')
-    const secret = 'test-secret'
-    const body = '{"test":"payload"}'
-    const sig = createHmac('sha256', secret).update(body).digest('hex')
-    expect(verifyWebhookSignature(body, sig, secret)).toBe(true)
-  })
-
-  it('returns false for invalid signature', async () => {
-    const { verifyWebhookSignature } = await import('../webhook')
-    expect(verifyWebhookSignature('{"test":"payload"}', 'invalidsig', 'secret')).toBe(false)
-  })
-
-  it('returns false for empty signature', async () => {
-    const { verifyWebhookSignature } = await import('../webhook')
-    expect(verifyWebhookSignature('{"test":"payload"}', '', 'secret')).toBe(false)
-  })
-})
 
 describe('handleWebhookEvent', () => {
   const makeMockSupabase = () => {
     const upsertMock = vi.fn().mockResolvedValue({ error: null })
-    const updateMock = vi.fn().mockResolvedValue({ error: null })
     const eqMock = vi.fn().mockReturnValue({ error: null })
     const mockFrom = vi.fn().mockReturnValue({
       upsert: upsertMock,
       update: () => ({ eq: eqMock }),
     })
-    return { from: mockFrom, upsertMock, updateMock, eqMock }
+    return { from: mockFrom, upsertMock, eqMock }
   }
 
-  it('subscription_created upserts subscription row', async () => {
+  it('checkout.session.completed upserts subscription row', async () => {
     const { handleWebhookEvent } = await import('../webhook')
     const supabase = makeMockSupabase()
-    const data = {
-      id: 'ls_sub_1',
-      attributes: {
-        status: 'active',
-        product_name: 'pro',
-        renews_at: '2026-05-01T00:00:00Z',
+    const event = {
+      type: 'checkout.session.completed',
+      data: {
+        object: {
+          subscription: 'sub_123',
+          customer: 'cus_123',
+          metadata: { tenant_id: 'tenant-123', plan: 'pro' },
+        },
       },
-      meta: { custom: { tenant_id: 'tenant-123' } },
     }
     await expect(
-      handleWebhookEvent('subscription_created', data, supabase as any)
+      handleWebhookEvent(event as never, supabase as never)
     ).resolves.not.toThrow()
     expect(supabase.from).toHaveBeenCalledWith('subscriptions')
   })
 
-  it('subscription_cancelled sets status to cancelled', async () => {
+  it('customer.subscription.deleted sets status to cancelled', async () => {
     const { handleWebhookEvent } = await import('../webhook')
     const supabase = makeMockSupabase()
-    const data = {
-      id: 'ls_sub_1',
-      attributes: { status: 'cancelled' },
-      meta: { custom: { tenant_id: 'tenant-123' } },
+    const event = {
+      type: 'customer.subscription.deleted',
+      data: { object: { id: 'sub_123' } },
     }
     await expect(
-      handleWebhookEvent('subscription_cancelled', data, supabase as any)
+      handleWebhookEvent(event as never, supabase as never)
     ).resolves.not.toThrow()
   })
 
   it('handles unknown events gracefully without throwing', async () => {
     const { handleWebhookEvent } = await import('../webhook')
     const supabase = makeMockSupabase()
+    const event = { type: 'some.unknown.event', data: { object: {} } }
     await expect(
-      handleWebhookEvent('some_unknown_event', {}, supabase as any)
+      handleWebhookEvent(event as never, supabase as never)
     ).resolves.not.toThrow()
   })
 })
@@ -152,7 +131,7 @@ describe('getSubscriptionForTenant', () => {
         }),
       }),
     }
-    const result = await getSubscriptionForTenant(supabase as any, 'tenant-1')
+    const result = await getSubscriptionForTenant(supabase as never, 'tenant-1')
     expect(result).toEqual({ id: 'sub-1', plan: 'pro' })
   })
 })
@@ -181,7 +160,7 @@ describe('getUsageForTenant', () => {
         return { select: vi.fn().mockReturnValue({ eq: vi.fn().mockResolvedValue({ count: 0, error: null }) }) }
       }),
     }
-    const result = await getUsageForTenant(supabase as any, 'tenant-1')
+    const result = await getUsageForTenant(supabase as never, 'tenant-1')
     expect(result).toHaveProperty('apiCalls')
     expect(result).toHaveProperty('agents')
   })

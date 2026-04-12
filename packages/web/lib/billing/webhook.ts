@@ -1,86 +1,90 @@
-import { createHmac, timingSafeEqual } from 'crypto'
+import type Stripe from 'stripe'
 import type { SupabaseClient } from '@supabase/supabase-js'
+import { getStripe } from './client'
 
 export function verifyWebhookSignature(
-  rawBody: string,
+  rawBody: string | Buffer,
   signature: string,
   secret: string
-): boolean {
-  if (!signature) return false
-
-  const expected = createHmac('sha256', secret).update(rawBody).digest('hex')
-  const expectedBuffer = Buffer.from(expected, 'utf8')
-  const signatureBuffer = Buffer.from(signature, 'utf8')
-
-  // timingSafeEqual requires same length buffers
-  if (expectedBuffer.length !== signatureBuffer.length) return false
-
-  return timingSafeEqual(expectedBuffer, signatureBuffer)
+): Stripe.Event {
+  const stripe = getStripe()
+  return stripe.webhooks.constructEvent(rawBody, signature, secret)
 }
 
 export async function handleWebhookEvent(
-  eventName: string,
-  data: Record<string, unknown>,
+  event: Stripe.Event,
   supabase: SupabaseClient
 ): Promise<void> {
-  const attrs = (data.attributes ?? {}) as Record<string, unknown>
-  const meta = (data.meta ?? {}) as Record<string, unknown>
-  const custom = (meta.custom ?? {}) as Record<string, unknown>
-  const lsId = data.id as string | undefined
-  const tenantId = custom.tenant_id as string | undefined
+  switch (event.type) {
+    case 'checkout.session.completed': {
+      const session = event.data.object as Stripe.Checkout.Session
+      const tenantId = session.metadata?.tenant_id
+      if (!tenantId || !session.subscription) break
 
-  switch (eventName) {
-    case 'subscription_created':
       await supabase.from('subscriptions').upsert({
-        lemon_squeezy_id: lsId,
+        stripe_subscription_id: String(session.subscription),
+        stripe_customer_id: String(session.customer),
         tenant_id: tenantId,
-        plan: attrs.product_name ?? 'free',
-        status: attrs.status ?? 'active',
-        current_period_end: attrs.renews_at ?? null,
-      })
+        plan: session.metadata?.plan ?? 'pro',
+        status: 'active',
+      } as never)
       break
+    }
 
-    case 'subscription_updated':
+    case 'customer.subscription.updated': {
+      const sub = event.data.object as Stripe.Subscription
       await supabase
         .from('subscriptions')
         .update({
-          plan: attrs.product_name ?? 'free',
-          status: attrs.status,
-          current_period_end: attrs.renews_at ?? null,
-        })
-        .eq('lemon_squeezy_id', lsId)
+          status: sub.status === 'active' ? 'active' : sub.status,
+          current_period_end: sub.current_period_end
+            ? new Date(sub.current_period_end * 1000).toISOString()
+            : null,
+        } as never)
+        .eq('stripe_subscription_id' as never, sub.id)
       break
+    }
 
-    case 'subscription_cancelled':
+    case 'customer.subscription.deleted': {
+      const sub = event.data.object as Stripe.Subscription
       await supabase
         .from('subscriptions')
-        .update({ status: 'cancelled' })
-        .eq('lemon_squeezy_id', lsId)
+        .update({ status: 'cancelled' } as never)
+        .eq('stripe_subscription_id' as never, sub.id)
       break
+    }
 
-    case 'subscription_expired':
+    case 'customer.subscription.paused': {
+      const sub = event.data.object as Stripe.Subscription
       await supabase
         .from('subscriptions')
-        .update({ status: 'expired' })
-        .eq('lemon_squeezy_id', lsId)
+        .update({ status: 'paused' } as never)
+        .eq('stripe_subscription_id' as never, sub.id)
       break
+    }
 
-    case 'subscription_paused':
+    case 'customer.subscription.resumed': {
+      const sub = event.data.object as Stripe.Subscription
       await supabase
         .from('subscriptions')
-        .update({ status: 'paused' })
-        .eq('lemon_squeezy_id', lsId)
+        .update({ status: 'active' } as never)
+        .eq('stripe_subscription_id' as never, sub.id)
       break
+    }
 
-    case 'subscription_resumed':
-      await supabase
-        .from('subscriptions')
-        .update({ status: 'active' })
-        .eq('lemon_squeezy_id', lsId)
+    case 'invoice.payment_failed': {
+      const invoice = event.data.object as Stripe.Invoice
+      if (invoice.subscription) {
+        await supabase
+          .from('subscriptions')
+          .update({ status: 'past_due' } as never)
+          .eq('stripe_subscription_id' as never, String(invoice.subscription))
+      }
       break
+    }
 
     default:
-      console.log(`[billing] unhandled webhook event: ${eventName}`)
+      console.log(`[billing] unhandled webhook event: ${event.type}`)
       break
   }
 }

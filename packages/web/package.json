@@ -16,7 +16,7 @@
     "@ai-sdk/anthropic": "0.0.56",
     "@ai-sdk/openai": "0.0.72",
     "@byteswarm/shared": "workspace:*",
-    "@lemonsqueezy/lemonsqueezy.js": "4.0.0",
+    "stripe": "^17.0.0",
     "@modelcontextprotocol/sdk": "^1.0.0",
     "@radix-ui/react-dialog": "^1.1.2",
     "@radix-ui/react-dropdown-menu": "^2.1.2",

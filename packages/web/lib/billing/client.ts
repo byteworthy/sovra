@@ -1,22 +1,25 @@
-import { lemonSqueezySetup } from '@lemonsqueezy/lemonsqueezy.js'
+import Stripe from 'stripe'
 
-let initialized = false
+let stripeInstance: Stripe | null = null
 
-export function configureLemonSqueezy(): void {
-  if (initialized) return
+export function getStripe(): Stripe {
+  if (stripeInstance) return stripeInstance
 
-  const apiKey = process.env.LEMONSQUEEZY_API_KEY
-  if (!apiKey) {
+  const secretKey = process.env.STRIPE_SECRET_KEY
+  if (!secretKey) {
     throw new Error(
-      'LEMONSQUEEZY_API_KEY environment variable is required but not set'
+      'STRIPE_SECRET_KEY environment variable is required but not set'
     )
   }
 
-  lemonSqueezySetup({ apiKey })
-  initialized = true
+  stripeInstance = new Stripe(secretKey, {
+    typescript: true,
+  })
+
+  return stripeInstance
 }
 
-/** Reset init state (for testing only) */
-export function _resetLemonSqueezyInit(): void {
-  initialized = false
+/** Reset instance (for testing only) */
+export function _resetStripeInstance(): void {
+  stripeInstance = null
 }
