@@ -52,8 +52,8 @@ vi.mock('@/lib/tenant/resolver', () => ({
 
 // Mock constants
 vi.mock('@/lib/rbac/constants', () => ({
-  PUBLIC_ROUTES: ['/login', '/signup', '/forgot-password', '/auth/callback', '/invite'],
-  TENANT_FREE_ROUTES: ['/login', '/signup', '/forgot-password', '/auth/callback', '/invite', '/onboarding'],
+  PUBLIC_ROUTES: ['/auth/login', '/auth/signup', '/auth/forgot-password', '/auth/reset-password', '/auth/verify-email', '/auth/callback', '/invite'],
+  TENANT_FREE_ROUTES: ['/auth/login', '/auth/signup', '/auth/forgot-password', '/auth/reset-password', '/auth/verify-email', '/auth/callback', '/invite', '/onboarding'],
 }))
 
 function makeRequest(pathname: string, headers: Record<string, string> = {}) {
@@ -83,19 +83,19 @@ describe('middleware', () => {
 
   it('allows public routes without authentication', async () => {
     const { middleware } = await import('@/middleware')
-    const req = makeRequest('/login')
+    const req = makeRequest('/auth/login')
     mockGetUser.mockResolvedValue({ data: { user: null }, error: null })
     const response = await middleware(req) as unknown as { status?: number; redirectUrl?: string }
-    // Should NOT redirect to /login (it's already /login)
+    // Should NOT redirect (it's already a public route)
     expect(response.redirectUrl).toBeUndefined()
   })
 
-  it('redirects unauthenticated users on protected routes to /login', async () => {
+  it('redirects unauthenticated users on protected routes to /auth/login', async () => {
     const { middleware } = await import('@/middleware')
-    const req = makeRequest('/dashboard')
+    const req = makeRequest('/t/acme/dashboard')
     mockGetUser.mockResolvedValue({ data: { user: null }, error: null })
     const response = await middleware(req) as unknown as { redirectUrl?: string; status?: number }
-    expect(response.redirectUrl).toContain('/login')
+    expect(response.redirectUrl).toContain('/auth/login')
   })
 
   it('resolves tenant slug and sets x-tenant-slug header', async () => {

@@ -22,7 +22,7 @@ describe('GET /auth/callback', () => {
     mockExchangeCodeForSession.mockResolvedValue({ error: null })
   })
 
-  it('exchanges code and redirects to /dashboard by default', async () => {
+  it('exchanges code and redirects to /onboarding by default', async () => {
     const { GET } = await import('@/app/auth/callback/route')
     const { NextResponse } = await import('next/server')
 
@@ -30,7 +30,7 @@ describe('GET /auth/callback', () => {
     await GET(request)
 
     expect(mockExchangeCodeForSession).toHaveBeenCalledWith('abc123')
-    expect(NextResponse.redirect).toHaveBeenCalledWith('https://example.com/dashboard')
+    expect(NextResponse.redirect).toHaveBeenCalledWith('https://example.com/onboarding')
   })
 
   it('redirects to /next param when provided', async () => {
@@ -53,7 +53,7 @@ describe('GET /auth/callback', () => {
     expect(NextResponse.redirect).toHaveBeenCalledWith('https://example.com/auth/reset-password')
   })
 
-  it('redirects to /login with error when error param is present', async () => {
+  it('redirects to /auth/login with error when error param is present', async () => {
     const { GET } = await import('@/app/auth/callback/route')
     const { NextResponse } = await import('next/server')
 
@@ -61,19 +61,19 @@ describe('GET /auth/callback', () => {
     await GET(request)
 
     expect(NextResponse.redirect).toHaveBeenCalledWith(
-      'https://example.com/login?error=access_denied'
+      'https://example.com/auth/login?error=access_denied'
     )
     expect(mockExchangeCodeForSession).not.toHaveBeenCalled()
   })
 
-  it('redirects to /login when no code and no error', async () => {
+  it('redirects to /auth/login when no code and no error', async () => {
     const { GET } = await import('@/app/auth/callback/route')
     const { NextResponse } = await import('next/server')
 
     const request = new Request('https://example.com/auth/callback')
     await GET(request)
 
-    expect(NextResponse.redirect).toHaveBeenCalledWith('https://example.com/login')
+    expect(NextResponse.redirect).toHaveBeenCalledWith('https://example.com/auth/login')
     expect(mockExchangeCodeForSession).not.toHaveBeenCalled()
   })
 })

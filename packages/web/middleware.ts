@@ -74,7 +74,7 @@ export async function middleware(request: NextRequest) {
 
     if (!userRow?.is_platform_admin) {
       const dashUrl = request.nextUrl.clone()
-      dashUrl.pathname = '/dashboard'
+      dashUrl.pathname = '/onboarding'
       return NextResponse.redirect(dashUrl)
     }
 
@@ -84,7 +84,11 @@ export async function middleware(request: NextRequest) {
   }
 
   // 6. Public routes bypass auth
-  const isPublicRoute = PUBLIC_ROUTES.some((route) => pathname.startsWith(route))
+  const isPublicRoute = PUBLIC_ROUTES.some((route) =>
+    route === '/' || route === '/docs'
+      ? pathname === route || pathname === `${route}/`
+      : pathname.startsWith(route)
+  )
 
   if (!user && !isPublicRoute) {
     const loginUrl = request.nextUrl.clone()

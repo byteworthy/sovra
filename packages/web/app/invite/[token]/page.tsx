@@ -65,7 +65,7 @@ export default function InviteAcceptPage() {
               You now have access to this workspace.
             </p>
             <Button
-              onClick={() => router.push(`/t/${state.tenantId}/dashboard`)}
+              onClick={() => router.push('/onboarding')}
               className="w-full h-11 mt-6"
             >
               Open your dashboard

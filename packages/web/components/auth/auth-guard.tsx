@@ -19,7 +19,7 @@ export function AuthGuard({ children, fallback }: AuthGuardProps) {
     supabase.auth.getUser().then(({ data, error }) => {
       if (error || !data.user) {
         setState('unauthenticated')
-        router.push('/login')
+        router.push('/auth/login')
       } else {
         setState('authenticated')
       }

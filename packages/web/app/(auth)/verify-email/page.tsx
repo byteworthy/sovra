@@ -27,7 +27,7 @@ export default async function VerifyEmailPage({ searchParams }: VerifyEmailPageP
         <VerifyEmailClient email={email} />
 
         <p className="text-sm text-muted-foreground">
-          <Link href="/login" className="text-primary hover:text-primary/80 transition-colors">
+          <Link href="/auth/login" className="text-primary hover:text-primary/80 transition-colors">
             Back to sign in
           </Link>
         </p>

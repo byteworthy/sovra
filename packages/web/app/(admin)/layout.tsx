@@ -25,7 +25,7 @@ export default async function AdminLayout({ children }: AdminLayoutProps) {
     .eq('id', user.id)
     .single()
 
-  if (!userRow?.is_platform_admin) redirect('/dashboard')
+  if (!userRow?.is_platform_admin) redirect('/onboarding')
 
   return (
     <div className="flex min-h-screen">
@@ -36,7 +36,7 @@ export default async function AdminLayout({ children }: AdminLayoutProps) {
           <div className="flex items-center gap-4">
             <span className="text-xs text-muted-foreground">{user.email}</span>
             <Link
-              href="/dashboard"
+              href="/onboarding"
               className="text-xs text-muted-foreground hover:text-foreground transition-colors"
             >
               Exit admin

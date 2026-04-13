@@ -21,19 +21,27 @@ export const DEFAULT_PERMISSIONS = [
 
 // Routes that don't require authentication
 export const PUBLIC_ROUTES = [
-  '/login',
-  '/signup',
-  '/forgot-password',
+  '/auth/login',
+  '/auth/signup',
+  '/auth/forgot-password',
+  '/auth/reset-password',
+  '/auth/verify-email',
   '/auth/callback',
   '/invite',
+  '/',
+  '/docs',
 ] as const
 
 // Routes that don't require tenant context
 export const TENANT_FREE_ROUTES = [
-  '/login',
-  '/signup',
-  '/forgot-password',
+  '/auth/login',
+  '/auth/signup',
+  '/auth/forgot-password',
+  '/auth/reset-password',
+  '/auth/verify-email',
   '/auth/callback',
   '/invite',
   '/onboarding',
+  '/',
+  '/docs',
 ] as const
