@@ -90,6 +90,17 @@ describe('POST /api/chat', () => {
           }),
         }
       }
+      if (table === 'tenant_users') {
+        return {
+          select: vi.fn().mockReturnValue({
+            eq: vi.fn().mockReturnValue({
+              eq: vi.fn().mockReturnValue({
+                single: vi.fn().mockResolvedValue({ data: { id: 'tu-1' } }),
+              }),
+            }),
+          }),
+        }
+      }
       if (table === 'tool_executions') {
         return { insert: mockInsert }
       }

@@ -115,12 +115,12 @@ describe('middleware', () => {
     expect(response.headers.get('Cache-Control')).toBe('private, no-store')
   })
 
-  it('redirects authenticated users on /login to /dashboard', async () => {
+  it('redirects authenticated users on /auth/login to /onboarding', async () => {
     const { middleware } = await import('@/middleware')
-    const req = makeRequest('/login')
+    const req = makeRequest('/auth/login')
     mockGetUser.mockResolvedValue({ data: { user: { id: 'user-1' } }, error: null })
     const response = await middleware(req) as unknown as { redirectUrl?: string }
-    expect(response.redirectUrl).toContain('/dashboard')
+    expect(response.redirectUrl).toContain('/onboarding')
   })
 
   it('middleware config exports matcher array', async () => {
