@@ -1,4 +1,5 @@
 import { generateText } from 'ai'
+import type { SupabaseClient } from '@supabase/supabase-js'
 import { createSupabaseServerClient } from '@/lib/auth/server'
 import { getProvider, initProviders } from '@/lib/ai/registry'
 import { buildContextMessages } from '@/lib/memory/types'
@@ -28,8 +29,7 @@ export interface AgentRunResult {
 }
 
 async function runSingleAgent(
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  supabase: any,
+  supabase: SupabaseClient,
   agent: AgentRow,
   prompt: string,
   workspace: Workspace,
@@ -76,8 +76,7 @@ async function runSingleAgent(
 }
 
 export async function runRoundRobin(
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  supabase: any,
+  supabase: SupabaseClient,
   agents: AgentRow[],
   prompt: string,
   workspace: Workspace,
@@ -95,8 +94,7 @@ export async function runRoundRobin(
 }
 
 export async function runParallel(
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  supabase: any,
+  supabase: SupabaseClient,
   agents: AgentRow[],
   prompt: string,
   workspace: Workspace,
@@ -111,8 +109,7 @@ export async function runParallel(
 }
 
 export async function runSequential(
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  supabase: any,
+  supabase: SupabaseClient,
   agents: AgentRow[],
   prompt: string,
   workspace: Workspace,
@@ -122,8 +119,7 @@ export async function runSequential(
 }
 
 export async function runHierarchical(
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  supabase: any,
+  supabase: SupabaseClient,
   agents: AgentRow[],
   prompt: string,
   workspace: Workspace,
@@ -152,8 +148,7 @@ export async function runHierarchical(
 }
 
 export async function runDemocratic(
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  supabase: any,
+  supabase: SupabaseClient,
   agents: AgentRow[],
   prompt: string,
   workspace: Workspace,

@@ -235,7 +235,7 @@ Plans:
 **Plans:** 6 plans
 
 Plans:
-- [x] 06-01-PLAN.md - Billing backend: Lemon Squeezy SDK, plans, webhook, portal, health endpoint, migration
+- [x] 06-01-PLAN.md - Billing backend: Stripe SDK, plans, webhook, portal, health endpoint, migration
 - [x] 06-02-PLAN.md - API key generation, authentication, rate limiting, CRUD routes
 - [x] 06-03-PLAN.md - Admin dashboard: service client, queries, layout, all admin pages
 - [x] 06-04-PLAN.md - Tenant settings UI: billing page, API keys page
@@ -243,7 +243,7 @@ Plans:
 - [x] 06-06-PLAN.md - Deployment configs (Railway/AWS/GCP), CI/CD, environment docs
 
 **Requirements:**
-- BILL-01: Subscription management (Lemon Squeezy)
+- BILL-01: Subscription management (Stripe)
 - BILL-02: Plan definitions (free, pro, enterprise)
 - BILL-03: Usage tracking
 - BILL-04: Customer portal access
@@ -269,7 +269,7 @@ Plans:
 - MON-04: Custom metrics
 
 **Success Criteria:**
-1. Users can subscribe via Lemon Squeezy
+1. Users can subscribe via Stripe
 2. Usage limits enforced per plan
 3. Admin can view all tenants
 4. Admin can manage users

@@ -76,4 +76,34 @@ describe('GET /auth/callback', () => {
     expect(NextResponse.redirect).toHaveBeenCalledWith('https://example.com/auth/login')
     expect(mockExchangeCodeForSession).not.toHaveBeenCalled()
   })
+
+  it('sanitizes next param to prevent open redirect with double-slash', async () => {
+    const { GET } = await import('@/app/auth/callback/route')
+    const { NextResponse } = await import('next/server')
+
+    const request = new Request('https://example.com/auth/callback?code=abc123&next=//evil.com')
+    await GET(request)
+
+    expect(NextResponse.redirect).toHaveBeenCalledWith('https://example.com/onboarding')
+  })
+
+  it('sanitizes next param to prevent open redirect with protocol', async () => {
+    const { GET } = await import('@/app/auth/callback/route')
+    const { NextResponse } = await import('next/server')
+
+    const request = new Request('https://example.com/auth/callback?code=abc123&next=https://evil.com')
+    await GET(request)
+
+    expect(NextResponse.redirect).toHaveBeenCalledWith('https://example.com/onboarding')
+  })
+
+  it('allows valid relative next paths', async () => {
+    const { GET } = await import('@/app/auth/callback/route')
+    const { NextResponse } = await import('next/server')
+
+    const request = new Request('https://example.com/auth/callback?code=abc123&next=/t/acme/agents')
+    await GET(request)
+
+    expect(NextResponse.redirect).toHaveBeenCalledWith('https://example.com/t/acme/agents')
+  })
 })

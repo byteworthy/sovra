@@ -3,6 +3,7 @@ import { createSupabaseServerClient } from '@/lib/auth/server'
 import { getProvider, initProviders } from '@/lib/ai/registry'
 import { getMcpClient } from '@/lib/mcp/client'
 import { buildAiToolsFromMcp, getAgentTools } from '@/lib/mcp/tool-registry'
+import { getChatLimiter, checkSessionRateLimit, rateLimitResponse } from '@/lib/rate-limit'
 import type { Json } from '@byteswarm/shared/types/database'
 
 const TOOL_COSTS: Record<string, number> = {
@@ -21,6 +22,9 @@ export async function POST(req: Request) {
     data: { user },
   } = await supabase.auth.getUser()
   if (!user) return new Response('Unauthorized', { status: 401 })
+
+  const rl = await checkSessionRateLimit(getChatLimiter(), user.id)
+  if (!rl.success) return rateLimitResponse(rl.retryAfter!)
 
   const { messages, agentId, conversationId } = await req.json()
 

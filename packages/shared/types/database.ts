@@ -432,7 +432,7 @@ export type Database = {
           created_at: string
           current_period_end: string | null
           id: string
-          lemon_squeezy_id: string | null
+          stripe_customer_id: string | null
           plan: string
           status: string
           tenant_id: string
@@ -442,7 +442,7 @@ export type Database = {
           created_at?: string
           current_period_end?: string | null
           id?: string
-          lemon_squeezy_id?: string | null
+          stripe_customer_id?: string | null
           plan?: string
           status?: string
           tenant_id: string
@@ -452,7 +452,7 @@ export type Database = {
           created_at?: string
           current_period_end?: string | null
           id?: string
-          lemon_squeezy_id?: string | null
+          stripe_customer_id?: string | null
           plan?: string
           status?: string
           tenant_id?: string

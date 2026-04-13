@@ -1,10 +1,21 @@
 import { NextResponse } from 'next/server'
 import { createSupabaseServerClient } from '@/lib/auth/server'
 
+function sanitizeRedirectPath(raw: string | null): string {
+  if (!raw || !raw.startsWith('/') || raw.startsWith('//')) return '/onboarding'
+  try {
+    const url = new URL(raw, 'http://localhost')
+    if (url.host !== 'localhost') return '/onboarding'
+    return url.pathname + url.search
+  } catch {
+    return '/onboarding'
+  }
+}
+
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url)
   const code = searchParams.get('code')
-  const next = searchParams.get('next') ?? '/onboarding'
+  const next = sanitizeRedirectPath(searchParams.get('next'))
   const type = searchParams.get('type')
   const error = searchParams.get('error')
 

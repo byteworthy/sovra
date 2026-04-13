@@ -27,6 +27,7 @@ services:
       - "8080:8080"
       - "50051:50051"
       - "3001:3001"
+      - "3002:3002"
     volumes:
       - ../packages/worker:/app
       - go-cache:/root/.cache/go
@@ -36,6 +37,8 @@ services:
       - HTTP_PORT=8080
       - GRPC_PORT=50051
       - MCP_PORT=3001
+      - SOCKETIO_PORT=3002
+      - SOCKETIO_ALLOWED_ORIGINS=http://localhost:3000
       - GO_ENV=development
       - AGENT_WORKSPACE_PATH=/tmp/agent-workspace
       - BRAVE_SEARCH_API_KEY=${BRAVE_SEARCH_API_KEY:-}

@@ -34,6 +34,18 @@ export async function POST(req: NextRequest): Promise<Response> {
     return Response.json({ error: 'tenantId required' }, { status: 400 })
   }
 
+  // Verify user belongs to the requested tenant
+  const { data: membership } = await supabase
+    .from('tenant_users')
+    .select('id')
+    .eq('user_id', user.id)
+    .eq('tenant_id', tenantId)
+    .single()
+
+  if (!membership) {
+    return Response.json({ error: 'Forbidden' }, { status: 403 })
+  }
+
   const subscription = await getSubscriptionForTenant(supabase, tenantId)
   if (!subscription) {
     return Response.json({ error: 'No active subscription found' }, { status: 404 })

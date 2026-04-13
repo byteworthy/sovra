@@ -24,7 +24,7 @@ ByteSwarm is a production-ready, open-source AI-native SaaS boilerplate for buil
 - [ ] Agent memory: conversation, summary, vector, and hybrid strategies
 - [ ] Real-time collaboration via Socket.IO
 - [ ] RBAC with roles: owner, admin, member, viewer
-- [ ] Billing via Lemon Squeezy or Stripe
+- [ ] Billing via Stripe
 - [ ] Admin dashboard with tenant/user management
 - [ ] Docker Compose all-in-one for local/self-hosted deployment
 - [ ] Multi-cloud deployment configs (Railway, AWS, GCP)

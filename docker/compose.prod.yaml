@@ -13,6 +13,13 @@ services:
       - NEXT_PUBLIC_SUPABASE_URL=${SUPABASE_URL}
       - NEXT_PUBLIC_SUPABASE_ANON_KEY=${SUPABASE_ANON_KEY}
       - SUPABASE_SERVICE_ROLE_KEY=${SUPABASE_SERVICE_ROLE_KEY}
+      - STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}
+      - STRIPE_WEBHOOK_SECRET=${STRIPE_WEBHOOK_SECRET}
+      - UPSTASH_REDIS_REST_URL=${UPSTASH_REDIS_REST_URL:-}
+      - UPSTASH_REDIS_REST_TOKEN=${UPSTASH_REDIS_REST_TOKEN:-}
+      - NEXT_PUBLIC_POSTHOG_KEY=${POSTHOG_KEY:-}
+      - SENTRY_DSN=${SENTRY_DSN:-}
+      - NEXT_PUBLIC_WORKER_SOCKET_URL=${WORKER_SOCKET_URL:-http://worker:3002}
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
@@ -28,8 +35,10 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8080:8080"
-      - "50051:50051"
-      - "3001:3001"
+    expose:
+      - "50051"
+      - "3001"
+      - "3002"
     volumes:
       - agent-workspace:/tmp/agent-workspace
     environment:
@@ -37,6 +46,8 @@ services:
       - HTTP_PORT=8080
       - GRPC_PORT=50051
       - MCP_PORT=3001
+      - SOCKETIO_PORT=3002
+      - SOCKETIO_ALLOWED_ORIGINS=${ALLOWED_ORIGINS:-https://yourdomain.com}
       - GO_ENV=production
       - AGENT_WORKSPACE_PATH=/tmp/agent-workspace
       - BRAVE_SEARCH_API_KEY=${BRAVE_SEARCH_API_KEY:-}

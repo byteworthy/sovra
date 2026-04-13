@@ -106,7 +106,7 @@
 
 ### Billing (BILL)
 
-- [ ] **BILL-01**: Subscription management (Lemon Squeezy integration)
+- [ ] **BILL-01**: Subscription management (Stripe integration)
 - [ ] **BILL-02**: Plan definitions (free, pro, enterprise)
 - [ ] **BILL-03**: Usage tracking (API calls, storage, agents)
 - [ ] **BILL-04**: Customer portal access

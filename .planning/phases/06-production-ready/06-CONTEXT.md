@@ -8,7 +8,7 @@
 ## Phase Boundary
 
 Add billing, admin, deployment configs, and monitoring. This phase delivers:
-- Subscription management via Lemon Squeezy (BILL-01 through BILL-05)
+- Subscription management via Stripe (BILL-01 through BILL-05)
 - Plan definitions (free, pro, enterprise) with usage limits
 - Usage tracking per tenant
 - Customer portal access
@@ -45,7 +45,7 @@ Key constraints from prior phases:
 - Tenant-scoped everything via RLS -- admin must have super-admin role bypass
 - Next.js App Router with Supabase auth
 - Go worker for background processing
-- Open-source flexibility -- billing provider must be swappable (Lemon Squeezy default, Stripe alternative)
+- Open-source flexibility -- Stripe for billing (default provider)
 - No em dashes in copywriting
 - Premium UI for admin dashboard
 - ai@3.4.33 SDK constraint

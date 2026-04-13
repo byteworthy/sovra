@@ -3,6 +3,7 @@ import { z } from 'zod'
 import type { Json } from '@byteswarm/shared/types/database'
 import { createSupabaseServerClient } from '@/lib/auth/server'
 import { embedText } from '@/lib/vector/embed'
+import { getEmbedLimiter, checkSessionRateLimit, rateLimitResponse } from '@/lib/rate-limit'
 
 const embedRequestSchema = z.object({
   content: z.string().min(1, 'Content is required').max(50000, 'Content exceeds 50000 character limit'),
@@ -19,6 +20,9 @@ export async function POST(req: Request) {
   if (!user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
+
+  const rl = await checkSessionRateLimit(getEmbedLimiter(), user.id)
+  if (!rl.success) return rateLimitResponse(rl.retryAfter!)
 
   const body = await req.json().catch(() => null)
   if (!body) {
