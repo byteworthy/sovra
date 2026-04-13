@@ -1,8 +1,11 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
+import { FeatureBento } from '@/components/landing/feature-bento';
+import { Footer } from '@/components/landing/footer';
+import { ScrollSection } from '@/components/landing/scroll-section';
 import {
   Bot,
   Database,
@@ -15,6 +18,7 @@ import {
   Terminal,
   Code2,
   Server,
+  Github,
 } from 'lucide-react';
 
 export default function HomePage() {
@@ -70,8 +74,8 @@ export default function HomePage() {
             </Link>
           </div>
           <nav className="flex items-center space-x-6 text-sm font-medium ml-auto">
-            <Link href="#features" className="transition-colors hover:text-foreground/80 text-muted-foreground">Features</Link>
-            <Link href="#stack" className="transition-colors hover:text-foreground/80 text-muted-foreground">Stack</Link>
+            <Link href="#features" className="transition-colors hover:text-foreground/80 text-muted-foreground hidden sm:block">Features</Link>
+            <Link href="#stack" className="transition-colors hover:text-foreground/80 text-muted-foreground hidden sm:block">Stack</Link>
             <ThemeToggle />
             <Link href="#get-started">
               <Button variant="gradient" size="sm">Get Started</Button>
@@ -98,7 +102,7 @@ export default function HomePage() {
               Ship AI products.<br />
               <span className="text-primary text-glow">Not infrastructure.</span>
             </h1>
-            <p className="mt-6 text-lg text-muted-foreground leading-relaxed">
+            <p className="mt-6 text-lg text-muted-foreground leading-relaxed max-w-2xl mx-auto">
               The open-source platform that gives you multi-tenant auth, MCP-native agents,
               vector search, and real-time collaboration in one repo. Self-hosted. MIT licensed.
               Clone it, run it, build on it.
@@ -106,12 +110,13 @@ export default function HomePage() {
             <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="https://github.com/byteswarm/byteswarm" target="_blank">
                 <Button variant="gradient" size="lg" className="w-full sm:w-auto">
-                  View on GitHub <ArrowRight className="ml-2 h-4 w-4" />
+                  <Github className="mr-2 h-4 w-4" />
+                  Star on GitHub
                 </Button>
               </Link>
               <Link href="/docs">
                 <Button size="lg" variant="outline" className="w-full sm:w-auto hover:shadow-glow-sm">
-                  Read the Docs
+                  Read the Docs <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </Link>
             </div>
@@ -120,142 +125,99 @@ export default function HomePage() {
       </section>
 
       {/* Stack */}
-      <section id="stack" className="py-16 bg-surface-2/50">
-        <div className="container mx-auto px-4 max-w-6xl">
-          <h2 className="text-3xl font-bold text-center mb-12">Built On</h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {stack.map((item) => (
-              <Card key={item.name} variant="glass" className="text-center hover:shadow-glow-sm transition-all duration-200 cursor-default">
-                <CardHeader className="pb-2">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 mx-auto mb-2">
-                    <item.icon className="h-6 w-6 text-primary" />
-                  </div>
-                  <CardTitle className="text-sm">{item.name}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-xs text-muted-foreground">{item.desc}</p>
-                </CardContent>
-              </Card>
-            ))}
+      <ScrollSection>
+        <section id="stack" className="py-16 bg-surface-2/50">
+          <div className="container mx-auto px-4 max-w-6xl">
+            <h2 className="text-3xl font-bold text-center mb-12">Built On</h2>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+              {stack.map((item) => (
+                <Card key={item.name} variant="glass" className="text-center hover:shadow-glow-sm transition-all duration-200 cursor-default">
+                  <CardHeader className="pb-2">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 mx-auto mb-2">
+                      <item.icon className="h-6 w-6 text-primary" />
+                    </div>
+                    <CardTitle className="text-sm">{item.name}</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-xs text-muted-foreground">{item.desc}</p>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </ScrollSection>
 
-      {/* Features */}
-      <section id="features" className="py-16">
-        <div className="container mx-auto px-4 max-w-6xl">
-          <h2 className="text-3xl font-bold text-center mb-4">What You Get on Day One</h2>
-          <p className="text-muted-foreground text-center mb-12 max-w-2xl mx-auto">
-            Every feature that takes teams months to build. Already wired up. Already tested. Already working.
-          </p>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {features.map((feature) => (
-              <Card key={feature.title} variant="glass" className="hover:shadow-glow-sm transition-all duration-200 cursor-default group">
-                <CardHeader>
-                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 mb-3 group-hover:bg-primary/15 transition-colors">
-                    <feature.icon className="h-6 w-6 text-primary" />
-                  </div>
-                  <CardTitle>{feature.title}</CardTitle>
-                  <CardDescription>{feature.description}</CardDescription>
-                </CardHeader>
-              </Card>
-            ))}
+      {/* Features — Bento Grid */}
+      <ScrollSection>
+        <section id="features" className="py-16">
+          <div className="container mx-auto px-4 max-w-6xl">
+            <h2 className="text-3xl font-bold text-center mb-4">What You Get on Day One</h2>
+            <p className="text-muted-foreground text-center mb-12 max-w-2xl mx-auto">
+              Every feature that takes teams months to build. Already wired up. Already tested. Already working.
+            </p>
+            <FeatureBento features={features} />
           </div>
-        </div>
-      </section>
+        </section>
+      </ScrollSection>
 
       {/* What's Included */}
-      <section className="py-16 bg-surface-2/40">
-        <div className="container mx-auto px-4 max-w-6xl">
-          <h2 className="text-3xl font-bold text-center mb-12">What&apos;s Included</h2>
-          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-            <div>
-              <h3 className="text-xl font-semibold mb-4">Authentication</h3>
-              <ul className="space-y-2">
-                {['Email/password signup & login', 'Magic link authentication', 'OAuth (Google, GitHub)', 'Session management with JWT', 'Password reset & email verification'].map((item) => (
-                  <li key={item} className="flex items-center gap-2">
-                    <CheckCircle2 className="h-4 w-4 text-status-online shrink-0" />
-                    <span className="text-sm">{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div>
-              <h3 className="text-xl font-semibold mb-4">Multi-Tenancy</h3>
-              <ul className="space-y-2">
-                {['Tenant creation & management', 'Subdomain-based routing', 'Role-based access control', 'Tenant-scoped queries', 'RLS policies enforced'].map((item) => (
-                  <li key={item} className="flex items-center gap-2">
-                    <CheckCircle2 className="h-4 w-4 text-status-online shrink-0" />
-                    <span className="text-sm">{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div>
-              <h3 className="text-xl font-semibold mb-4">AI Features</h3>
-              <ul className="space-y-2">
-                {['MCP client & server', 'Built-in tools (file, web, DB)', 'Streaming via Vercel AI SDK', 'Vector memory with pgvector', 'Tool usage cost tracking'].map((item) => (
-                  <li key={item} className="flex items-center gap-2">
-                    <CheckCircle2 className="h-4 w-4 text-status-online shrink-0" />
-                    <span className="text-sm">{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div>
-              <h3 className="text-xl font-semibold mb-4">Production</h3>
-              <ul className="space-y-2">
-                {['Billing (Stripe)', 'Admin dashboard', 'API keys with rate limiting', 'Sentry + PostHog integration', 'CI/CD with GitHub Actions'].map((item) => (
-                  <li key={item} className="flex items-center gap-2">
-                    <CheckCircle2 className="h-4 w-4 text-status-online shrink-0" />
-                    <span className="text-sm">{item}</span>
-                  </li>
-                ))}
-              </ul>
+      <ScrollSection>
+        <section className="py-16 bg-surface-2/40">
+          <div className="container mx-auto px-4 max-w-6xl">
+            <h2 className="text-3xl font-bold text-center mb-12">What&apos;s Included</h2>
+            <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+              {[
+                { title: 'Authentication', items: ['Email/password signup & login', 'Magic link authentication', 'OAuth (Google, GitHub)', 'Session management with JWT', 'Password reset & email verification'] },
+                { title: 'Multi-Tenancy', items: ['Tenant creation & management', 'Subdomain-based routing', 'Role-based access control', 'Tenant-scoped queries', 'RLS policies enforced'] },
+                { title: 'AI Features', items: ['MCP client & server', 'Built-in tools (file, web, DB)', 'Streaming via Vercel AI SDK', 'Vector memory with pgvector', 'Tool usage cost tracking'] },
+                { title: 'Production', items: ['Billing (Stripe)', 'Admin dashboard', 'API keys with rate limiting', 'Sentry + PostHog integration', 'CI/CD with GitHub Actions'] },
+              ].map(({ title, items }) => (
+                <div key={title}>
+                  <h3 className="text-xl font-semibold mb-4">{title}</h3>
+                  <ul className="space-y-2">
+                    {items.map((item) => (
+                      <li key={item} className="flex items-center gap-2">
+                        <CheckCircle2 className="h-4 w-4 text-status-online shrink-0" />
+                        <span className="text-sm">{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </ScrollSection>
 
       {/* CTA */}
-      <section id="get-started" className="relative py-24 overflow-hidden">
-        {/* Background mesh */}
-        <div className="absolute inset-0 -z-10">
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-[radial-gradient(ellipse_at_center,hsl(var(--glow-primary)/0.08),transparent_70%)] blur-3xl" />
-        </div>
+      <ScrollSection>
+        <section id="get-started" className="relative py-24 overflow-hidden">
+          <div className="absolute inset-0 -z-10">
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-[radial-gradient(ellipse_at_center,hsl(var(--glow-primary)/0.08),transparent_70%)] blur-3xl" />
+          </div>
 
-        <div className="container mx-auto px-4 max-w-6xl">
-          <div className="glass-card rounded-2xl p-12 text-center noise-overlay">
-            <h2 className="text-3xl font-bold mb-4 relative z-10">Stop building plumbing. Start building product.</h2>
-            <p className="text-muted-foreground mb-8 max-w-xl mx-auto relative z-10">
-              One command. Full AI agent platform. Running locally in under 2 minutes.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center relative z-10">
-              <Link href="https://github.com/byteswarm/byteswarm" target="_blank">
-                <Button variant="gradient" size="lg">
-                  <Terminal className="mr-2 h-4 w-4" />
-                  git clone byteswarm
-                </Button>
-              </Link>
+          <div className="container mx-auto px-4 max-w-6xl">
+            <div className="glass-card rounded-2xl p-12 text-center noise-overlay">
+              <h2 className="text-3xl font-bold mb-4 relative z-10">Stop building plumbing. Start building product.</h2>
+              <p className="text-muted-foreground mb-8 max-w-xl mx-auto relative z-10">
+                One command. Full AI agent platform. Running locally in under 2 minutes.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center relative z-10">
+                <Link href="https://github.com/byteswarm/byteswarm" target="_blank">
+                  <Button variant="gradient" size="lg">
+                    <Terminal className="mr-2 h-4 w-4" />
+                    git clone byteswarm
+                  </Button>
+                </Link>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </ScrollSection>
 
       {/* Footer */}
-      <footer className="py-8 border-t border-border/40">
-        <div className="container mx-auto px-4 max-w-6xl">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <div className="flex items-center gap-2">
-              <Bot className="h-5 w-5 text-primary" />
-              <span className="font-semibold">ByteSwarm</span>
-            </div>
-            <p className="text-sm text-muted-foreground">
-              MIT License &middot; Open Source
-            </p>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }
