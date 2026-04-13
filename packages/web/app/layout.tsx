@@ -1,10 +1,10 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import { GeistSans } from 'geist/font/sans';
+import { GeistMono } from 'geist/font/mono';
 import './globals.css';
 import { cn } from '@/lib/utils';
 import { PostHogProvider } from '@/components/providers/PostHogProvider';
-
-const inter = Inter({ subsets: ['latin'] });
+import { ThemeProvider } from '@/components/providers/ThemeProvider';
 
 export const metadata: Metadata = {
   title: 'ByteSwarm - AI-Native SaaS Boilerplate',
@@ -20,8 +20,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={cn(inter.className, 'min-h-screen bg-background font-sans antialiased')}>
-        <PostHogProvider>{children}</PostHogProvider>
+      <body className={cn(GeistSans.variable, GeistMono.variable, 'min-h-screen bg-background font-sans antialiased')}>
+        <ThemeProvider>
+          <PostHogProvider>{children}</PostHogProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
