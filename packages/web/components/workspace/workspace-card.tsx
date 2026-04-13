@@ -36,6 +36,7 @@ export function WorkspaceCard({ workspace, agentCount, tenantSlug, staggerIndex 
   return (
     <motion.div
       {...VARIANTS.listItem}
+      whileHover={{ y: -2 }}
       transition={{ ...VARIANTS.listItem.transition, delay: staggerIndex * 0.04 }}
     >
       <Link

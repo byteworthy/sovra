@@ -1,13 +1,15 @@
 import * as React from 'react';
 import { cn } from '@/lib/utils';
+import { Spinner } from '@/components/ui/spinner';
 
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link' | 'gradient' | 'ghost-premium';
   size?: 'default' | 'sm' | 'lg' | 'icon';
+  loading?: boolean;
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant = 'default', size = 'default', ...props }, ref) => {
+  ({ className, variant = 'default', size = 'default', loading, children, disabled, ...props }, ref) => {
     const variantStyles = {
       default: 'bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm',
       destructive: 'bg-destructive text-destructive-foreground hover:bg-destructive/90 shadow-sm',
@@ -32,11 +34,15 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all duration-150 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 active:scale-[0.98]',
           variantStyles[variant],
           sizeStyles[size],
+          loading && 'opacity-70 cursor-wait',
           className
         )}
         ref={ref}
+        disabled={disabled || loading}
         {...props}
-      />
+      >
+        {loading ? <><Spinner size="sm" />{children}</> : children}
+      </button>
     );
   }
 );

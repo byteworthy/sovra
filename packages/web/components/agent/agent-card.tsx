@@ -29,7 +29,7 @@ export function AgentCard({ agent, tenantSlug, onEdit, onDelete }: AgentCardProp
   const status = agent.status ?? 'idle'
 
   return (
-    <motion.div {...VARIANTS.listItem}>
+    <motion.div {...VARIANTS.listItem} whileHover={{ y: -2 }} transition={{ type: 'spring', stiffness: 400, damping: 20 }}>
       <Link
         href={chatHref}
         className={cn(
