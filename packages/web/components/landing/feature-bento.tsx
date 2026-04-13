@@ -3,10 +3,15 @@
 import { motion, useInView } from 'framer-motion'
 import { useRef } from 'react'
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
+import { Bot, Database, Lock, Users, Cloud, Zap } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 
+const ICON_MAP: Record<string, LucideIcon> = {
+  Bot, Database, Lock, Users, Cloud, Zap,
+}
+
 interface Feature {
-  icon: LucideIcon
+  icon: string
   title: string
   description: string
 }
@@ -49,7 +54,10 @@ export function FeatureBento({ features }: FeatureBentoProps) {
             >
               <CardHeader className={isLarge ? 'p-8' : 'p-6'}>
                 <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 mb-4 group-hover:bg-primary/15 group-hover:shadow-glow-sm transition-all duration-200">
-                  <feature.icon className="h-6 w-6 text-primary" />
+                  {(() => {
+                    const Icon = ICON_MAP[feature.icon] ?? Bot
+                    return <Icon className="h-6 w-6 text-primary" />
+                  })()}
                 </div>
                 <CardTitle className={isLarge ? 'text-xl' : 'text-base'}>{feature.title}</CardTitle>
                 <CardDescription className={isLarge ? 'text-sm leading-relaxed' : 'text-sm'}>

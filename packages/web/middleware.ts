@@ -12,19 +12,61 @@ function setSecurityHeaders(res: NextResponse): void {
   res.headers.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=()')
 }
 
+function isPublicRoute(pathname: string): boolean {
+  return PUBLIC_ROUTES.some((route) =>
+    route === '/' || route === '/docs'
+      ? pathname === route || pathname === `${route}/`
+      : pathname.startsWith(route)
+  )
+}
+
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
 
-  // 1. Resolve tenant BEFORE auth per architecture decision D-04
+  // 1. Public routes: skip auth entirely for fast response
+  if (isPublicRoute(pathname)) {
+    const response = NextResponse.next({ request })
+
+    // Still refresh session cookies if present (non-blocking for the user)
+    const supabase = createServerClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      {
+        cookies: {
+          getAll: () => request.cookies.getAll(),
+          setAll(cookiesToSet) {
+            cookiesToSet.forEach(({ name, value, options }) =>
+              response.cookies.set(name, value, options)
+            )
+          },
+        },
+      }
+    )
+
+    // Refresh session if cookies exist (silent, non-blocking for page load)
+    const hasCookies = request.cookies.getAll().some((c) => c.name.startsWith('sb-'))
+    if (hasCookies) {
+      const { data: { user } } = await supabase.auth.getUser()
+      // Redirect authenticated users away from login/signup
+      if (user && (pathname === '/auth/login' || pathname === '/auth/signup')) {
+        const dashUrl = request.nextUrl.clone()
+        dashUrl.pathname = '/onboarding'
+        return NextResponse.redirect(dashUrl)
+      }
+    }
+
+    setSecurityHeaders(response)
+    return response
+  }
+
+  // 2. Resolve tenant BEFORE auth per architecture decision D-04
   const resolver = createTenantResolver()
   const tenantSlug = resolver.resolve(request)
 
-  // 2. Build response object; may be replaced during cookie refresh
-  let response = NextResponse.next({
-    request: { headers: new Headers(request.headers) },
-  })
+  // 3. Build response object; may be replaced during cookie refresh
+  let response = NextResponse.next({ request })
 
-  // 3. Create Supabase SSR client - handles session cookie refresh
+  // 4. Create Supabase SSR client - handles session cookie refresh
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
@@ -35,9 +77,7 @@ export async function middleware(request: NextRequest) {
         },
         setAll(cookiesToSet) {
           cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value))
-          response = NextResponse.next({
-            request: { headers: new Headers(request.headers) },
-          })
+          response = NextResponse.next({ request })
           cookiesToSet.forEach(({ name, value, options }) =>
             response.cookies.set(name, value, options)
           )
@@ -46,12 +86,12 @@ export async function middleware(request: NextRequest) {
     }
   )
 
-  // 4. Validate session (getUser calls Supabase Auth API to verify JWT)
+  // 5. Validate session (getUser calls Supabase Auth API to verify JWT)
   const {
     data: { user },
   } = await supabase.auth.getUser()
 
-  // 5. Admin path guard: /admin/* requires is_platform_admin
+  // 6. Admin path guard: /admin/* requires is_platform_admin
   if (pathname.startsWith('/admin')) {
     if (!user) {
       const loginUrl = request.nextUrl.clone()
@@ -83,25 +123,12 @@ export async function middleware(request: NextRequest) {
     return response
   }
 
-  // 6. Public routes bypass auth
-  const isPublicRoute = PUBLIC_ROUTES.some((route) =>
-    route === '/' || route === '/docs'
-      ? pathname === route || pathname === `${route}/`
-      : pathname.startsWith(route)
-  )
-
-  if (!user && !isPublicRoute) {
+  // 7. Redirect unauthenticated users to login
+  if (!user) {
     const loginUrl = request.nextUrl.clone()
     loginUrl.pathname = '/auth/login'
     loginUrl.searchParams.set('next', pathname)
     return NextResponse.redirect(loginUrl)
-  }
-
-  // 7. Redirect authenticated users away from login/signup to dashboard
-  if (user && (pathname === '/auth/login' || pathname === '/auth/signup')) {
-    const dashUrl = request.nextUrl.clone()
-    dashUrl.pathname = '/onboarding'
-    return NextResponse.redirect(dashUrl)
   }
 
   // 8. Forward resolved tenant slug to server components via header
@@ -110,9 +137,7 @@ export async function middleware(request: NextRequest) {
   }
 
   // 9. Prevent CDN/proxy caching of authenticated responses
-  if (user) {
-    response.headers.set('Cache-Control', 'private, no-store')
-  }
+  response.headers.set('Cache-Control', 'private, no-store')
 
   setSecurityHeaders(response)
   return response

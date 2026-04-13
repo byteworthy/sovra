@@ -28,6 +28,8 @@ export const PUBLIC_ROUTES = [
   '/auth/verify-email',
   '/auth/callback',
   '/invite',
+  '/api/health',
+  '/api/billing/webhook',
   '/',
   '/docs',
 ] as const

@@ -118,6 +118,8 @@ describe('middleware', () => {
   it('redirects authenticated users on /auth/login to /onboarding', async () => {
     const { middleware } = await import('@/middleware')
     const req = makeRequest('/auth/login')
+    // Simulate existing session cookie so middleware checks auth on public route
+    req.cookies.set('sb-localhost-auth-token', 'fake-session')
     mockGetUser.mockResolvedValue({ data: { user: { id: 'user-1' } }, error: null })
     const response = await middleware(req) as unknown as { redirectUrl?: string }
     expect(response.redirectUrl).toContain('/onboarding')

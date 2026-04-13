@@ -10,10 +10,6 @@ import { ScrollSection } from '@/components/landing/scroll-section';
 import {
   Bot,
   Database,
-  Lock,
-  Cloud,
-  Users,
-  Zap,
   ArrowRight,
   CheckCircle2,
   Terminal,
@@ -30,32 +26,32 @@ export const metadata: Metadata = {
 export default function HomePage() {
   const features = [
     {
-      icon: Bot,
+      icon: 'Bot',
       title: 'MCP-Native Agents',
       description: 'Full Model Context Protocol client and server. Your agents use tools the way the ecosystem intended. Not a wrapper. Native.',
     },
     {
-      icon: Database,
+      icon: 'Database',
       title: 'Vector Search Built In',
       description: 'pgvector inside your existing Postgres. Semantic search, hybrid search, tenant-scoped. No separate Pinecone bill.',
     },
     {
-      icon: Lock,
+      icon: 'Lock',
       title: 'Tenant Isolation at the Database',
       description: 'Row-level security enforced by Postgres. Not middleware. Not application logic. User A cannot see User B\'s data. Period.',
     },
     {
-      icon: Users,
+      icon: 'Users',
       title: 'Multi-Agent Workspaces',
       description: 'Agents collaborate in real-time. Shared memory, conflict resolution, parallel execution. One workspace, many agents.',
     },
     {
-      icon: Cloud,
+      icon: 'Cloud',
       title: 'Self-Hosted. Your Data.',
       description: 'Docker, Railway, AWS, GCP. Deploy wherever you want. Your infrastructure, your rules, your data.',
     },
     {
-      icon: Zap,
+      icon: 'Zap',
       title: 'Production on Day One',
       description: 'Auth, billing, API keys, monitoring, audit logs. The boring stuff that takes months. Already done.',
     },
