@@ -22,7 +22,7 @@ export default function SystemHealthPage() {
       <div>
         <p className="text-sm font-semibold mb-3">Custom metrics</p>
         <p className="text-sm text-muted-foreground">
-          PostHog metrics will appear here once monitoring integration is wired in Plan 05.
+          Custom metrics will appear here once PostHog dashboards are configured.
         </p>
       </div>
     </div>

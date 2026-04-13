@@ -88,8 +88,7 @@ export function TenantTable({ tenants, total, page, pageSize, onPageChange }: Te
 
   async function handleConfirm() {
     if (!confirmAction) return
-    // Actions wired through server actions in a follow-up; log for now
-    console.log(`${confirmAction.type} tenant: ${confirmAction.tenantId}`)
+    // TODO: Wire to server actions for suspend/delete tenant operations
     setConfirmAction(null)
   }
 

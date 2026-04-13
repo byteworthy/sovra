@@ -44,7 +44,7 @@ ByteSwarm is the full stack. Auth to agents. Database to deployment. One repo, o
 ```bash
 git clone https://github.com/byteswarm/byteswarm.git
 cd byteswarm
-docker-compose up
+docker compose -f docker/compose.dev.yaml up
 # Open http://localhost:3000
 ```
 

@@ -60,7 +60,7 @@ export default function DashboardPage() {
             <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
             <p className="text-sm text-muted-foreground">{title}</p>
             <p className="text-2xl font-semibold mt-1">{value}</p>
-            <p className="text-xs text-muted-foreground mt-1">Coming soon</p>
+            <p className="text-xs text-muted-foreground mt-1">No data yet</p>
           </div>
         ))}
       </div>
