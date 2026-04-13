@@ -4,7 +4,7 @@ export default function ChatLoading() {
   return (
     <div className="flex h-[calc(100vh-3.5rem)] -m-6">
       {/* Sidebar skeleton */}
-      <div className="hidden md:flex w-[280px] bg-zinc-900/50 border-r border-border flex-col p-3 gap-2">
+      <div className="hidden md:flex w-[280px] bg-surface-2/50 border-r border-border flex-col p-3 gap-2">
         <Skeleton className="h-9 w-full rounded-md" />
         <div className="mt-2 flex flex-col gap-2">
           {Array.from({ length: 5 }).map((_, i) => (

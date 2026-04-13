@@ -155,7 +155,7 @@ export function InviteForm({ expanded, onToggle }: { expanded: boolean; onToggle
                           aria-label="Copy link"
                         >
                           {copied ? (
-                            <CheckCircle2 className="h-4 w-4 text-[#22C55E]" />
+                            <CheckCircle2 className="h-4 w-4 text-status-online" />
                           ) : (
                             <Copy className="h-4 w-4 text-muted-foreground" />
                           )}

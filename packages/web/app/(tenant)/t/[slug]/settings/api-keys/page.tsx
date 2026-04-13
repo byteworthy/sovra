@@ -61,13 +61,13 @@ export default function ApiKeysPage() {
         {loading ? (
           <div className="rounded-xl border border-border bg-card">
             {[...Array(3)].map((_, i) => (
-              <div key={i} className="h-[64px] border-b border-border last:border-b-0 animate-pulse bg-zinc-800/20" />
+              <div key={i} className="h-[64px] border-b border-border last:border-b-0 animate-pulse bg-surface-3/20" />
             ))}
           </div>
         ) : keys.length === 0 ? (
           /* Empty state */
           <div className="flex flex-col items-center justify-center py-24 text-center">
-            <div className="mb-4 h-12 w-12 rounded-full bg-zinc-800/60 flex items-center justify-center">
+            <div className="mb-4 h-12 w-12 rounded-full bg-surface-3/60 flex items-center justify-center">
               <KeyRound className="h-5 w-5 text-muted-foreground" />
             </div>
             <h2 className="text-base font-semibold mb-2">No API keys</h2>
