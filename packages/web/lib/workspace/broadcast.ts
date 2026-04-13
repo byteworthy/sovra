@@ -7,9 +7,15 @@ export async function broadcastToWorkspace(
   event: string,
   data: unknown
 ): Promise<void> {
+  const headers: Record<string, string> = { 'Content-Type': 'application/json' }
+  const secret = process.env.INTERNAL_API_SECRET
+  if (secret) {
+    headers['Authorization'] = `Bearer ${secret}`
+  }
+
   await fetch(`${WORKER_URL}/internal/broadcast`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers,
     body: JSON.stringify({
       tenant_id: tenantId,
       workspace_id: workspaceId,

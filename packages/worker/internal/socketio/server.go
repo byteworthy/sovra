@@ -5,6 +5,7 @@ import (
 	"log"
 
 	"github.com/gin-gonic/gin"
+	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/zishang520/engine.io/v2/types"
 	"github.com/zishang520/socket.io/v2/socket"
 )
@@ -17,7 +18,7 @@ func BuildRoomName(tenantId, workspaceId string) string {
 
 // MountSocketIO creates a Socket.IO server and mounts it on a new Gin router.
 // Returns the server instance and router for further route registration.
-func MountSocketIO(allowedOrigins string) (*socket.Server, *gin.Engine) {
+func MountSocketIO(allowedOrigins string, auth *SocketAuth) (*socket.Server, *gin.Engine) {
 	gin.SetMode(gin.ReleaseMode)
 	router := gin.New()
 	router.Use(gin.Recovery())
@@ -32,7 +33,7 @@ func MountSocketIO(allowedOrigins string) (*socket.Server, *gin.Engine) {
 
 	io.On("connection", func(clients ...any) {
 		client := clients[0].(*socket.Socket)
-		HandleConnection(io, client)
+		HandleConnection(io, client, auth)
 	})
 
 	router.GET("/socket.io/*f", gin.WrapH(io.ServeHandler(nil)))
@@ -44,9 +45,13 @@ func MountSocketIO(allowedOrigins string) (*socket.Server, *gin.Engine) {
 // StartSocketIOServer starts the Socket.IO server on the given port.
 // Mounts broadcast routes internally and starts listening in the background.
 // Returns the Socket.IO server instance for use by callers.
-func StartSocketIOServer(port int, allowedOrigins string) *socket.Server {
-	io, router := MountSocketIO(allowedOrigins)
-	MountBroadcastRoutes(router, io)
+func StartSocketIOServer(port int, allowedOrigins string, internalSecret string, jwtSecret string, pool *pgxpool.Pool) *socket.Server {
+	auth := &SocketAuth{
+		JWTSecret: []byte(jwtSecret),
+		Pool:      pool,
+	}
+	io, router := MountSocketIO(allowedOrigins, auth)
+	MountBroadcastRoutes(router, io, internalSecret)
 
 	addr := fmt.Sprintf(":%d", port)
 	log.Printf("socket.io server listening on %s", addr)

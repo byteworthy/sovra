@@ -23,6 +23,8 @@ export async function createWorkspace(
   formData: unknown
 ): Promise<WorkspaceResult> {
   const supabase = await createSupabaseServerClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) return { data: null, error: 'Not authenticated' }
 
   const parsed = workspaceFormSchema.parse(formData)
   const { agent_ids, ...workspaceFields } = parsed
@@ -68,6 +70,9 @@ export async function updateWorkspace(
   data: Partial<WorkspaceFormData>
 ): Promise<WorkspaceResult> {
   const supabase = await createSupabaseServerClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) return { data: null, error: 'Not authenticated' }
+
   const { agent_ids, ...workspaceFields } = data
 
   const { data: workspace, error } = await supabase
@@ -107,6 +112,8 @@ export async function updateWorkspace(
 
 export async function deleteWorkspace(id: string): Promise<DeleteResult> {
   const supabase = await createSupabaseServerClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) return { error: 'Not authenticated' }
 
   const { error } = await supabase
     .from('workspaces')
@@ -126,6 +133,8 @@ export async function addAgentToWorkspace(
   position = 0
 ): Promise<AgentAssignResult> {
   const supabase = await createSupabaseServerClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) return { data: null, error: 'Not authenticated' }
 
   const { data: workspace, error: workspaceError } = await supabase
     .from('workspaces')
@@ -156,6 +165,8 @@ export async function removeAgentFromWorkspace(
   agentId: string
 ): Promise<DeleteResult> {
   const supabase = await createSupabaseServerClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) return { error: 'Not authenticated' }
 
   const { error } = await supabase
     .from('workspace_agents' as never)

@@ -39,6 +39,8 @@ services:
       - MCP_PORT=3001
       - SOCKETIO_PORT=3002
       - SOCKETIO_ALLOWED_ORIGINS=http://localhost:3000
+      - INTERNAL_API_SECRET=${INTERNAL_API_SECRET:-dev-secret}
+      - SUPABASE_JWT_SECRET=${SUPABASE_JWT_SECRET:-}
       - GO_ENV=development
       - AGENT_WORKSPACE_PATH=/tmp/agent-workspace
       - BRAVE_SEARCH_API_KEY=${BRAVE_SEARCH_API_KEY:-}

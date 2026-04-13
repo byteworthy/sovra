@@ -20,6 +20,7 @@ services:
       - NEXT_PUBLIC_POSTHOG_KEY=${POSTHOG_KEY:-}
       - SENTRY_DSN=${SENTRY_DSN:-}
       - NEXT_PUBLIC_WORKER_SOCKET_URL=${WORKER_SOCKET_URL:-http://worker:3002}
+      - INTERNAL_API_SECRET=${INTERNAL_API_SECRET}
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
@@ -48,6 +49,8 @@ services:
       - MCP_PORT=3001
       - SOCKETIO_PORT=3002
       - SOCKETIO_ALLOWED_ORIGINS=${ALLOWED_ORIGINS:-https://yourdomain.com}
+      - INTERNAL_API_SECRET=${INTERNAL_API_SECRET}
+      - SUPABASE_JWT_SECRET=${SUPABASE_JWT_SECRET}
       - GO_ENV=production
       - AGENT_WORKSPACE_PATH=/tmp/agent-workspace
       - BRAVE_SEARCH_API_KEY=${BRAVE_SEARCH_API_KEY:-}

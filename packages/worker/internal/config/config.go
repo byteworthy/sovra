@@ -7,16 +7,18 @@ import (
 
 // Config holds all runtime configuration loaded from environment variables.
 type Config struct {
-	DatabaseURL           string
-	HTTPPort              int
-	GRPCPort              int
-	MCPPort               int
-	SocketIOPort          int
+	DatabaseURL            string
+	HTTPPort               int
+	GRPCPort               int
+	MCPPort                int
+	SocketIOPort           int
 	SocketIOAllowedOrigins string
-	Environment           string
-	AgentWorkspacePath    string
-	BraveSearchAPIKey     string
-	OpenAIAPIKey          string
+	InternalAPISecret      string
+	SupabaseJWTSecret      string
+	Environment            string
+	AgentWorkspacePath     string
+	BraveSearchAPIKey      string
+	OpenAIAPIKey           string
 }
 
 // Load reads configuration from environment variables with safe defaults.
@@ -28,6 +30,8 @@ func Load() *Config {
 		MCPPort:            getEnvInt("MCP_PORT", 3001),
 		SocketIOPort:          getEnvInt("SOCKETIO_PORT", 3002),
 		SocketIOAllowedOrigins: getEnv("SOCKETIO_ALLOWED_ORIGINS", "http://localhost:3000"),
+		InternalAPISecret:     getEnv("INTERNAL_API_SECRET", ""),
+		SupabaseJWTSecret:     getEnv("SUPABASE_JWT_SECRET", ""),
 		Environment:           getEnv("GO_ENV", "development"),
 		AgentWorkspacePath: getEnv("AGENT_WORKSPACE_PATH", "/tmp/agent-workspace"),
 		BraveSearchAPIKey:  getEnv("BRAVE_SEARCH_API_KEY", ""),

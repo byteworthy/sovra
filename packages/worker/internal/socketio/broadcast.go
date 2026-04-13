@@ -1,6 +1,7 @@
 package socketio
 
 import (
+	"crypto/subtle"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -38,10 +39,29 @@ func (h *BroadcastHandler) Handle(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"ok": true})
 }
 
+// InternalAuthMiddleware validates the Authorization header against a shared secret.
+// If no secret is configured, all requests are allowed (local dev mode).
+func InternalAuthMiddleware(secret string) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		if secret == "" {
+			c.Next()
+			return
+		}
+		token := c.GetHeader("Authorization")
+		if token == "" || subtle.ConstantTimeCompare([]byte(token), []byte("Bearer "+secret)) != 1 {
+			c.JSON(http.StatusUnauthorized, gin.H{"error": "unauthorized"})
+			c.Abort()
+			return
+		}
+		c.Next()
+	}
+}
+
 // MountBroadcastRoutes adds the /internal/broadcast endpoint to the given router.
-// This endpoint is internal-only — not exposed to the internet.
-func MountBroadcastRoutes(router *gin.Engine, io *socket.Server) {
+// Requires INTERNAL_API_SECRET for authentication when configured.
+func MountBroadcastRoutes(router *gin.Engine, io *socket.Server, secret string) {
 	handler := &BroadcastHandler{IO: io}
 	internal := router.Group("/internal")
+	internal.Use(InternalAuthMiddleware(secret))
 	internal.POST("/broadcast", handler.Handle)
 }

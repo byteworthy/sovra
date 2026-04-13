@@ -45,7 +45,9 @@ func main() {
 	// Start Socket.IO server for real-time workspace collaboration.
 	// Serves on cfg.SocketIOPort (default 3002). Includes /internal/broadcast endpoint.
 	// SECURITY: Never use "*" for allowed origins in production — use SOCKETIO_ALLOWED_ORIGINS env var.
-	go func() { socketioserver.StartSocketIOServer(cfg.SocketIOPort, cfg.SocketIOAllowedOrigins) }()
+	go func() {
+		socketioserver.StartSocketIOServer(cfg.SocketIOPort, cfg.SocketIOAllowedOrigins, cfg.InternalAPISecret, cfg.SupabaseJWTSecret, pool)
+	}()
 
 	// Block until SIGINT or SIGTERM.
 	quit := make(chan os.Signal, 1)

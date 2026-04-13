@@ -16,12 +16,12 @@ import (
 func newTestRouter(io *socket.Server) *gin.Engine {
 	gin.SetMode(gin.TestMode)
 	router := gin.New()
-	socketio.MountBroadcastRoutes(router, io)
+	socketio.MountBroadcastRoutes(router, io, "")
 	return router
 }
 
 func TestBroadcastHandler_MissingFields(t *testing.T) {
-	io, _ := socketio.MountSocketIO("*")
+	io, _ := socketio.MountSocketIO("*", &socketio.SocketAuth{})
 	router := newTestRouter(io)
 
 	tests := []struct {
@@ -68,7 +68,7 @@ func TestBroadcastHandler_MissingFields(t *testing.T) {
 }
 
 func TestBroadcastHandler_EmptyTenantOrWorkspace(t *testing.T) {
-	io, _ := socketio.MountSocketIO("*")
+	io, _ := socketio.MountSocketIO("*", &socketio.SocketAuth{})
 	router := newTestRouter(io)
 
 	tests := []struct {
@@ -105,7 +105,7 @@ func TestBroadcastHandler_EmptyTenantOrWorkspace(t *testing.T) {
 }
 
 func TestBroadcastHandler_ValidPayload(t *testing.T) {
-	io, _ := socketio.MountSocketIO("*")
+	io, _ := socketio.MountSocketIO("*", &socketio.SocketAuth{})
 	router := newTestRouter(io)
 
 	body := map[string]any{

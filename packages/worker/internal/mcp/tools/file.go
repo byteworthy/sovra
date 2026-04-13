@@ -41,7 +41,10 @@ func resolveSandboxedPath(workspacePath, userPath string) (string, error) {
 	if err != nil {
 		return "", fmt.Errorf("invalid path: %w", err)
 	}
-	if !strings.HasPrefix(absResolved, absWorkspace) {
+	// Ensure the resolved path is exactly the workspace or a child of it.
+	// The separator check prevents /tmp/agent-workspace2/evil from matching
+	// when workspace is /tmp/agent-workspace.
+	if absResolved != absWorkspace && !strings.HasPrefix(absResolved, absWorkspace+string(filepath.Separator)) {
 		return "", fmt.Errorf("path traversal blocked: %s escapes workspace root", userPath)
 	}
 	return absResolved, nil

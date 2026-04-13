@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from 'react'
 import { io, type Socket } from 'socket.io-client'
+import { createSupabaseBrowserClient } from '@/lib/auth/client'
 import { useWorkspaceStore } from './workspace-store'
 
 export function useWorkspaceSocket(tenantId: string, workspaceId: string) {
@@ -19,17 +20,22 @@ export function useWorkspaceSocket(tenantId: string, workspaceId: string) {
       }
     )
 
-    const joinRoom = () => socket.emit('workspace:join', tenantId, workspaceId)
+    const joinRoom = async () => {
+      const supabase = createSupabaseBrowserClient()
+      const { data: { session } } = await supabase.auth.getSession()
+      const token = session?.access_token ?? ''
+      socket.emit('workspace:join', tenantId, workspaceId, token)
+    }
 
     socket.on('connect', () => {
       setConnectionStatus('connected')
-      joinRoom()
+      void joinRoom()
     })
 
-    // REAL-05: rejoin room on reconnect
+    // REAL-05: rejoin room on reconnect (re-sends fresh token)
     socket.on('reconnect', () => {
       setConnectionStatus('connected')
-      joinRoom()
+      void joinRoom()
     })
 
     socket.on('disconnect', () => setConnectionStatus('disconnected'))

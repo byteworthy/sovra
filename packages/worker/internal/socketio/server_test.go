@@ -7,7 +7,7 @@ import (
 )
 
 func TestMountSocketIO_ReturnsNonNilServer(t *testing.T) {
-	io, router := socketio.MountSocketIO("*")
+	io, router := socketio.MountSocketIO("*", &socketio.SocketAuth{})
 
 	if io == nil {
 		t.Fatal("expected non-nil *socket.Server, got nil")
