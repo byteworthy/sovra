@@ -10,20 +10,17 @@ const footerLinks = {
   ],
   Developers: [
     { label: 'GitHub', href: 'https://github.com/byteswarm/byteswarm' },
-    { label: 'API Reference', href: '/docs/api' },
+    { label: 'Documentation', href: '/docs' },
     { label: 'Contributing', href: 'https://github.com/byteswarm/byteswarm/blob/main/CONTRIBUTING.md' },
     { label: 'Changelog', href: 'https://github.com/byteswarm/byteswarm/releases' },
   ],
   Community: [
-    { label: 'Discord', href: '#' },
-    { label: 'Twitter', href: '#' },
-    { label: 'Blog', href: '#' },
     { label: 'Discussions', href: 'https://github.com/byteswarm/byteswarm/discussions' },
+    { label: 'Issues', href: 'https://github.com/byteswarm/byteswarm/issues' },
+    { label: 'Star on GitHub', href: 'https://github.com/byteswarm/byteswarm' },
   ],
   Legal: [
     { label: 'MIT License', href: 'https://github.com/byteswarm/byteswarm/blob/main/LICENSE' },
-    { label: 'Privacy', href: '#' },
-    { label: 'Terms', href: '#' },
   ],
 }
 

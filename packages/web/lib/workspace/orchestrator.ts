@@ -181,10 +181,10 @@ export async function runWorkspace(
   }
 
   const { data: waRows, error: agentsError } = await supabase
-    .from('workspace_agents' as never)
-    .select('*, agents(*)' as never)
-    .eq('workspace_id' as never, workspaceId)
-    .order('position' as never, { ascending: true })
+    .from('workspace_agents')
+    .select('*, agents(*)')
+    .eq('workspace_id', workspaceId)
+    .order('position', { ascending: true })
 
   if (agentsError || !waRows?.length) {
     throw new Error('No agents configured for workspace')

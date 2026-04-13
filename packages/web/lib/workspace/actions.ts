@@ -47,16 +47,18 @@ export async function createWorkspace(
   if (error) return { data: null, error: error.message }
 
   if (agent_ids.length > 0) {
+    const wsId = (workspace as Record<string, unknown>).id as string
     const agentRows = agent_ids.map((agentId, index) => ({
-      workspace_id: (workspace as Record<string, unknown>).id as string,
+      workspace_id: wsId,
       agent_id: agentId,
+      tenant_id: tenantId,
       role: 'member' as AgentRole,
       position: index,
     }))
 
     const { error: agentError } = await supabase
-      .from('workspace_agents' as never)
-      .insert(agentRows as never)
+      .from('workspace_agents')
+      .insert(agentRows)
 
     if (agentError) return { data: null, error: agentError.message }
   }
@@ -86,21 +88,23 @@ export async function updateWorkspace(
 
   if (agent_ids !== undefined) {
     await supabase
-      .from('workspace_agents' as never)
+      .from('workspace_agents')
       .delete()
       .eq('workspace_id', id)
 
     if (agent_ids.length > 0) {
+      const wsTenantId = (workspace as Record<string, unknown>).tenant_id as string
       const agentRows = agent_ids.map((agentId, index) => ({
         workspace_id: id,
         agent_id: agentId,
+        tenant_id: wsTenantId,
         role: 'member' as AgentRole,
         position: index,
       }))
 
       const { error: agentError } = await supabase
-        .from('workspace_agents' as never)
-        .insert(agentRows as never)
+        .from('workspace_agents')
+        .insert(agentRows)
 
       if (agentError) return { data: null, error: agentError.message }
     }
@@ -147,13 +151,14 @@ export async function addAgentToWorkspace(
   const tenantId = (workspace as Record<string, unknown>).tenant_id as string
 
   const { data, error } = await supabase
-    .from('workspace_agents' as never)
+    .from('workspace_agents')
     .insert({
       workspace_id: workspaceId,
       agent_id: agentId,
+      tenant_id: tenantId,
       role,
       position,
-    } as never)
+    })
 
   if (error) return { data: null, error: error.message }
 
@@ -169,7 +174,7 @@ export async function removeAgentFromWorkspace(
   if (!user) return { error: 'Not authenticated' }
 
   const { error } = await supabase
-    .from('workspace_agents' as never)
+    .from('workspace_agents')
     .delete()
     .eq('workspace_id', workspaceId)
     .eq('agent_id', agentId)

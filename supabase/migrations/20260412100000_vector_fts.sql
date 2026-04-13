@@ -5,8 +5,9 @@ ALTER TABLE vector_documents ADD COLUMN IF NOT EXISTS fts tsvector
 CREATE INDEX IF NOT EXISTS idx_vector_documents_fts
   ON vector_documents USING gin(fts);
 
--- Set default ef_search for better recall on HNSW queries
-ALTER SYSTEM SET hnsw.ef_search = 100;
+-- NOTE: ef_search tuning is handled at connection level, not via ALTER SYSTEM
+-- (ALTER SYSTEM cannot run inside migration pipelines).
+-- Set in supabase/config.toml or per-session: SET hnsw.ef_search = 100;
 
 -- RPC function: semantic search (cosine similarity via pgvector)
 CREATE OR REPLACE FUNCTION match_documents(

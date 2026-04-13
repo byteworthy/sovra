@@ -1,3 +1,4 @@
+import type { Json } from '@byteswarm/shared/types/database'
 import { createSupabaseServerClient } from '@/lib/auth/server'
 
 const MAX_VALUE_BYTES = 65536 // 64KB
@@ -54,9 +55,9 @@ export async function writeSharedMemory(
       tenant_id: tenantId,
       workspace_id: workspaceId,
       key,
-      value: value as Record<string, unknown>,
+      value: value as Json,
       updated_by: agentId ?? null,
-    } as never)
+    })
 
   if (error) return { data: null, error: error.message }
   return { data, error: null }
@@ -90,10 +91,10 @@ export async function upsertSharedMemory(
         tenant_id: tenantId,
         workspace_id: workspaceId,
         key,
-        value: value as Record<string, unknown>,
+        value: value as Json,
         updated_by: agentId ?? null,
         updated_at: new Date().toISOString(),
-      } as never,
+      },
       { onConflict: 'workspace_id,key' }
     )
 

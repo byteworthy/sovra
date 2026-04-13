@@ -1,3 +1,5 @@
+# Prerequisite: run 'supabase start' before starting these services.
+# The web and worker services connect to the local Supabase instance.
 name: byteswarm-dev
 
 services:

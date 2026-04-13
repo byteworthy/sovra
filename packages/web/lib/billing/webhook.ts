@@ -27,7 +27,7 @@ export async function handleWebhookEvent(
         tenant_id: tenantId,
         plan: session.metadata?.plan ?? 'pro',
         status: 'active',
-      } as never)
+      })
       break
     }
 
@@ -40,8 +40,8 @@ export async function handleWebhookEvent(
           current_period_end: sub.current_period_end
             ? new Date(sub.current_period_end * 1000).toISOString()
             : null,
-        } as never)
-        .eq('stripe_subscription_id' as never, sub.id)
+        })
+        .eq('stripe_subscription_id', sub.id)
       break
     }
 
@@ -49,8 +49,8 @@ export async function handleWebhookEvent(
       const sub = event.data.object as Stripe.Subscription
       await supabase
         .from('subscriptions')
-        .update({ status: 'cancelled' } as never)
-        .eq('stripe_subscription_id' as never, sub.id)
+        .update({ status: 'cancelled' })
+        .eq('stripe_subscription_id', sub.id)
       break
     }
 
@@ -58,8 +58,8 @@ export async function handleWebhookEvent(
       const sub = event.data.object as Stripe.Subscription
       await supabase
         .from('subscriptions')
-        .update({ status: 'paused' } as never)
-        .eq('stripe_subscription_id' as never, sub.id)
+        .update({ status: 'paused' })
+        .eq('stripe_subscription_id', sub.id)
       break
     }
 
@@ -67,8 +67,8 @@ export async function handleWebhookEvent(
       const sub = event.data.object as Stripe.Subscription
       await supabase
         .from('subscriptions')
-        .update({ status: 'active' } as never)
-        .eq('stripe_subscription_id' as never, sub.id)
+        .update({ status: 'active' })
+        .eq('stripe_subscription_id', sub.id)
       break
     }
 
@@ -77,8 +77,8 @@ export async function handleWebhookEvent(
       if (invoice.subscription) {
         await supabase
           .from('subscriptions')
-          .update({ status: 'past_due' } as never)
-          .eq('stripe_subscription_id' as never, String(invoice.subscription))
+          .update({ status: 'past_due' })
+          .eq('stripe_subscription_id', String(invoice.subscription))
       }
       break
     }

@@ -28,6 +28,8 @@ services:
       timeout: 10s
       retries: 3
       start_period: 40s
+    networks:
+      - byteswarm
 
   worker:
     image: byteswarm/worker:${VERSION:-latest}
@@ -62,9 +64,15 @@ services:
       timeout: 10s
       retries: 3
       start_period: 10s
+    networks:
+      - byteswarm
     depends_on:
       web:
         condition: service_started
+
+networks:
+  byteswarm:
+    driver: bridge
 
 volumes:
   agent-workspace:
