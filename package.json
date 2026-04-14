@@ -2,7 +2,7 @@
   "name": "sovra",
   "version": "1.0.0",
   "private": true,
-  "description": "AI-native SaaS boilerplate for multi-tenant AI applications",
+  "description": "Open-source platform for building multi-tenant AI agent applications with MCP, vector search, and real-time collaboration",
   "scripts": {
     "dev": "pnpm -r --parallel dev",
     "build": "pnpm -r build",
@@ -22,13 +22,21 @@
     "pnpm": ">=9.0.0"
   },
   "keywords": [
-    "ai",
+    "ai-agents",
     "mcp",
+    "model-context-protocol",
     "multi-tenant",
-    "saas",
-    "boilerplate",
+    "saas-boilerplate",
     "nextjs",
-    "go"
+    "supabase",
+    "vector-search",
+    "pgvector",
+    "ai-platform",
+    "open-source",
+    "self-hosted",
+    "multi-agent",
+    "golang",
+    "stripe"
   ],
   "license": "MIT"
 }
