@@ -90,14 +90,19 @@ export async function updateWorkspace(
 
   if (!existing) return { data: null, error: 'Workspace not found' }
 
+  const existingTenantId = (existing as Record<string, unknown>).tenant_id as string
+
   const { data: mem } = await supabase
     .from('tenant_users')
     .select('id')
     .eq('user_id', user.id)
-    .eq('tenant_id', (existing as Record<string, unknown>).tenant_id as string)
+    .eq('tenant_id', existingTenantId)
     .single()
 
   if (!mem) return { data: null, error: 'Forbidden' }
+
+  const canUpdate = await hasPermission(supabase, user.id, existingTenantId, 'workspace:update')
+  if (!canUpdate) return { data: null, error: 'Forbidden: insufficient permissions' }
 
   const { data: workspace, error } = await supabase
     .from('workspaces')
@@ -151,20 +156,25 @@ export async function deleteWorkspace(id: string): Promise<DeleteResult> {
 
   if (!workspace) return { error: 'Workspace not found' }
 
+  const wsTenantId = (workspace as Record<string, unknown>).tenant_id as string
+
   const { data: mem } = await supabase
     .from('tenant_users')
     .select('id')
     .eq('user_id', user.id)
-    .eq('tenant_id', (workspace as Record<string, unknown>).tenant_id as string)
+    .eq('tenant_id', wsTenantId)
     .single()
 
   if (!mem) return { error: 'Forbidden' }
+
+  const canDelete = await hasPermission(supabase, user.id, wsTenantId, 'workspace:delete')
+  if (!canDelete) return { error: 'Forbidden: insufficient permissions' }
 
   const { error } = await supabase
     .from('workspaces')
     .delete()
     .eq('id', id)
-    .eq('tenant_id', (workspace as Record<string, unknown>).tenant_id as string)
+    .eq('tenant_id', wsTenantId)
 
   if (error) return { error: error.message }
 

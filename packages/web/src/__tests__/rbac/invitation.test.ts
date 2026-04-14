@@ -21,6 +21,17 @@ vi.mock('@/lib/rbac/checker', () => ({
   hasPermission: vi.fn().mockResolvedValue(true),
 }))
 
+// Mock admin client used by acceptInvitation
+const mockAdminFrom = vi.fn()
+const mockAdminRpc = vi.fn()
+
+vi.mock('@/lib/admin/service-client', () => ({
+  createAdminClient: vi.fn().mockReturnValue({
+    from: mockAdminFrom,
+    rpc: mockAdminRpc,
+  }),
+}))
+
 // We mock the crypto module to get deterministic tokens
 vi.mock('crypto', async () => {
   const actual = await vi.importActual<typeof import('crypto')>('crypto')
@@ -173,10 +184,9 @@ describe('acceptInvitation', () => {
   it('rejects expired invitations', async () => {
     mockGetUser.mockResolvedValue({ data: { user: { id: 'user-1' } }, error: null })
 
-    const expiredDate = new Date(Date.now() - 1000).toISOString() // 1 second in the past
+    const expiredDate = new Date(Date.now() - 1000).toISOString()
 
-    const updateFn = vi.fn().mockReturnThis()
-    mockFrom.mockReturnValue({
+    mockAdminFrom.mockReturnValue({
       select: vi.fn().mockReturnThis(),
       eq: vi.fn().mockReturnThis(),
       single: vi.fn().mockResolvedValue({
@@ -187,7 +197,7 @@ describe('acceptInvitation', () => {
         },
         error: null,
       }),
-      update: updateFn,
+      update: vi.fn().mockReturnThis(),
     })
 
     const { acceptInvitation } = await import('@/lib/rbac/invitation')
@@ -196,27 +206,29 @@ describe('acceptInvitation', () => {
     expect(result.tenantId).toBeNull()
   })
 
-  it('rejects invitations that exceeded max_uses', async () => {
+  it('rejects invitations via atomic check when max_uses exceeded', async () => {
     mockGetUser.mockResolvedValue({ data: { user: { id: 'user-1' } }, error: null })
 
     const futureDate = new Date(Date.now() + 86400000).toISOString()
 
-    mockFrom.mockReturnValue({
+    mockAdminFrom.mockReturnValue({
       select: vi.fn().mockReturnThis(),
       eq: vi.fn().mockReturnThis(),
       single: vi.fn().mockResolvedValue({
         data: {
           id: 'inv-1', tenant_id: 'tenant-1', role_id: 'role-1',
           token: 'link-token', invite_type: 'link', status: 'pending',
-          max_uses: 5, use_count: 5, expires_at: futureDate,
+          max_uses: 5, use_count: 4, expires_at: futureDate,
         },
         error: null,
       }),
     })
+    // Atomic RPC returns false (max_uses reached)
+    mockAdminRpc.mockResolvedValue({ data: false, error: null })
 
     const { acceptInvitation } = await import('@/lib/rbac/invitation')
     const result = await acceptInvitation('link-token')
-    expect(result.error).toBe('Invitation has reached maximum uses')
+    expect(result.error).toBe('Invitation is no longer valid')
   })
 
   it('adds user to tenant and returns tenantId on success', async () => {
@@ -232,19 +244,20 @@ describe('acceptInvitation', () => {
     const tuInsertFn = vi.fn().mockResolvedValue({ data: null, error: null })
     const updateEq = vi.fn().mockResolvedValue({ data: null, error: null })
 
-    let fromCallCount = 0
-    mockFrom.mockImplementation((table: string) => {
+    // Atomic RPC returns true (invitation claimed)
+    mockAdminRpc.mockResolvedValue({ data: true, error: null })
+
+    let adminFromCallCount = 0
+    mockAdminFrom.mockImplementation((table: string) => {
       if (table === 'invitations') {
-        fromCallCount++
-        if (fromCallCount === 1) {
-          // First call: fetch invitation
+        adminFromCallCount++
+        if (adminFromCallCount === 1) {
           return {
             select: vi.fn().mockReturnThis(),
             eq: vi.fn().mockReturnThis(),
             single: vi.fn().mockResolvedValue({ data: inviteRow, error: null }),
           }
         }
-        // Second call: update invitation
         return { update: vi.fn().mockReturnThis(), eq: updateEq }
       }
       if (table === 'roles') {

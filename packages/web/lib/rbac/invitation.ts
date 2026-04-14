@@ -2,6 +2,7 @@
 
 import { randomBytes } from 'crypto'
 import { createSupabaseServerClient } from '@/lib/auth/server'
+import { createAdminClient } from '@/lib/admin/service-client'
 import { hasPermission } from '@/lib/rbac/checker'
 import type { Invitation, InviteType } from '@sovra/shared'
 
@@ -94,8 +95,11 @@ export async function acceptInvitation(
   } = await supabase.auth.getUser()
   if (!user) return { tenantId: null, error: 'Not authenticated' }
 
-  // Fetch invitation by token
-  const { data: invite, error: fetchError } = await supabase
+  // Use service role client for invitation operations (authenticated users can't read/write invitations directly)
+  const adminClient = createAdminClient()
+
+  // Fetch invitation by token using service role (tokens are not readable via RLS)
+  const { data: invite, error: fetchError } = await adminClient
     .from('invitations')
     .select('*')
     .eq('token', token)
@@ -106,24 +110,26 @@ export async function acceptInvitation(
 
   // Reject expired invitations
   if (new Date(invite.expires_at) < new Date()) {
-    await supabase.from('invitations').update({ status: 'expired' }).eq('id', invite.id)
+    await adminClient.from('invitations').update({ status: 'expired' }).eq('id', invite.id)
     return { tenantId: null, error: 'Invitation has expired' }
   }
 
-  // Reject invitations that have hit max uses
-  if (invite.max_uses !== null && invite.use_count >= invite.max_uses) {
-    return { tenantId: null, error: 'Invitation has reached maximum uses' }
-  }
+  // Atomically claim the invitation (prevents race condition on max_uses)
+  const { data: accepted } = await adminClient.rpc('accept_invitation_atomic', {
+    p_invitation_id: invite.id,
+  })
+
+  if (!accepted) return { tenantId: null, error: 'Invitation is no longer valid' }
 
   // Resolve role name for backward-compat tenant_users.role column
-  const { data: roleData } = await supabase
+  const { data: roleData } = await adminClient
     .from('roles')
     .select('name')
     .eq('id', invite.role_id)
     .single()
 
-  // Add user to tenant
-  const { error: addError } = await supabase.from('tenant_users').insert({
+  // Add user to tenant via service role (no INSERT RLS policy for authenticated users)
+  const { error: addError } = await adminClient.from('tenant_users').insert({
     tenant_id: invite.tenant_id,
     user_id: user.id,
     role: roleData?.name ?? 'member',
@@ -133,15 +139,12 @@ export async function acceptInvitation(
   if (addError) {
     // Already a member: treat as success
     if (addError.code === '23505') return { tenantId: invite.tenant_id, error: null }
-    return { tenantId: null, error: addError.message }
+    return { tenantId: null, error: 'Failed to join tenant' }
   }
 
-  // Increment use_count; mark email invites as accepted
-  const useCount = invite.use_count + 1
+  // Mark email invites as accepted
   if (invite.invite_type === 'email') {
-    await supabase.from('invitations').update({ use_count: useCount, status: 'accepted' }).eq('id', invite.id)
-  } else {
-    await supabase.from('invitations').update({ use_count: useCount }).eq('id', invite.id)
+    await adminClient.from('invitations').update({ status: 'accepted' }).eq('id', invite.id)
   }
 
   return { tenantId: invite.tenant_id, error: null }
