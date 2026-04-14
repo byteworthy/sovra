@@ -14,7 +14,7 @@
 **Decision:** All three strategies via config - subdomain, path, header
 **Implementation:** A `TenantResolver` interface with 3 implementations. `TENANT_RESOLUTION_STRATEGY` env var selects one. Default: `path` (simplest for local dev and self-hosters). Subdomain for SaaS deployments. Header for API-first/headless usage.
 - Path: `/t/{slug}/dashboard`
-- Subdomain: `{slug}.byteswarm.dev`
+- Subdomain: `{slug}.sovra.dev`
 - Header: `X-Tenant-ID` or `X-Tenant-Slug`
 
 ### 3. Permission Model

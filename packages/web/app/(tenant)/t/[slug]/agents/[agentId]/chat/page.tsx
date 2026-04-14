@@ -7,7 +7,7 @@ import { ChatPageClient } from './chat-page-client'
 import type { Message } from 'ai'
 
 export const metadata: Metadata = {
-  title: 'Agent Chat | ByteSwarm',
+  title: 'Agent Chat | Sovra',
   description: 'Chat with your AI agent and manage conversation history.',
 }
 

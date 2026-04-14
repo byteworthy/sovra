@@ -7,7 +7,7 @@ export async function getMcpClient(): Promise<Client> {
   if (mcpClient) return mcpClient
 
   const url = new URL(process.env.WORKER_MCP_URL ?? 'http://worker:3001/mcp')
-  const client = new Client({ name: 'byteswarm-web', version: '1.0.0' })
+  const client = new Client({ name: 'sovra-web', version: '1.0.0' })
 
   const headers: Record<string, string> = {}
   const secret = process.env.INTERNAL_API_SECRET

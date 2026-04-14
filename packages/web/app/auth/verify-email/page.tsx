@@ -3,7 +3,7 @@ import { AuthCard } from '@/components/auth/auth-card'
 import { VerifyEmailClient } from './client'
 
 export const metadata = {
-  title: 'Verify email | ByteSwarm',
+  title: 'Verify email | Sovra',
 }
 
 interface VerifyEmailPageProps {

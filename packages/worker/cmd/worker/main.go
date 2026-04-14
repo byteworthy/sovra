@@ -7,18 +7,18 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/byteswarm/worker/internal/config"
-	"github.com/byteswarm/worker/internal/db"
-	workergrpc "github.com/byteswarm/worker/internal/grpc"
-	workerhttp "github.com/byteswarm/worker/internal/http"
-	mcpserver "github.com/byteswarm/worker/internal/mcp"
-	socketioserver "github.com/byteswarm/worker/internal/socketio"
+	"github.com/byteworthy/sovra-worker/internal/config"
+	"github.com/byteworthy/sovra-worker/internal/db"
+	workergrpc "github.com/byteworthy/sovra-worker/internal/grpc"
+	workerhttp "github.com/byteworthy/sovra-worker/internal/http"
+	mcpserver "github.com/byteworthy/sovra-worker/internal/mcp"
+	socketioserver "github.com/byteworthy/sovra-worker/internal/socketio"
 )
 
 func main() {
 	cfg := config.Load()
 
-	log.Printf("starting byteswarm worker (env=%s)", cfg.Environment)
+	log.Printf("starting sovra worker (env=%s)", cfg.Environment)
 
 	// Connect to database.
 	// SECURITY: Never log cfg.DatabaseURL — only log connection status.

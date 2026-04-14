@@ -1,6 +1,6 @@
 import type { SupabaseClient } from '@supabase/supabase-js'
-import type { AuthAdapter, AuthUser, AuthSession, AuthResult, OAuthProvider } from '@byteswarm/shared'
-import type { Database } from '@byteswarm/shared'
+import type { AuthAdapter, AuthUser, AuthSession, AuthResult, OAuthProvider } from '@sovra/shared'
+import type { Database } from '@sovra/shared'
 
 function mapUser(user: { id: string; email?: string; user_metadata?: Record<string, unknown> } | null): AuthUser | null {
   if (!user) return null

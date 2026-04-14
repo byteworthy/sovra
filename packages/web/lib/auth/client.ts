@@ -1,5 +1,5 @@
 import { createBrowserClient } from '@supabase/ssr'
-import type { Database } from '@byteswarm/shared'
+import type { Database } from '@sovra/shared'
 
 let browserClient: ReturnType<typeof createBrowserClient<Database>> | null = null
 

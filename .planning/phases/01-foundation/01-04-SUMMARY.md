@@ -57,7 +57,7 @@ Created all Docker configuration for local development and production deployment
 
 ### Task 2: Vitest Setup and Full Quality Gate
 
-- **packages/web/vitest.config.ts** - jsdom environment, `@vitejs/plugin-react`, `vite-tsconfig-paths` for `@/*` and `@byteswarm/shared/*` path resolution.
+- **packages/web/vitest.config.ts** - jsdom environment, `@vitejs/plugin-react`, `vite-tsconfig-paths` for `@/*` and `@sovra/shared/*` path resolution.
 - **packages/web/src/__tests__/smoke.test.tsx** - 2 tests: arithmetic assertion (infrastructure check) and JSX compilation check.
 - **packages/web/.eslintrc.json** - `next/core-web-vitals` config (required for non-interactive `next lint`).
 - **packages/web/package.json** - Added `test: vitest run` and `test:watch: vitest` scripts.
@@ -73,9 +73,9 @@ Created all Docker configuration for local development and production deployment
 
 | Check | Command | Result |
 |-------|---------|--------|
-| Vitest | `pnpm --filter @byteswarm/web run test` | 2/2 passed |
-| TypeScript | `pnpm --filter @byteswarm/web run type-check` | Clean (exit 0) |
-| ESLint | `pnpm --filter @byteswarm/web run lint` | No warnings or errors |
+| Vitest | `pnpm --filter @sovra/web run test` | 2/2 passed |
+| TypeScript | `pnpm --filter @sovra/web run type-check` | Clean (exit 0) |
+| ESLint | `pnpm --filter @sovra/web run lint` | No warnings or errors |
 | Go build | `cd packages/worker && go build ./...` | Clean |
 | Go test | `cd packages/worker && go test ./...` | 1 package tested, pass |
 | Compose dev | `docker compose -f docker/compose.dev.yaml config` | Valid |

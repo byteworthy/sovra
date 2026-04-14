@@ -125,7 +125,7 @@ One deliberate test-time bypass noted: `SSRFCheckEnabled` package variable in `t
 
 **Test:** Start Docker Compose worker service (`docker compose -f docker/compose.dev.yaml up worker`) and send a POST to `http://localhost:3001/mcp` with Content-Type: application/json and a valid MCP initialize request body: `{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0.0"}}}`
 
-**Expected:** HTTP 200 response with JSON body containing `protocolVersion`, `capabilities`, and `serverInfo.name = "byteswarm-worker"`.
+**Expected:** HTTP 200 response with JSON body containing `protocolVersion`, `capabilities`, and `serverInfo.name = "sovra-worker"`.
 
 **Why human:** The Streamable HTTP transport requires a live Go process. The unit test `TestHTTPHandler_MCPEndpointResponds` only verifies the endpoint returns non-404; it does not exercise the full MCP protocol handshake sequence.
 
@@ -139,7 +139,7 @@ One deliberate test-time bypass noted: `SSRFCheckEnabled` package variable in `t
 
 #### 3. Document Embed and Hybrid Search Round-Trip
 
-**Test:** With OPENAI_API_KEY set and Supabase migration applied, call `POST /api/documents/embed` with `{"content": "ByteSwarm is an AI-native SaaS boilerplate for building multi-tenant applications"}`. Then call `POST /api/documents/search` with `{"query": "multi-tenant AI boilerplate", "mode": "hybrid"}`.
+**Test:** With OPENAI_API_KEY set and Supabase migration applied, call `POST /api/documents/embed` with `{"content": "Sovra is an AI-native SaaS boilerplate for building multi-tenant applications"}`. Then call `POST /api/documents/search` with `{"query": "multi-tenant AI boilerplate", "mode": "hybrid"}`.
 
 **Expected:** Embed returns 201 with an `id`. Search returns 200 with `results` array where the embedded document appears with `similarity > 0.7`.
 

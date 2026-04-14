@@ -32,7 +32,7 @@ export default async function AdminLayout({ children }: AdminLayoutProps) {
       <AdminSidebar />
       <div className="flex-1 flex flex-col min-h-screen">
         <header className="h-14 flex items-center justify-between px-6 border-b border-amber-500/20 bg-background sticky top-0 z-10">
-          <span className="text-sm font-semibold text-amber-400">ByteSwarm Admin</span>
+          <span className="text-sm font-semibold text-amber-400">Sovra Admin</span>
           <div className="flex items-center gap-4">
             <span className="text-xs text-muted-foreground">{user.email}</span>
             <Link

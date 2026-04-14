@@ -29,7 +29,7 @@ export function BrandPanel() {
 
       <div className="flex items-center gap-2 relative z-10">
         <Bot className="h-6 w-6 text-primary" />
-        <span className="text-lg font-semibold text-foreground">ByteSwarm</span>
+        <span className="text-lg font-semibold text-foreground">Sovra</span>
       </div>
 
       <div className="space-y-6 relative z-10">

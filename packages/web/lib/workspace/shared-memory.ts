@@ -1,4 +1,4 @@
-import type { Json } from '@byteswarm/shared/types/database'
+import type { Json } from '@sovra/shared/types/database'
 import { createSupabaseServerClient } from '@/lib/auth/server'
 
 const MAX_VALUE_BYTES = 65536 // 64KB

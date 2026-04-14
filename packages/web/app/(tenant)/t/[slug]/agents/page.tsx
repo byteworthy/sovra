@@ -4,7 +4,7 @@ import { listAgents } from '@/lib/agent/queries'
 import { AgentListClient } from './agent-list-client'
 
 export const metadata: Metadata = {
-  title: 'Agents | ByteSwarm',
+  title: 'Agents | Sovra',
   description: 'Manage and configure your AI agents, tools, and MCP connections.',
 }
 

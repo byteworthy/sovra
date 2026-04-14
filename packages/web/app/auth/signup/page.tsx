@@ -2,7 +2,7 @@ import { AuthCard } from '@/components/auth/auth-card'
 import { SignupPageClient } from './client'
 
 export const metadata = {
-  title: 'Create account | ByteSwarm',
+  title: 'Create account | Sovra',
 }
 
 export default function SignupPage() {

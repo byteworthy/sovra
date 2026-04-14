@@ -9,7 +9,7 @@ import { BillingPortalButton } from '@/components/billing/BillingPortalButton'
 import { notFound } from 'next/navigation'
 
 export const metadata: Metadata = {
-  title: 'Billing | ByteSwarm',
+  title: 'Billing | Sovra',
   description: 'Manage your subscription plan, usage limits, and billing details.',
 }
 

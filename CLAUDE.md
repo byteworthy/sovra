@@ -1,10 +1,10 @@
-# ByteSwarm - Claude Code Instructions
+# Sovra - Claude Code Instructions
 
-This file provides project-specific guidance for Claude Code when working on ByteSwarm.
+This file provides project-specific guidance for Claude Code when working on Sovra.
 
 ## Project Overview
 
-**ByteSwarm** is an open-source AI-native SaaS boilerplate for building multi-tenant AI applications with MCP, vector database, and multi-agent collaboration.
+**Sovra** is an open-source AI-native SaaS boilerplate for building multi-tenant AI applications with MCP, vector database, and multi-agent collaboration.
 
 ## Quick Start
 
@@ -23,7 +23,7 @@ go build ./...
 ## Directory Structure
 
 ```
-byteswarm/
+sovra/
 ├── packages/
 │   ├── web/           # Next.js frontend + API
 │   ├── worker/       # Go agent worker service

@@ -12,9 +12,9 @@ progress:
   percent: 79
 ---
 
-# State: ByteSwarm
+# State: Sovra
 
-**Project:** ByteSwarm
+**Project:** Sovra
 **Status:** Executing Phase 06
 **Milestone:** 1.0
 

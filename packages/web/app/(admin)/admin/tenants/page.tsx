@@ -3,7 +3,7 @@ import { getAllTenants } from '@/lib/admin/queries'
 import { TenantTableWrapper } from './TenantTableWrapper'
 
 export const metadata: Metadata = {
-  title: 'Tenants | ByteSwarm Admin',
+  title: 'Tenants | Sovra Admin',
   description: 'View, search, and manage all tenant organizations on the platform.',
 }
 

@@ -1,8 +1,8 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/byteswarm/byteswarm/main/.github/logo.svg" width="80" alt="ByteSwarm" />
+  <img src="https://raw.githubusercontent.com/byteworthy/sovra/main/.github/logo.svg" width="80" alt="Sovra" />
 </p>
 
-<h1 align="center">ByteSwarm</h1>
+<h1 align="center">Sovra</h1>
 
 <p align="center">
   <strong>The open-source AI agent platform you'd have to build yourself. Until now.</strong>
@@ -35,7 +35,7 @@ You're stuck gluing them together yourself.
 
 ## The Solution
 
-ByteSwarm is the full stack. Auth to agents. Database to deployment. One repo, one command, production-ready.
+Sovra is the full stack. Auth to agents. Database to deployment. One repo, one command, production-ready.
 
 **What takes teams 3+ months to build, you get in one `git clone`.**
 
@@ -52,8 +52,8 @@ ByteSwarm is the full stack. Auth to agents. Database to deployment. One repo, o
 
 ```bash
 # 1. Clone and install
-git clone https://github.com/byteswarm/byteswarm.git
-cd byteswarm
+git clone https://github.com/byteworthy/sovra.git
+cd sovra
 pnpm install
 
 # 2. Start local Supabase (Postgres + Auth + pgvector)
@@ -128,7 +128,7 @@ Monitoring   Sentry + PostHog
 
 **Why Supabase?** Postgres + pgvector + auth + real-time + RLS in one service. No separate vector database bill. No separate auth service. Everything in one place, and you own the data.
 
-**Why not NextAuth/Clerk/Auth0?** ByteSwarm ships with Supabase Auth as the default (zero config). But the `AuthAdapter` interface means you can swap to any provider by implementing 5 methods. No lock-in.
+**Why not NextAuth/Clerk/Auth0?** Sovra ships with Supabase Auth as the default (zero config). But the `AuthAdapter` interface means you can swap to any provider by implementing 5 methods. No lock-in.
 
 ## Architecture
 
@@ -206,6 +206,6 @@ Contributions welcome. Read the [contributing guide](CONTRIBUTING.md) before ope
 ---
 
 <p align="center">
-  <strong>Built by <a href="https://byteworthy.dev">ByteWorthy</a></strong><br/>
-  <sub>Stop building plumbing. Start building product.</sub>
+  <strong>Built by <a href="https://byteworthy.io">ByteWorthy</a></strong><br/>
+  <sub>Ship AI products. Not infrastructure.</sub>
 </p>

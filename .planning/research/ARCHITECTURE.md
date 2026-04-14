@@ -1,4 +1,4 @@
-# Architecture Research - ByteSwarm
+# Architecture Research - Sovra
 
 **Research Type:** Project Research - Architecture dimension
 **Date:** 2026-04-11

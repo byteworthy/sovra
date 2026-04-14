@@ -9,18 +9,18 @@ const footerLinks = {
     { label: 'Documentation', href: '/docs' },
   ],
   Developers: [
-    { label: 'GitHub', href: 'https://github.com/byteswarm/byteswarm' },
+    { label: 'GitHub', href: 'https://github.com/byteworthy/sovra' },
     { label: 'Documentation', href: '/docs' },
-    { label: 'Contributing', href: 'https://github.com/byteswarm/byteswarm/blob/main/CONTRIBUTING.md' },
-    { label: 'Changelog', href: 'https://github.com/byteswarm/byteswarm/releases' },
+    { label: 'Contributing', href: 'https://github.com/byteworthy/sovra/blob/main/CONTRIBUTING.md' },
+    { label: 'Changelog', href: 'https://github.com/byteworthy/sovra/releases' },
   ],
   Community: [
-    { label: 'Discussions', href: 'https://github.com/byteswarm/byteswarm/discussions' },
-    { label: 'Issues', href: 'https://github.com/byteswarm/byteswarm/issues' },
-    { label: 'Star on GitHub', href: 'https://github.com/byteswarm/byteswarm' },
+    { label: 'Discussions', href: 'https://github.com/byteworthy/sovra/discussions' },
+    { label: 'Issues', href: 'https://github.com/byteworthy/sovra/issues' },
+    { label: 'Star on GitHub', href: 'https://github.com/byteworthy/sovra' },
   ],
   Legal: [
-    { label: 'MIT License', href: 'https://github.com/byteswarm/byteswarm/blob/main/LICENSE' },
+    { label: 'MIT License', href: 'https://github.com/byteworthy/sovra/blob/main/LICENSE' },
   ],
 }
 
@@ -33,7 +33,7 @@ export function Footer() {
           <div className="col-span-2 md:col-span-1">
             <Link href="/" className="flex items-center gap-2 mb-4">
               <Bot className="h-5 w-5 text-primary" />
-              <span className="font-semibold">ByteSwarm</span>
+              <span className="font-semibold">Sovra</span>
             </Link>
             <p className="text-xs text-muted-foreground leading-relaxed">
               Open-source AI-native SaaS boilerplate. Self-hosted. MIT licensed.
@@ -64,10 +64,10 @@ export function Footer() {
         {/* Bottom bar */}
         <div className="mt-10 pt-6 border-t border-border/40 flex flex-col sm:flex-row justify-between items-center gap-4">
           <p className="text-xs text-muted-foreground">
-            &copy; {new Date().getFullYear()} ByteSwarm. MIT License.
+            &copy; {new Date().getFullYear()} Sovra. MIT License.
           </p>
           <p className="text-xs text-muted-foreground">
-            Built with ByteSwarm
+            Built with Sovra
           </p>
         </div>
       </div>

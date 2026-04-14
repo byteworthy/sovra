@@ -1,4 +1,4 @@
-import type { TenantResolver, TenantResolutionStrategy } from '@byteswarm/shared'
+import type { TenantResolver, TenantResolutionStrategy } from '@sovra/shared'
 import { PathTenantResolver } from './path-resolver'
 import { SubdomainTenantResolver } from './subdomain-resolver'
 import { HeaderTenantResolver } from './header-resolver'

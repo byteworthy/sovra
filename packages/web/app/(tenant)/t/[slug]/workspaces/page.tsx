@@ -6,7 +6,7 @@ import { WorkspacesListClient } from './workspaces-list-client'
 import type { Workspace } from '@/lib/workspace/types'
 
 export const metadata: Metadata = {
-  title: 'Workspaces | ByteSwarm',
+  title: 'Workspaces | Sovra',
   description: 'Organize agents into collaborative workspaces with shared memory.',
 }
 

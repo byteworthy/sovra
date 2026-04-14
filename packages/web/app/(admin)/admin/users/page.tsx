@@ -3,7 +3,7 @@ import { getAllUsers } from '@/lib/admin/queries'
 import { UserTableWrapper } from './UserTableWrapper'
 
 export const metadata: Metadata = {
-  title: 'Users | ByteSwarm Admin',
+  title: 'Users | Sovra Admin',
   description: 'Browse and manage all users across all tenants on the platform.',
 }
 

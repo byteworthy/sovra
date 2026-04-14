@@ -1,6 +1,6 @@
 # Environment Variables Reference
 
-All environment variables for ByteSwarm. Copy `.env.example` to `.env.local` and fill in the required values.
+All environment variables for Sovra. Copy `.env.example` to `.env.local` and fill in the required values.
 
 When optional variables are absent, the feature degrades gracefully with no errors thrown.
 

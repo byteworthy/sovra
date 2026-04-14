@@ -6,7 +6,7 @@ import { readSharedMemory } from '@/lib/workspace/shared-memory'
 import { WorkspaceDetailClient } from './workspace-detail-client'
 
 export const metadata: Metadata = {
-  title: 'Workspace | ByteSwarm',
+  title: 'Workspace | Sovra',
   description: 'View and manage agents, shared memory, and settings for this workspace.',
 }
 

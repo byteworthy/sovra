@@ -126,7 +126,7 @@ JWT auth-style API keys with bsk_ prefix, SHA-256 hash storage, Upstash sliding-
 **4. [Rule 3 - Blocking] Added @upstash/ratelimit + @upstash/redis dependencies**
 - **Found during:** Task 1 setup
 - **Issue:** Packages not in `package.json` — plan assumes they exist
-- **Fix:** `pnpm add --filter @byteswarm/web @upstash/ratelimit @upstash/redis`
+- **Fix:** `pnpm add --filter @sovra/web @upstash/ratelimit @upstash/redis`
 - **Commit:** 8aeefa0
 
 ## Known Stubs

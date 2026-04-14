@@ -280,7 +280,7 @@ Backdrop: bg-black/60 backdrop-blur-sm, tap outside disabled during key reveal.
 ```
 Admin shell:
 ┌─ Admin header (h-14, border-b border-amber-500/20) ────────────┐
-│ ByteSwarm Admin (Label, amber-400)    [user menu] [exit admin]  │
+│ Sovra Admin (Label, amber-400)    [user menu] [exit admin]  │
 └─────────────────────────────────────────────────────────────────┘
 
 ┌─ Admin sidebar (w-[220px], border-r border-border) ────────────┐
@@ -587,7 +587,7 @@ No em dashes anywhere. Plain language. Verb + noun CTAs.
 | Revoke key: confirmation | "Revoke this API key? Applications using it will stop working immediately." |
 | Revoke key: confirm button | "Revoke key" |
 | Revoke key: cancel button | "Keep key" |
-| Admin layout: header label | "ByteSwarm Admin" |
+| Admin layout: header label | "Sovra Admin" |
 | Admin layout: exit button | "Exit admin" |
 | Admin overview heading | "Platform overview" |
 | Admin tenants page heading | "Tenants" |

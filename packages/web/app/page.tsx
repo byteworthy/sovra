@@ -19,7 +19,7 @@ import {
 } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'ByteSwarm — AI-Native SaaS Boilerplate',
+  title: 'Sovra — AI-Native SaaS Boilerplate',
   description: 'Open-source boilerplate for building multi-tenant AI applications with MCP, vector database, and multi-agent collaboration.',
 }
 
@@ -72,7 +72,7 @@ export default function HomePage() {
           <div className="mr-4 flex">
             <Link href="/" className="mr-6 flex items-center space-x-2">
               <Bot className="h-6 w-6 text-primary drop-shadow-[0_0_8px_hsl(var(--glow-primary)/0.6)]" />
-              <span className="font-bold text-xl">ByteSwarm</span>
+              <span className="font-bold text-xl">Sovra</span>
             </Link>
           </div>
           <nav className="flex items-center space-x-6 text-sm font-medium ml-auto">
@@ -110,7 +110,7 @@ export default function HomePage() {
               Clone it, run it, build on it.
             </p>
             <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="https://github.com/byteswarm/byteswarm" target="_blank">
+              <Link href="https://github.com/byteworthy/sovra" target="_blank">
                 <Button variant="gradient" size="lg" className="w-full sm:w-auto">
                   <Github className="mr-2 h-4 w-4" />
                   Star on GitHub
@@ -206,10 +206,10 @@ export default function HomePage() {
                 One command. Full AI agent platform. Running locally in under 2 minutes.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center relative z-10">
-                <Link href="https://github.com/byteswarm/byteswarm" target="_blank">
+                <Link href="https://github.com/byteworthy/sovra" target="_blank">
                   <Button variant="gradient" size="lg">
                     <Terminal className="mr-2 h-4 w-4" />
-                    git clone byteswarm
+                    git clone sovra
                   </Button>
                 </Link>
               </div>

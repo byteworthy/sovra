@@ -18,7 +18,7 @@ export function AuthLayout({ children }: AuthLayoutProps) {
         {/* Mobile logo - hidden on desktop where BrandPanel shows */}
         <div className="flex items-center gap-2 mb-8 md:hidden">
           <Bot className="h-6 w-6 text-primary" />
-          <span className="text-lg font-semibold text-white">ByteSwarm</span>
+          <span className="text-lg font-semibold text-white">Sovra</span>
         </div>
 
         <motion.div

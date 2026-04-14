@@ -1,1 +1,1 @@
-export type { AuthAdapter } from '@byteswarm/shared'
+export type { AuthAdapter } from '@sovra/shared'

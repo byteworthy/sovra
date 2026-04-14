@@ -6,7 +6,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/byteswarm/worker/internal/config"
+	"github.com/byteworthy/sovra-worker/internal/config"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 )

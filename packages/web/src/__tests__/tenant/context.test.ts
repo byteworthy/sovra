@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest'
 import { renderHook } from '@testing-library/react'
 import React from 'react'
 import { TenantProvider, useTenant } from '@/lib/tenant/context'
-import type { Tenant } from '@byteswarm/shared'
+import type { Tenant } from '@sovra/shared'
 
 const mockTenant: Tenant = {
   id: 'test-id',

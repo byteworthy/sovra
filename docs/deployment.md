@@ -1,6 +1,6 @@
-# ByteSwarm Deployment Guide
+# Sovra Deployment Guide
 
-ByteSwarm can be deployed to any of three cloud platforms or self-hosted with Docker Compose. All platforms use the same Docker images built from `packages/web/Dockerfile` and `packages/worker/Dockerfile`.
+Sovra can be deployed to any of three cloud platforms or self-hosted with Docker Compose. All platforms use the same Docker images built from `packages/web/Dockerfile` and `packages/worker/Dockerfile`.
 
 ## Prerequisites
 
@@ -34,8 +34,8 @@ The simplest path. Runs both services on a single host.
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/your-org/byteswarm.git
-   cd byteswarm
+   git clone https://github.com/your-org/sovra.git
+   cd sovra
    ```
 
 2. Copy and fill in environment variables:
@@ -81,8 +81,8 @@ Railway offers zero-config deploys from a GitHub repo. Recommended for quick sta
 1. Create a new project in the Railway dashboard.
 
 2. Add two services from the same GitHub repo:
-   - **byteswarm-web** - set root directory to repo root
-   - **byteswarm-worker** - set root directory to repo root
+   - **sovra-web** - set root directory to repo root
+   - **sovra-worker** - set root directory to repo root
 
 3. For each service, Railway will auto-detect the TOML config from `platform/railway/`:
    - Web service uses `platform/railway/railway.web.toml`
@@ -139,7 +139,7 @@ Serverless containers with automatic scaling. Ideal for GCP users.
 3. Create secrets in Secret Manager for each environment variable:
 
    ```bash
-   echo -n "your-value" | gcloud secrets create byteswarm-SUPABASE_SERVICE_ROLE_KEY --data-file=-
+   echo -n "your-value" | gcloud secrets create sovra-SUPABASE_SERVICE_ROLE_KEY --data-file=-
    # Repeat for each secret listed in docs/environment-variables.md
    ```
 
@@ -147,7 +147,7 @@ Serverless containers with automatic scaling. Ideal for GCP users.
 
    ```bash
    PROJECT_NUMBER=$(gcloud projects describe YOUR_PROJECT_ID --format='value(projectNumber)')
-   gcloud secrets add-iam-policy-binding byteswarm-SUPABASE_SERVICE_ROLE_KEY \
+   gcloud secrets add-iam-policy-binding sovra-SUPABASE_SERVICE_ROLE_KEY \
      --member="serviceAccount:${PROJECT_NUMBER}-compute@developer.gserviceaccount.com" \
      --role="roles/secretmanager.secretAccessor"
    ```
@@ -163,23 +163,23 @@ Serverless containers with automatic scaling. Ideal for GCP users.
 
    ```bash
    # Build and push web image
-   docker build -t gcr.io/YOUR_PROJECT_ID/byteswarm-web:latest packages/web
-   docker push gcr.io/YOUR_PROJECT_ID/byteswarm-web:latest
+   docker build -t gcr.io/YOUR_PROJECT_ID/sovra-web:latest packages/web
+   docker push gcr.io/YOUR_PROJECT_ID/sovra-web:latest
 
    # Deploy web service
-   gcloud run deploy byteswarm-web \
-     --image gcr.io/YOUR_PROJECT_ID/byteswarm-web:latest \
+   gcloud run deploy sovra-web \
+     --image gcr.io/YOUR_PROJECT_ID/sovra-web:latest \
      --region us-central1 \
      --platform managed \
      --port 3000
 
    # Build and push worker image
-   docker build -t gcr.io/YOUR_PROJECT_ID/byteswarm-worker:latest packages/worker
-   docker push gcr.io/YOUR_PROJECT_ID/byteswarm-worker:latest
+   docker build -t gcr.io/YOUR_PROJECT_ID/sovra-worker:latest packages/worker
+   docker push gcr.io/YOUR_PROJECT_ID/sovra-worker:latest
 
    # Deploy worker service
-   gcloud run deploy byteswarm-worker \
-     --image gcr.io/YOUR_PROJECT_ID/byteswarm-worker:latest \
+   gcloud run deploy sovra-worker \
+     --image gcr.io/YOUR_PROJECT_ID/sovra-worker:latest \
      --region us-central1 \
      --platform managed \
      --port 8080
@@ -188,8 +188,8 @@ Serverless containers with automatic scaling. Ideal for GCP users.
 6. Verify both services are running:
 
    ```bash
-   gcloud run services describe byteswarm-web --region us-central1 --format 'value(status.url)'
-   gcloud run services describe byteswarm-worker --region us-central1 --format 'value(status.url)'
+   gcloud run services describe sovra-web --region us-central1 --format 'value(status.url)'
+   gcloud run services describe sovra-worker --region us-central1 --format 'value(status.url)'
    ```
 
 ### Notes
@@ -215,8 +215,8 @@ Production-grade containerized deployment on AWS. Suitable for enterprise worklo
 1. Create ECR repositories:
 
    ```bash
-   aws ecr create-repository --repository-name byteswarm-web --region YOUR_REGION
-   aws ecr create-repository --repository-name byteswarm-worker --region YOUR_REGION
+   aws ecr create-repository --repository-name sovra-web --region YOUR_REGION
+   aws ecr create-repository --repository-name sovra-worker --region YOUR_REGION
    ```
 
 2. Authenticate Docker with ECR:
@@ -230,19 +230,19 @@ Production-grade containerized deployment on AWS. Suitable for enterprise worklo
 
    ```bash
    # Web
-   docker build -t YOUR_ACCOUNT_ID.dkr.ecr.YOUR_REGION.amazonaws.com/byteswarm-web:latest packages/web
-   docker push YOUR_ACCOUNT_ID.dkr.ecr.YOUR_REGION.amazonaws.com/byteswarm-web:latest
+   docker build -t YOUR_ACCOUNT_ID.dkr.ecr.YOUR_REGION.amazonaws.com/sovra-web:latest packages/web
+   docker push YOUR_ACCOUNT_ID.dkr.ecr.YOUR_REGION.amazonaws.com/sovra-web:latest
 
    # Worker
-   docker build -t YOUR_ACCOUNT_ID.dkr.ecr.YOUR_REGION.amazonaws.com/byteswarm-worker:latest packages/worker
-   docker push YOUR_ACCOUNT_ID.dkr.ecr.YOUR_REGION.amazonaws.com/byteswarm-worker:latest
+   docker build -t YOUR_ACCOUNT_ID.dkr.ecr.YOUR_REGION.amazonaws.com/sovra-worker:latest packages/worker
+   docker push YOUR_ACCOUNT_ID.dkr.ecr.YOUR_REGION.amazonaws.com/sovra-worker:latest
    ```
 
 4. Store secrets in AWS Secrets Manager:
 
    ```bash
    aws secretsmanager create-secret \
-     --name byteswarm/SUPABASE_SERVICE_ROLE_KEY \
+     --name sovra/SUPABASE_SERVICE_ROLE_KEY \
      --secret-string "your-service-role-key"
    # Repeat for each secret
    ```
@@ -250,14 +250,14 @@ Production-grade containerized deployment on AWS. Suitable for enterprise worklo
 5. Create ECS cluster:
 
    ```bash
-   aws ecs create-cluster --cluster-name byteswarm
+   aws ecs create-cluster --cluster-name sovra
    ```
 
 6. Create CloudWatch log groups:
 
    ```bash
-   aws logs create-log-group --log-group-name /ecs/byteswarm-web
-   aws logs create-log-group --log-group-name /ecs/byteswarm-worker
+   aws logs create-log-group --log-group-name /ecs/sovra-web
+   aws logs create-log-group --log-group-name /ecs/sovra-worker
    ```
 
 7. Register task definitions (substitute `AWS_ACCOUNT_ID`, `AWS_REGION`, `IMAGE_TAG`):
@@ -286,8 +286,8 @@ Production-grade containerized deployment on AWS. Suitable for enterprise worklo
 
    ```bash
    aws ecs describe-services \
-     --cluster byteswarm \
-     --services byteswarm-web byteswarm-worker \
+     --cluster sovra \
+     --services sovra-web sovra-worker \
      --query 'services[*].{name:serviceName,status:status,running:runningCount}'
    ```
 

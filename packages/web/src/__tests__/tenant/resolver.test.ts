@@ -32,12 +32,12 @@ describe('PathTenantResolver', () => {
 describe('SubdomainTenantResolver', () => {
   const resolver = new SubdomainTenantResolver()
 
-  it('extracts slug from host acme.byteswarm.dev', () => {
-    expect(resolver.resolve(makeRequest('https://acme.byteswarm.dev/', { host: 'acme.byteswarm.dev' }))).toBe('acme')
+  it('extracts slug from host acme.sovra.dev', () => {
+    expect(resolver.resolve(makeRequest('https://acme.sovra.dev/', { host: 'acme.sovra.dev' }))).toBe('acme')
   })
 
-  it('returns null for byteswarm.dev (no subdomain)', () => {
-    expect(resolver.resolve(makeRequest('https://byteswarm.dev/', { host: 'byteswarm.dev' }))).toBeNull()
+  it('returns null for sovra.dev (no subdomain)', () => {
+    expect(resolver.resolve(makeRequest('https://sovra.dev/', { host: 'sovra.dev' }))).toBeNull()
   })
 
   it('returns null for localhost:3000', () => {

@@ -20,7 +20,7 @@
     ],
     "paths": {
       "@/*": ["./*"],
-      "@byteswarm/shared/*": ["../shared/*"]
+      "@sovra/shared/*": ["../shared/*"]
     },
     "baseUrl": "."
   },

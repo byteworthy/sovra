@@ -6,8 +6,8 @@ import (
 	"os"
 	"testing"
 
-	"github.com/byteswarm/worker/internal/config"
-	mcpserver "github.com/byteswarm/worker/internal/mcp"
+	"github.com/byteworthy/sovra-worker/internal/config"
+	mcpserver "github.com/byteworthy/sovra-worker/internal/mcp"
 )
 
 func TestNewMCPServer_ReturnsNonNil(t *testing.T) {

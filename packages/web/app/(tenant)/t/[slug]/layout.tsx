@@ -3,7 +3,7 @@ import { createSupabaseServerClient } from '@/lib/auth/server'
 import { TenantProvider } from '@/lib/tenant/context'
 import { ToastProvider } from '@/components/ui/toast-provider'
 import { Sidebar, MobileSidebar } from '@/components/tenant/sidebar'
-import type { Tenant } from '@byteswarm/shared'
+import type { Tenant } from '@sovra/shared'
 
 interface TenantLayoutProps {
   children: React.ReactNode

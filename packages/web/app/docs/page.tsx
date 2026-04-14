@@ -4,8 +4,8 @@ import { Button } from '@/components/ui/button'
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 
 export const metadata = {
-  title: 'Documentation | ByteSwarm',
-  description: 'Get started with ByteSwarm — guides, API reference, and deployment docs.',
+  title: 'Documentation | Sovra',
+  description: 'Get started with Sovra — guides, API reference, and deployment docs.',
 }
 
 const guides = [
@@ -13,19 +13,19 @@ const guides = [
     icon: Terminal,
     title: 'Quick Start',
     description: 'Clone the repo, configure environment variables, and run locally in under 2 minutes.',
-    href: 'https://github.com/byteswarm/byteswarm#quick-start',
+    href: 'https://github.com/byteworthy/sovra#quick-start',
   },
   {
     icon: BookOpen,
     title: 'Architecture',
     description: 'Understand how Next.js, Supabase, and the Go worker fit together.',
-    href: 'https://github.com/byteswarm/byteswarm#architecture',
+    href: 'https://github.com/byteworthy/sovra#architecture',
   },
   {
     icon: Github,
     title: 'Contributing',
     description: 'Set up your development environment and submit your first pull request.',
-    href: 'https://github.com/byteswarm/byteswarm/blob/main/CONTRIBUTING.md',
+    href: 'https://github.com/byteworthy/sovra/blob/main/CONTRIBUTING.md',
   },
 ]
 
@@ -36,7 +36,7 @@ export default function DocsPage() {
         <div className="container flex h-14 items-center mx-auto px-4 max-w-4xl">
           <Link href="/" className="flex items-center space-x-2">
             <Bot className="h-5 w-5 text-primary" />
-            <span className="font-bold">ByteSwarm</span>
+            <span className="font-bold">Sovra</span>
           </Link>
           <span className="ml-2 text-sm text-muted-foreground">/ docs</span>
         </div>
@@ -46,7 +46,7 @@ export default function DocsPage() {
         <div className="mb-12">
           <h1 className="text-3xl font-bold tracking-tight mb-3">Documentation</h1>
           <p className="text-muted-foreground max-w-2xl">
-            ByteSwarm documentation lives on GitHub. Below are quick links to get you started.
+            Sovra documentation lives on GitHub. Below are quick links to get you started.
             Full API reference and advanced guides are coming soon.
           </p>
         </div>
@@ -76,12 +76,12 @@ export default function DocsPage() {
             Open an issue on GitHub or join the community discussion.
           </p>
           <div className="flex gap-3 justify-center">
-            <Link href="https://github.com/byteswarm/byteswarm/issues" target="_blank">
+            <Link href="https://github.com/byteworthy/sovra/issues" target="_blank">
               <Button variant="outline" size="sm">
                 Report an issue
               </Button>
             </Link>
-            <Link href="https://github.com/byteswarm/byteswarm/discussions" target="_blank">
+            <Link href="https://github.com/byteworthy/sovra/discussions" target="_blank">
               <Button variant="ghost-premium" size="sm">
                 Discussions
               </Button>

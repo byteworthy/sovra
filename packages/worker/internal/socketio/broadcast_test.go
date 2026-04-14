@@ -8,7 +8,7 @@ import (
 	"testing"
 
 	"github.com/gin-gonic/gin"
-	"github.com/byteswarm/worker/internal/socketio"
+	"github.com/byteworthy/sovra-worker/internal/socketio"
 	"github.com/zishang520/socket.io/v2/socket"
 )
 

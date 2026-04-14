@@ -56,7 +56,7 @@ Go MCP server on port 3001 with 6 tools (file_read, file_write, file_list, web_s
 ## What Was Built
 
 ### Task 1: MCP Server Infrastructure
-- MCP server with `byteswarm-worker` v1.0.0 implementation using official Go SDK v1.5.0
+- MCP server with `sovra-worker` v1.0.0 implementation using official Go SDK v1.5.0
 - Streamable HTTP handler at `/mcp` endpoint on port 3001
 - Config extended with MCPPort, AgentWorkspacePath, BraveSearchAPIKey, OpenAIAPIKey
 - `StartMCPServer` goroutine wired into main.go alongside health and gRPC servers

@@ -1,8 +1,8 @@
-# ByteSwarm UI Polish & Hardening Sprint — Implementation Plan
+# Sovra UI Polish & Hardening Sprint — Implementation Plan
 
 > **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
 
-**Goal:** Make ByteSwarm the gold-standard open-source AI SaaS boilerplate — zero rough edges, WCAG 2.1 AA accessible, premium micro-interactions, secure middleware, and complete developer onboarding.
+**Goal:** Make Sovra the gold-standard open-source AI SaaS boilerplate — zero rough edges, WCAG 2.1 AA accessible, premium micro-interactions, secure middleware, and complete developer onboarding.
 
 **Architecture:** 5 parallel tracks executed sequentially within each track. Track 1 (infrastructure) unblocks all others. Tracks 2-4 (UI/a11y/interactions) are independent. Track 5 (hardening) runs last.
 
@@ -78,7 +78,7 @@ import { PostHogProvider } from '@/components/providers/PostHogProvider';
 import { ThemeProvider } from '@/components/providers/ThemeProvider';
 
 export const metadata: Metadata = {
-  title: 'ByteSwarm - AI-Native SaaS Boilerplate',
+  title: 'Sovra - AI-Native SaaS Boilerplate',
   description:
     'Production-ready open-source boilerplate for building multi-tenant AI applications with MCP, vector database, and multi-agent collaboration.',
   keywords: ['AI', 'MCP', 'multi-tenant', 'SaaS', 'boilerplate', 'Next.js', 'Go'],
@@ -387,7 +387,7 @@ git commit -m "feat(landing): bento-style feature grid with glass cards"
 
 4 columns: Product (Features, Pricing, Docs), Developers (GitHub, API Reference, Contributing), Community (Discord, Twitter, Blog), Legal (License, Privacy).
 
-Use `bg-surface-2` background with `border-t border-border/40`. Bottom bar with copyright and "Built with ByteSwarm" attribution.
+Use `bg-surface-2` background with `border-t border-border/40`. Bottom bar with copyright and "Built with Sovra" attribution.
 
 **Step 2: Replace simple footer in page.tsx**
 
@@ -612,7 +612,7 @@ export const env = validateEnv()
 **Step 2: Create .env.example**
 
 ```bash
-# ByteSwarm — Environment Variables
+# Sovra — Environment Variables
 # Copy to .env.local and fill in your values
 
 # Supabase (required)
@@ -782,7 +782,7 @@ Expected: Zero results
 **Step 3: Update README with quick-start**
 
 Write a comprehensive README.md at the project root with:
-- Hero banner describing ByteSwarm
+- Hero banner describing Sovra
 - Quick start (3 commands: clone, env setup, docker-compose up)
 - Architecture overview (Next.js + Supabase + Go Worker)
 - Feature list with categories

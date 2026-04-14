@@ -8,7 +8,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/byteswarm/worker/internal/mcp/tools"
+	"github.com/byteworthy/sovra-worker/internal/mcp/tools"
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 )
 

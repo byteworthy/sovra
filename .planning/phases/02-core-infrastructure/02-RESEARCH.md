@@ -14,7 +14,7 @@
 1. **Auth Provider:** Supabase Auth native behind `AuthAdapter` interface (swappable). No custom JWT hooks - keeps free-tier compatible.
 2. **Routing Strategy:** All three via config (`TENANT_RESOLUTION_STRATEGY` env var). Default: `path`. Subdomain and header are opt-in.
    - Path: `/t/{slug}/dashboard`
-   - Subdomain: `{slug}.byteswarm.dev`
+   - Subdomain: `{slug}.sovra.dev`
    - Header: `X-Tenant-ID` or `X-Tenant-Slug`
 3. **Permission Model:** `roles` + `permissions` + `role_permissions` tables (tenant-scoped, DB-checked). Permission strings follow `resource:action` format.
 4. **Invitations:** Both email invites and shareable invite links. `invitations` table tracks both.
@@ -371,7 +371,7 @@ const token = randomBytes(32).toString('hex')  // 64-char hex string
 
 ### Pitfall 7: Subdomain Resolution Needing `NEXT_PUBLIC_APP_DOMAIN`
 **What goes wrong:** Subdomain resolver needs to know the base domain to strip it from `Host` header. Hardcoding it breaks local dev and multi-domain deployments.
-**Why it happens:** Subdomain resolver receives `tenant.byteswarm.dev` and needs to extract `tenant`.
+**Why it happens:** Subdomain resolver receives `tenant.sovra.dev` and needs to extract `tenant`.
 **How to avoid:** `NEXT_PUBLIC_APP_DOMAIN` env var (default: `localhost:3000`). Subdomain resolver strips base domain; path resolver doesn't need it.
 
 ### Pitfall 8: OAuth Callback URL Configuration

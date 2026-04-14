@@ -46,7 +46,7 @@ metrics:
 
 ## What Was Built
 
-The `packages/worker/` Go module (`github.com/byteswarm/worker`) implements the skeleton for the ByteSwarm agent execution service. It uses standard Go `cmd/internal` layout with four internal packages:
+The `packages/worker/` Go module (`github.com/sovra/worker`) implements the skeleton for the Sovra agent execution service. It uses standard Go `cmd/internal` layout with four internal packages:
 
 - **config** - env-based Config struct loaded at startup; never exposes DATABASE_URL in logs
 - **db** - pgxpool connection with MaxConns=10, MinConns=2, ping verification on startup
@@ -81,7 +81,7 @@ The entry point (`cmd/worker/main.go`) starts HTTP and gRPC servers as goroutine
 ### Docker Build Not Verified
 - **Reason:** Docker daemon (OrbStack) was not running during execution
 - **Impact:** Dockerfile syntax and multi-stage logic were validated by reading; Go compilation in Dockerfile exactly matches the verified `go build -o /dev/null ./cmd/worker` command
-- **Action required:** Run `docker build -t byteswarm-worker-test packages/worker/` when Docker is available
+- **Action required:** Run `docker build -t sovra-worker-test packages/worker/` when Docker is available
 
 ## Threat Flags
 

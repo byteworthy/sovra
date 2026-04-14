@@ -181,7 +181,7 @@ let mcpClient: Client | null = null
 
 export async function getMcpClient(): Promise<Client> {
   if (mcpClient) return mcpClient
-  const client = new Client({ name: 'byteswarm-web', version: '1.0.0' })
+  const client = new Client({ name: 'sovra-web', version: '1.0.0' })
   const transport = new StreamableHTTPClientTransport(
     new URL(process.env.WORKER_MCP_URL ?? 'http://worker:3001/mcp')
   )
@@ -362,7 +362,7 @@ LIMIT $4;
 // Source: pkg.go.dev/github.com/modelcontextprotocol/go-sdk/mcp (verified v1.5.0)
 func StartMCPServer(port int, pool *pgxpool.Pool) {
     server := mcp.NewServer(&mcp.Implementation{
-        Name:    "byteswarm-worker",
+        Name:    "sovra-worker",
         Version: "1.0.0",
     }, nil)
 

@@ -3,7 +3,7 @@ import { Alert } from '@/components/ui/alert'
 import { LoginPageClient } from './client'
 
 export const metadata = {
-  title: 'Sign in | ByteSwarm',
+  title: 'Sign in | Sovra',
 }
 
 interface LoginPageProps {
@@ -18,7 +18,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
     <AuthCard aria-label="Sign in form">
       <div className="space-y-2 mb-6">
         <h1 className="text-2xl font-semibold tracking-tight">Sign in</h1>
-        <p className="text-sm text-muted-foreground mt-2">Welcome back to ByteSwarm</p>
+        <p className="text-sm text-muted-foreground mt-2">Welcome back to Sovra</p>
       </div>
 
       {errorFromUrl && (

@@ -17,7 +17,7 @@ export function Sidebar() {
       {/* Logo */}
       <div className="flex items-center gap-2 px-4 h-16 border-b border-border">
         <Bot className="h-5 w-5 text-primary" />
-        <span className="text-sm font-semibold text-foreground">ByteSwarm</span>
+        <span className="text-sm font-semibold text-foreground">Sovra</span>
       </div>
 
       {/* Tenant switcher */}
@@ -87,7 +87,7 @@ export function MobileSidebar() {
             <div className="flex items-center justify-between px-4 h-16 border-b border-border">
               <div className="flex items-center gap-2">
                 <Bot className="h-5 w-5 text-primary" />
-                <span className="text-sm font-semibold text-foreground">ByteSwarm</span>
+                <span className="text-sm font-semibold text-foreground">Sovra</span>
               </div>
               <button
                 onClick={() => setOpen(false)}

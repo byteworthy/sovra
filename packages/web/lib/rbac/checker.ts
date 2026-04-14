@@ -1,5 +1,5 @@
 import type { SupabaseClient } from '@supabase/supabase-js'
-import type { PermissionChecker } from '@byteswarm/shared'
+import type { PermissionChecker } from '@sovra/shared'
 
 export class SupabasePermissionChecker implements PermissionChecker {
   constructor(private supabase: SupabaseClient) {}

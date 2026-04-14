@@ -1,4 +1,4 @@
-# Railway configuration for ByteSwarm worker service
+# Railway configuration for Sovra worker service
 # NOTE: Configure the service root directory to the repo root in Railway dashboard
 
 [build]

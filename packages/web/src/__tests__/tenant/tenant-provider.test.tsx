@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react'
 import { renderHook } from '@testing-library/react'
 import React from 'react'
 import { TenantProvider, useTenant } from '@/lib/tenant/context'
-import type { Tenant } from '@byteswarm/shared'
+import type { Tenant } from '@sovra/shared'
 
 const mockTenant: Tenant = {
   id: 'tenant-123',

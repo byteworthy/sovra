@@ -3,7 +3,7 @@ import { getAuditLogs } from '@/lib/admin/queries'
 import { AuditLogTableWrapper } from './AuditLogTableWrapper'
 
 export const metadata: Metadata = {
-  title: 'Audit Log | ByteSwarm Admin',
+  title: 'Audit Log | Sovra Admin',
   description: 'Review platform-wide audit events, security actions, and change history.',
 }
 

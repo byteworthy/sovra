@@ -40,7 +40,7 @@ None - infrastructure phase.
 
 ## Summary
 
-ByteSwarm Phase 1 sets up a hybrid monorepo: pnpm workspaces manage the TypeScript/JavaScript side (Next.js web app, shared types), while the Go worker lives at `packages/worker/` as a Go module with its own `go.mod`. pnpm workspaces do not manage Go modules - the Go service is invoked via a `Makefile` or shell commands called from pnpm scripts.
+Sovra Phase 1 sets up a hybrid monorepo: pnpm workspaces manage the TypeScript/JavaScript side (Next.js web app, shared types), while the Go worker lives at `packages/worker/` as a Go module with its own `go.mod`. pnpm workspaces do not manage Go modules - the Go service is invoked via a `Makefile` or shell commands called from pnpm scripts.
 
 The project already has `packages/web/` scaffolded with Next.js 15 and Tailwind. However, there are three critical issues to fix: (1) `.cts`/`.ctsx` file extensions on React components (should be `.tsx`/`.ts`), (2) the `next.config.cts` file (should be `next.config.ts`), and (3) the `packages/shared/` and `packages/worker/` packages are missing. Supabase CLI is not installed on the dev machine but is available via Homebrew (`brew install supabase`). Go is not installed.
 
@@ -71,7 +71,7 @@ Directives from `CLAUDE.md` that the planner must honor:
 - `packages/web/` - Next.js 15 app skeleton with App Router [VERIFIED: codebase grep]
 - `packages/web/package.json` - deps including next@^15.1.0, react@^19, tailwindcss@^3.4.17, @supabase/supabase-js@^2.47.0 [VERIFIED: codebase grep]
 - `packages/web/tailwind.config.ts` - CSS variable-based design tokens, shadcn/ui compatible [VERIFIED: codebase grep]
-- `packages/web/tsconfig.json` - strict, bundler module resolution, paths for `@/*` and `@byteswarm/shared/*` [VERIFIED: codebase grep]
+- `packages/web/tsconfig.json` - strict, bundler module resolution, paths for `@/*` and `@sovra/shared/*` [VERIFIED: codebase grep]
 - `packages/web/components/ui/` - button.tsx, badge.tsx, card.ctsx (note wrong extension) [VERIFIED: codebase grep]
 - `platform/railway/`, `platform/aws/`, `platform/gcp/` - directories exist (contents unknown)
 - `supabase/migrations/` - directory exists but empty [VERIFIED: codebase grep]
@@ -130,17 +130,17 @@ brew install supabase
 brew install go  # installs 1.22+
 
 # Go worker dependencies (run inside packages/worker/)
-go mod init github.com/byteswarm/worker
+go mod init github.com/sovra/worker
 go get github.com/gin-gonic/gin@v1.12.0
 go get google.golang.org/grpc@v1.80.0
 go get github.com/jackc/pgx/v5@v5.9.1
 go get github.com/jackc/pgx/v5/pgxpool@v5.9.1
 
 # Shared package (pnpm, from root)
-pnpm --filter @byteswarm/shared install
+pnpm --filter @sovra/shared install
 
 # Vitest for web package
-pnpm --filter @byteswarm/web add -D vitest @vitejs/plugin-react jsdom @testing-library/react @testing-library/dom vite-tsconfig-paths
+pnpm --filter @sovra/web add -D vitest @vitejs/plugin-react jsdom @testing-library/react @testing-library/dom vite-tsconfig-paths
 ```
 
 ---
@@ -149,7 +149,7 @@ pnpm --filter @byteswarm/web add -D vitest @vitejs/plugin-react jsdom @testing-l
 
 ### Recommended Project Structure
 ```
-byteswarm/
+sovra/
 ├── packages/
 │   ├── web/                    # Next.js 15 App Router (EXISTS, needs fixes)
 │   │   ├── app/                # Routes, layouts, pages (.tsx not .cts)
@@ -185,7 +185,7 @@ byteswarm/
 │       ├── types/
 │       │   ├── database.ts     # Generated Supabase types
 │       │   └── index.ts        # Manual shared types
-│       └── package.json        # name: @byteswarm/shared
+│       └── package.json        # name: @sovra/shared
 ├── supabase/
 │   ├── config.toml             # Supabase project config (CREATE)
 │   ├── migrations/             # SQL migration files (ADD files)
@@ -277,10 +277,10 @@ import (
     "os/signal"
     "syscall"
 
-    "github.com/byteswarm/worker/internal/config"
-    "github.com/byteswarm/worker/internal/db"
-    "github.com/byteswarm/worker/internal/grpc"
-    "github.com/byteswarm/worker/internal/http"
+    "github.com/sovra/worker/internal/config"
+    "github.com/sovra/worker/internal/db"
+    "github.com/sovra/worker/internal/grpc"
+    "github.com/sovra/worker/internal/http"
 )
 
 func main() {
@@ -728,7 +728,7 @@ create policy "tenant_audit_insert" on audit_logs
 
 ```yaml
 # docker/compose.dev.yaml
-name: byteswarm-dev
+name: sovra-dev
 
 services:
   web:
@@ -773,11 +773,11 @@ volumes:
 ### Production Pattern (`docker/compose.prod.yaml`)
 ```yaml
 # docker/compose.prod.yaml - expects external DB, Auth, etc.
-name: byteswarm-prod
+name: sovra-prod
 
 services:
   web:
-    image: byteswarm/web:${VERSION:-latest}
+    image: sovra/web:${VERSION:-latest}
     build:
       context: ../packages/web
       dockerfile: Dockerfile
@@ -797,7 +797,7 @@ services:
       start_period: 40s
 
   worker:
-    image: byteswarm/worker:${VERSION:-latest}
+    image: sovra/worker:${VERSION:-latest}
     build:
       context: ../packages/worker
       dockerfile: Dockerfile
@@ -840,8 +840,8 @@ services:
 | Framework | Vitest 4.1.4 + @testing-library/react 16.3.2 (to be installed) |
 | Go testing | Built-in `go test ./...` |
 | Config file | `packages/web/vitest.config.ts` (to be created - Wave 0) |
-| Quick run (web) | `pnpm --filter @byteswarm/web test --run` |
-| Full suite (web) | `pnpm --filter @byteswarm/web test` |
+| Quick run (web) | `pnpm --filter @sovra/web test --run` |
+| Full suite (web) | `pnpm --filter @sovra/web test` |
 | Quick run (worker) | `cd packages/worker && go test ./...` |
 | Full suite (worker) | `cd packages/worker && go test -race ./...` |
 
@@ -866,8 +866,8 @@ export default defineConfig({
 #### Phase 1 Test Map
 | Req ID | Behavior | Test Type | Automated Command | File Exists? |
 |--------|----------|-----------|-------------------|-------------|
-| FOUN-02 | Next.js compiles without errors | compile | `pnpm --filter @byteswarm/web typecheck` | ❌ Wave 0 |
-| FOUN-02 | Root layout renders | unit | `pnpm --filter @byteswarm/web test --run` | ❌ Wave 0 |
+| FOUN-02 | Next.js compiles without errors | compile | `pnpm --filter @sovra/web typecheck` | ❌ Wave 0 |
+| FOUN-02 | Root layout renders | unit | `pnpm --filter @sovra/web test --run` | ❌ Wave 0 |
 | FOUN-03 | Go worker compiles | compile | `cd packages/worker && go build ./...` | ❌ Wave 0 |
 | FOUN-03 | Go worker connects to DB | integration | `cd packages/worker && go test ./internal/db/...` | ❌ Wave 0 |
 | DB-03 | All tables exist | smoke | `supabase db diff --local` (no diff = tables present) | ❌ Wave 0 |
@@ -879,10 +879,10 @@ export default defineConfig({
 - [ ] `packages/web/vitest.setup.ts` - Test setup (jest-dom matchers)
 - [ ] `packages/web/__tests__/layout.test.tsx` - Root layout smoke test
 - [ ] `packages/worker/internal/db/db_test.go` - DB connection test
-- [ ] Vitest install: `pnpm --filter @byteswarm/web add -D vitest @vitejs/plugin-react jsdom @testing-library/react @testing-library/dom vite-tsconfig-paths`
+- [ ] Vitest install: `pnpm --filter @sovra/web add -D vitest @vitejs/plugin-react jsdom @testing-library/react @testing-library/dom vite-tsconfig-paths`
 
 #### Sampling Rate
-- **Per task commit:** `pnpm --filter @byteswarm/web typecheck && pnpm --filter @byteswarm/web lint`
+- **Per task commit:** `pnpm --filter @sovra/web typecheck && pnpm --filter @sovra/web lint`
 - **Per wave merge:** `pnpm test && pnpm typecheck` (root runs all)
 - **Phase gate:** Full suite green + `go test ./...` before `/gsd-verify-work`
 
@@ -911,7 +911,7 @@ export default defineConfig({
 ### Pitfall 4: pnpm Workspace Including Go Package
 **What goes wrong:** `pnpm install` fails with "no package.json in packages/worker".
 **Why it happens:** `pnpm-workspace.yaml: packages: ['packages/*']` matches `packages/worker/` which is a Go module without `package.json`.
-**How to avoid:** Either (a) add a stub `package.json` to `packages/worker/` with just `{"name": "@byteswarm/worker", "private": true}`, or (b) explicitly list only JS packages in `pnpm-workspace.yaml`.
+**How to avoid:** Either (a) add a stub `package.json` to `packages/worker/` with just `{"name": "@sovra/worker", "private": true}`, or (b) explicitly list only JS packages in `pnpm-workspace.yaml`.
 **Warning signs:** pnpm install fails with "No matching version found."
 
 ### Pitfall 5: RLS Blocks Service Role Connections
@@ -1000,7 +1000,7 @@ supabase/.env
 ## Open Questions
 
 1. **Shared package scope**
-   - What we know: `pnpm-workspace.yaml` covers `packages/*`, and `tsconfig.json` has `@byteswarm/shared/*` path alias pointing to `../shared/*`
+   - What we know: `pnpm-workspace.yaml` covers `packages/*`, and `tsconfig.json` has `@sovra/shared/*` path alias pointing to `../shared/*`
    - What's unclear: Does `packages/shared/` need a full `package.json` with build step, or just TypeScript files consumed via path alias?
    - Recommendation: Use TypeScript path alias only (no build step) for Phase 1. Supabase-generated types + manual types. Add build step in Phase 2 if needed.
 

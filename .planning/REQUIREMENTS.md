@@ -1,4 +1,4 @@
-# Requirements: ByteSwarm
+# Requirements: Sovra
 
 **Defined:** 2026-04-11
 **Core Value:** Zero-to-Production AI Apps in Hours - Pre-configured with MCP, vector DB, multi-tenant, and multi-agent collaboration. Self-hosted with multi-cloud deploy.

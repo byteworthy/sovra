@@ -3,7 +3,7 @@ import { createAdminClient } from '@/lib/admin/service-client'
 import { HealthCheckRow } from '@/components/admin/HealthCheckRow'
 
 export const metadata: Metadata = {
-  title: 'System Health | ByteSwarm Admin',
+  title: 'System Health | Sovra Admin',
   description: 'Monitor real-time system health, service status, and infrastructure metrics.',
 }
 

@@ -1,8 +1,8 @@
-name: byteswarm
+name: sovra
 
 services:
   web:
-    image: byteswarm/web:${VERSION:-latest}
+    image: sovra/web:${VERSION:-latest}
     build:
       context: ../packages/web
       dockerfile: Dockerfile
@@ -29,10 +29,10 @@ services:
       retries: 3
       start_period: 40s
     networks:
-      - byteswarm
+      - sovra
 
   worker:
-    image: byteswarm/worker:${VERSION:-latest}
+    image: sovra/worker:${VERSION:-latest}
     build:
       context: ../packages/worker
       dockerfile: Dockerfile
@@ -65,13 +65,13 @@ services:
       retries: 3
       start_period: 10s
     networks:
-      - byteswarm
+      - sovra
     depends_on:
       web:
         condition: service_started
 
 networks:
-  byteswarm:
+  sovra:
     driver: bridge
 
 volumes:

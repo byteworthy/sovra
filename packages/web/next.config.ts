@@ -28,7 +28,7 @@ const securityHeaders = [
 const nextConfig: NextConfig = {
   output: 'standalone',
   reactStrictMode: true,
-  transpilePackages: ['@byteswarm/shared'],
+  transpilePackages: ['@sovra/shared'],
   images: {
     remotePatterns: [
       { protocol: 'https', hostname: '**.supabase.co' },

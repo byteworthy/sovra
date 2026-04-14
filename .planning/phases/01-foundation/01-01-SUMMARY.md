@@ -8,7 +8,7 @@ dependency_graph:
   provides: [working-monorepo, shared-types-package, go-makefile, env-template]
   affects: [all-subsequent-plans]
 tech_stack:
-  added: [pnpm-workspaces, @byteswarm/shared]
+  added: [pnpm-workspaces, @sovra/shared]
   patterns: [workspace-dependency, explicit-workspace-listing, esm-next-config]
 key_files:
   created:
@@ -43,7 +43,7 @@ metrics:
 
 # Phase 1 Plan 1: Fix Scaffold Extensions and Set Up Shared Package Summary
 
-pnpm monorepo with corrected .tsx extensions, @byteswarm/shared types package, Go Makefile, and env template - TypeScript compiles clean.
+pnpm monorepo with corrected .tsx extensions, @sovra/shared types package, Go Makefile, and env template - TypeScript compiles clean.
 
 ## What Was Built
 

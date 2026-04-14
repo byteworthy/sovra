@@ -67,7 +67,7 @@ export function PlanCard({ plan, isCurrent, currentPlan, onSelect, index = 0 }: 
     if (isEnterprise) {
       return (
         <a
-          href="mailto:sales@byteswarm.io"
+          href="mailto:scale@getbyteworthy.com"
           className="mt-auto w-full rounded-md border border-border px-3 py-2 text-sm font-semibold text-foreground hover:border-primary/20 transition-colors text-center block"
         >
           Contact sales

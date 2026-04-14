@@ -5,11 +5,11 @@ steps:
     args:
       - build
       - --tag
-      - gcr.io/$PROJECT_ID/byteswarm-web:$SHORT_SHA
+      - gcr.io/$PROJECT_ID/sovra-web:$SHORT_SHA
       - --tag
-      - gcr.io/$PROJECT_ID/byteswarm-web:latest
+      - gcr.io/$PROJECT_ID/sovra-web:latest
       - --cache-from
-      - gcr.io/$PROJECT_ID/byteswarm-web:latest
+      - gcr.io/$PROJECT_ID/sovra-web:latest
       - --file
       - packages/web/Dockerfile
       - packages/web
@@ -20,11 +20,11 @@ steps:
     args:
       - build
       - --tag
-      - gcr.io/$PROJECT_ID/byteswarm-worker:$SHORT_SHA
+      - gcr.io/$PROJECT_ID/sovra-worker:$SHORT_SHA
       - --tag
-      - gcr.io/$PROJECT_ID/byteswarm-worker:latest
+      - gcr.io/$PROJECT_ID/sovra-worker:latest
       - --cache-from
-      - gcr.io/$PROJECT_ID/byteswarm-worker:latest
+      - gcr.io/$PROJECT_ID/sovra-worker:latest
       - --file
       - packages/worker/Dockerfile
       - packages/worker
@@ -37,7 +37,7 @@ steps:
     args:
       - push
       - --all-tags
-      - gcr.io/$PROJECT_ID/byteswarm-web
+      - gcr.io/$PROJECT_ID/sovra-web
 
   # Push worker image
   - name: "gcr.io/cloud-builders/docker"
@@ -47,7 +47,7 @@ steps:
     args:
       - push
       - --all-tags
-      - gcr.io/$PROJECT_ID/byteswarm-worker
+      - gcr.io/$PROJECT_ID/sovra-worker
 
   # Deploy web to Cloud Run
   - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
@@ -58,9 +58,9 @@ steps:
     args:
       - run
       - deploy
-      - byteswarm-web
+      - sovra-web
       - --image
-      - gcr.io/$PROJECT_ID/byteswarm-web:$SHORT_SHA
+      - gcr.io/$PROJECT_ID/sovra-web:$SHORT_SHA
       - --region
       - $_REGION
       - --platform
@@ -78,9 +78,9 @@ steps:
     args:
       - run
       - deploy
-      - byteswarm-worker
+      - sovra-worker
       - --image
-      - gcr.io/$PROJECT_ID/byteswarm-worker:$SHORT_SHA
+      - gcr.io/$PROJECT_ID/sovra-worker:$SHORT_SHA
       - --region
       - $_REGION
       - --platform
@@ -93,10 +93,10 @@ substitutions:
   _REGION: us-central1
 
 images:
-  - gcr.io/$PROJECT_ID/byteswarm-web:$SHORT_SHA
-  - gcr.io/$PROJECT_ID/byteswarm-web:latest
-  - gcr.io/$PROJECT_ID/byteswarm-worker:$SHORT_SHA
-  - gcr.io/$PROJECT_ID/byteswarm-worker:latest
+  - gcr.io/$PROJECT_ID/sovra-web:$SHORT_SHA
+  - gcr.io/$PROJECT_ID/sovra-web:latest
+  - gcr.io/$PROJECT_ID/sovra-worker:$SHORT_SHA
+  - gcr.io/$PROJECT_ID/sovra-worker:latest
 
 options:
   logging: CLOUD_LOGGING_ONLY

@@ -1,8 +1,8 @@
 package mcp
 
 import (
-	"github.com/byteswarm/worker/internal/config"
-	"github.com/byteswarm/worker/internal/mcp/tools"
+	"github.com/byteworthy/sovra-worker/internal/config"
+	"github.com/byteworthy/sovra-worker/internal/mcp/tools"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 )
@@ -10,7 +10,7 @@ import (
 // NewMCPServer creates an MCP server with all built-in tools registered.
 func NewMCPServer(pool *pgxpool.Pool, cfg *config.Config) *mcp.Server {
 	server := mcp.NewServer(&mcp.Implementation{
-		Name:    "byteswarm-worker",
+		Name:    "sovra-worker",
 		Version: "1.0.0",
 	}, nil)
 

@@ -20,7 +20,7 @@ decisions:
   - "Helper function get_current_tenant_id() must be defined AFTER tenant_users table - Postgres resolves table references at parse time, not call time, for SQL functions"
   - "supabase gen types emits 'Connecting to db 5432' to stdout when redirected - strip this line post-generation"
   - "Supabase CLI v2.84.2 uses PostgreSQL 17 by default (not 15 as planned) - no impact on schema or RLS"
-  - "Stopped vezta Supabase project to free ports 54322-54324 before starting byteswarm instance"
+  - "Stopped vezta Supabase project to free ports 54322-54324 before starting sovra instance"
 metrics:
   duration: "~25 minutes"
   completed: "2026-04-12"
@@ -66,7 +66,7 @@ Initialized Supabase CLI project, wrote a 506-line SQL migration creating all 14
 
 ### Environmental Notes
 
-- Stopped the running `vezta` Supabase project (port conflict on 54322) before starting byteswarm
+- Stopped the running `vezta` Supabase project (port conflict on 54322) before starting sovra
 - Supabase CLI 2.84.2 defaults to PostgreSQL 17 - plan specified 15. No functional impact; schema and RLS work identically.
 - Docker images (all Supabase services) required fresh pull on first `supabase start` (~5 min)
 

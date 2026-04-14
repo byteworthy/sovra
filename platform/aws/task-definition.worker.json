@@ -1,15 +1,15 @@
 {
-  "family": "byteswarm-worker",
+  "family": "sovra-worker",
   "networkMode": "awsvpc",
   "requiresCompatibilities": ["FARGATE"],
   "cpu": "512",
   "memory": "1024",
   "executionRoleArn": "arn:aws:iam::${AWS_ACCOUNT_ID}:role/ecsTaskExecutionRole",
-  "taskRoleArn": "arn:aws:iam::${AWS_ACCOUNT_ID}:role/byteswarm-worker-task-role",
+  "taskRoleArn": "arn:aws:iam::${AWS_ACCOUNT_ID}:role/sovra-worker-task-role",
   "containerDefinitions": [
     {
-      "name": "byteswarm-worker",
-      "image": "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/byteswarm-worker:${IMAGE_TAG}",
+      "name": "sovra-worker",
+      "image": "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/sovra-worker:${IMAGE_TAG}",
       "essential": true,
       "portMappings": [
         {
@@ -42,15 +42,15 @@
       "secrets": [
         {
           "name": "DATABASE_URL",
-          "valueFrom": "arn:aws:secretsmanager:${AWS_REGION}:${AWS_ACCOUNT_ID}:secret:byteswarm/DATABASE_URL"
+          "valueFrom": "arn:aws:secretsmanager:${AWS_REGION}:${AWS_ACCOUNT_ID}:secret:sovra/DATABASE_URL"
         },
         {
           "name": "OPENAI_API_KEY",
-          "valueFrom": "arn:aws:secretsmanager:${AWS_REGION}:${AWS_ACCOUNT_ID}:secret:byteswarm/OPENAI_API_KEY"
+          "valueFrom": "arn:aws:secretsmanager:${AWS_REGION}:${AWS_ACCOUNT_ID}:secret:sovra/OPENAI_API_KEY"
         },
         {
           "name": "BRAVE_SEARCH_API_KEY",
-          "valueFrom": "arn:aws:secretsmanager:${AWS_REGION}:${AWS_ACCOUNT_ID}:secret:byteswarm/BRAVE_SEARCH_API_KEY"
+          "valueFrom": "arn:aws:secretsmanager:${AWS_REGION}:${AWS_ACCOUNT_ID}:secret:sovra/BRAVE_SEARCH_API_KEY"
         }
       ],
       "healthCheck": {
@@ -66,7 +66,7 @@
       "logConfiguration": {
         "logDriver": "awslogs",
         "options": {
-          "awslogs-group": "/ecs/byteswarm-worker",
+          "awslogs-group": "/ecs/sovra-worker",
           "awslogs-region": "${AWS_REGION}",
           "awslogs-stream-prefix": "ecs"
         }

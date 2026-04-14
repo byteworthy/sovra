@@ -5,7 +5,7 @@ import { AdminStatCard } from '@/components/admin/AdminStatCard'
 import { HealthCheckRow } from '@/components/admin/HealthCheckRow'
 
 export const metadata: Metadata = {
-  title: 'Admin Overview | ByteSwarm',
+  title: 'Admin Overview | Sovra',
   description: 'Platform-wide statistics, health checks, and admin controls.',
 }
 

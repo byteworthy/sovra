@@ -1,4 +1,4 @@
-# Pitfalls Research - ByteSwarm
+# Pitfalls Research - Sovra
 
 **Research Type:** Project Research - Pitfalls dimension
 **Date:** 2026-04-11

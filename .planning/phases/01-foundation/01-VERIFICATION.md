@@ -5,13 +5,13 @@ status: passed
 score: 9/9
 re_verification: false
 human_verification:
-  - test: "Run `pnpm install && pnpm --filter @byteswarm/web run test` from repo root"
+  - test: "Run `pnpm install && pnpm --filter @sovra/web run test` from repo root"
     expected: "2/2 Vitest smoke tests pass (confirms test infrastructure + JSX compilation)"
     why_human: "node_modules not installed in verification environment - cannot run vitest directly"
-  - test: "Run `pnpm --filter @byteswarm/web run lint` from repo root"
+  - test: "Run `pnpm --filter @sovra/web run lint` from repo root"
     expected: "next lint exits 0 with no warnings or errors"
     why_human: "node_modules not installed - cannot invoke next lint directly. Also need to confirm card.ctsx does not cause parse errors (file still present alongside card.tsx)"
-  - test: "Run `pnpm --filter @byteswarm/web run type-check` from repo root"
+  - test: "Run `pnpm --filter @sovra/web run type-check` from repo root"
     expected: "tsc --noEmit exits 0"
     why_human: "node_modules not installed - cannot run tsc directly"
   - test: "Run `docker compose -f docker/compose.dev.yaml up` (requires Docker + `supabase start` on host first)"
@@ -55,7 +55,7 @@ human_verification:
 | `pnpm-workspace.yaml` | pnpm monorepo config | ✓ VERIFIED | Lists `packages/web` and `packages/shared`; worker excluded from JS workspace (correct - Go module) |
 | `packages/web/next.config.ts` | Next.js config | ✓ VERIFIED | ESM export, `output: 'standalone'` for Docker |
 | `packages/shared/types/database.ts` | Generated TS types | ✓ VERIFIED | 874 lines, auto-generated from live Supabase schema, 20 `Tables` references |
-| `packages/worker/go.mod` | Go module definition | ✓ VERIFIED | `module github.com/byteswarm/worker`, go 1.26.2, gin + pgx + grpc deps |
+| `packages/worker/go.mod` | Go module definition | ✓ VERIFIED | `module github.com/sovra/worker`, go 1.26.2, gin + pgx + grpc deps |
 | `packages/worker/cmd/worker/main.go` | Worker entry point | ✓ VERIFIED | Substantive: config load, pgxpool connect, HTTP + gRPC goroutines, graceful shutdown |
 | `supabase/migrations/20260412004330_initial_schema.sql` | Full DB schema | ✓ VERIFIED | 506 lines, 14 tables, 14 RLS enables, 51 policies, pgvector, 19 indexes |
 | `docker/compose.dev.yaml` | Dev compose config | ✓ VERIFIED | web + worker services, host.docker.internal bridge, env var refs |
@@ -68,7 +68,7 @@ human_verification:
 
 | From | To | Via | Status | Details |
 |------|----|-----|--------|---------|
-| packages/web | @byteswarm/shared | pnpm-workspace.yaml + package.json | ✓ WIRED | workspace:* dep in web package.json |
+| packages/web | @sovra/shared | pnpm-workspace.yaml + package.json | ✓ WIRED | workspace:* dep in web package.json |
 | packages/worker/main.go | pgxpool | internal/db/pool.go | ✓ WIRED | db.NewPool() called in main, pool passed to servers |
 | packages/worker/main.go | Gin HTTP health | internal/http/health.go | ✓ WIRED | workerhttp.StartHealthServer() goroutine |
 | packages/worker/main.go | gRPC server | internal/grpc/server.go | ✓ WIRED | workergrpc.StartServer() goroutine |
@@ -123,19 +123,19 @@ No TODO/FIXME/HACK patterns found in production code files. Worker gRPC insecure
 
 #### 1. Test Suite
 
-**Test:** From repo root: `pnpm install && pnpm --filter @byteswarm/web run test`
+**Test:** From repo root: `pnpm install && pnpm --filter @sovra/web run test`
 **Expected:** "2 tests passed" - arithmetic assertion and JSX compilation
 **Why human:** node_modules not installed in verification environment
 
 #### 2. TypeScript Compilation
 
-**Test:** From repo root: `pnpm install && pnpm --filter @byteswarm/web run type-check`
+**Test:** From repo root: `pnpm install && pnpm --filter @sovra/web run type-check`
 **Expected:** `tsc --noEmit` exits 0 with no output
 **Why human:** node_modules not installed in verification environment
 
 #### 3. ESLint (including card.ctsx impact)
 
-**Test:** From repo root: `pnpm install && pnpm --filter @byteswarm/web run lint`
+**Test:** From repo root: `pnpm install && pnpm --filter @sovra/web run lint`
 **Expected:** `next lint` exits 0. If it fails due to card.ctsx, delete the file and re-run.
 **Why human:** node_modules not installed; card.ctsx status unknown without running lint
 

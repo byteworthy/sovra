@@ -159,7 +159,7 @@ None — Plans 04 and 05 are within Phase 2 scope and their work is not covered 
 | -------------------------------------------- | ------------------------------------------ | ----------------------------- | ----------- | ---------------------------------------------- |
 | `supabase-adapter.ts`                        | `lib/auth/client.ts`                       | createSupabaseBrowserClient   | ✓ WIRED     | Import confirmed in adapter                    |
 | `app/auth/callback/route.ts`                 | `lib/auth/server.ts`                       | createSupabaseServerClient    | ✓ WIRED     | Import confirmed in callback route             |
-| `lib/tenant/resolver.ts`                     | `@byteswarm/shared` TenantResolver         | import                        | ✓ WIRED     | Confirmed in resolver.ts line 1                |
+| `lib/tenant/resolver.ts`                     | `@sovra/shared` TenantResolver         | import                        | ✓ WIRED     | Confirmed in resolver.ts line 1                |
 | `packages/web/middleware.ts`                 | `lib/tenant/resolver.ts`                   | createTenantResolver          | ✓ WIRED     | Confirmed in middleware.ts                     |
 | `packages/web/middleware.ts`                 | `@supabase/ssr`                            | createServerClient            | ✓ WIRED     | Confirmed in middleware.ts                     |
 | `lib/rbac/checker.ts`                        | Supabase DB tenant_users join              | from('tenant_users').select() | ✓ WIRED     | Nested join in checker.ts                      |

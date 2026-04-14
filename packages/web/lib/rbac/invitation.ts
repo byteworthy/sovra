@@ -2,7 +2,7 @@
 
 import { randomBytes } from 'crypto'
 import { createSupabaseServerClient } from '@/lib/auth/server'
-import type { Invitation, InviteType } from '@byteswarm/shared'
+import type { Invitation, InviteType } from '@sovra/shared'
 
 interface CreateInvitationInput {
   tenantId: string

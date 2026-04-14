@@ -1,9 +1,9 @@
-# ByteSwarm UI Polish & Hardening Sprint — Design Document
+# Sovra UI Polish & Hardening Sprint — Design Document
 
 **Date:** 2026-04-13
-**Context:** ByteSwarm v1.0 has all 6 functional phases complete and a 52-file design token elevation committed. This sprint addresses the remaining gaps to make the boilerplate genuinely production-ready for the open-source developer community.
+**Context:** Sovra v1.0 has all 6 functional phases complete and a 52-file design token elevation committed. This sprint addresses the remaining gaps to make the boilerplate genuinely production-ready for the open-source developer community.
 
-**Goal:** Transform ByteSwarm from "functionally complete" to "the gold standard AI SaaS boilerplate" — zero rough edges, perfect accessibility, premium interactions, and bulletproof infrastructure.
+**Goal:** Transform Sovra from "functionally complete" to "the gold standard AI SaaS boilerplate" — zero rough edges, perfect accessibility, premium interactions, and bulletproof infrastructure.
 
 ---
 
@@ -63,7 +63,7 @@
 ### 2.5 Landing Footer
 - Proper multi-column footer with: Product, Resources, Community, Legal sections
 - GitHub link, docs link, Discord/community link
-- "Built with ByteSwarm" attribution for downstream forks
+- "Built with Sovra" attribution for downstream forks
 
 ---
 

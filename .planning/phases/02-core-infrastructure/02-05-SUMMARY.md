@@ -126,7 +126,7 @@ completed: 2026-04-12
 **2. [Rule 3 - Blocking] Installed framer-motion**
 - **Found during:** Task 1
 - **Issue:** framer-motion not in package.json but required for animations
-- **Fix:** `pnpm add framer-motion --filter @byteswarm/web`
+- **Fix:** `pnpm add framer-motion --filter @sovra/web`
 
 **3. [Rule 1 - Bug] Fixed TypeScript type errors**
 - **Found during:** Task 1

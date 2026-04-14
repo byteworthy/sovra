@@ -1,7 +1,7 @@
 'use client'
 
 import { createContext, useContext, type ReactNode } from 'react'
-import type { Tenant } from '@byteswarm/shared'
+import type { Tenant } from '@sovra/shared'
 
 interface TenantContextValue {
   tenant: Tenant

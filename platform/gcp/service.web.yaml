@@ -1,7 +1,7 @@
 apiVersion: serving.knative.dev/v1
 kind: Service
 metadata:
-  name: byteswarm-web
+  name: sovra-web
   annotations:
     run.googleapis.com/ingress: all
     run.googleapis.com/launch-stage: GA
@@ -18,7 +18,7 @@ spec:
       securityContext:
         runAsNonRoot: true
       containers:
-        - image: gcr.io/${PROJECT_ID}/byteswarm-web:${VERSION}
+        - image: gcr.io/${PROJECT_ID}/sovra-web:${VERSION}
           ports:
             - containerPort: 3000
           resources:
@@ -35,37 +35,37 @@ spec:
             - name: NEXT_PUBLIC_SUPABASE_URL
               valueFrom:
                 secretKeyRef:
-                  name: byteswarm-secrets
+                  name: sovra-secrets
                   key: NEXT_PUBLIC_SUPABASE_URL
             - name: NEXT_PUBLIC_SUPABASE_ANON_KEY
               valueFrom:
                 secretKeyRef:
-                  name: byteswarm-secrets
+                  name: sovra-secrets
                   key: NEXT_PUBLIC_SUPABASE_ANON_KEY
             - name: SUPABASE_SERVICE_ROLE_KEY
               valueFrom:
                 secretKeyRef:
-                  name: byteswarm-secrets
+                  name: sovra-secrets
                   key: SUPABASE_SERVICE_ROLE_KEY
             - name: OPENAI_API_KEY
               valueFrom:
                 secretKeyRef:
-                  name: byteswarm-secrets
+                  name: sovra-secrets
                   key: OPENAI_API_KEY
             - name: ANTHROPIC_API_KEY
               valueFrom:
                 secretKeyRef:
-                  name: byteswarm-secrets
+                  name: sovra-secrets
                   key: ANTHROPIC_API_KEY
             - name: STRIPE_SECRET_KEY
               valueFrom:
                 secretKeyRef:
-                  name: byteswarm-secrets
+                  name: sovra-secrets
                   key: STRIPE_SECRET_KEY
             - name: STRIPE_WEBHOOK_SECRET
               valueFrom:
                 secretKeyRef:
-                  name: byteswarm-secrets
+                  name: sovra-secrets
                   key: STRIPE_WEBHOOK_SECRET
           livenessProbe:
             httpGet:

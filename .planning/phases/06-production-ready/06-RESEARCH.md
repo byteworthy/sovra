@@ -64,7 +64,7 @@ None -- discuss phase skipped.
 
 ## Summary
 
-Phase 6 adds the production layer to a feature-complete ByteSwarm: billing via Lemon Squeezy, a super-admin dashboard bypassing tenant RLS, API key issuance and authentication, multi-cloud deployment configs, and observability with Sentry + PostHog.
+Phase 6 adds the production layer to a feature-complete Sovra: billing via Lemon Squeezy, a super-admin dashboard bypassing tenant RLS, API key issuance and authentication, multi-cloud deployment configs, and observability with Sentry + PostHog.
 
 The database schema is largely ready -- `subscriptions`, `api_keys`, `audit_logs` tables all exist with correct columns and RLS policies. The main gaps are: (1) no `is_platform_admin` field on `users` for super-admin access, (2) no billing SDK installed, (3) no rate-limiting infrastructure, (4) no deployment config files in `platform/`, (5) no Sentry/PostHog SDKs installed, and (6) no `/api/health` route in Next.js (the docker-compose healthcheck references it but it does not exist yet).
 
@@ -102,10 +102,10 @@ The database schema is largely ready -- `subscriptions`, `api_keys`, `audit_logs
 **Installation:**
 ```bash
 # From repo root (pnpm workspace)
-pnpm --filter @byteswarm/web add @lemonsqueezy/lemonsqueezy.js@4.0.0
-pnpm --filter @byteswarm/web add @sentry/nextjs@10.48.0
-pnpm --filter @byteswarm/web add posthog-js@1.367.0 posthog-node@5.29.2
-pnpm --filter @byteswarm/web add @upstash/ratelimit@2.0.8 @upstash/redis@1.37.0
+pnpm --filter @sovra/web add @lemonsqueezy/lemonsqueezy.js@4.0.0
+pnpm --filter @sovra/web add @sentry/nextjs@10.48.0
+pnpm --filter @sovra/web add posthog-js@1.367.0 posthog-node@5.29.2
+pnpm --filter @sovra/web add @upstash/ratelimit@2.0.8 @upstash/redis@1.37.0
 ```
 
 **Version verification:** All versions verified against npm registry on 2026-04-12. [VERIFIED: npm registry]
@@ -207,7 +207,7 @@ export function configureLemonSqueezy() {
 ```
 
 ```typescript
-// lib/billing/plans.ts [ASSUMED structure - no official ByteSwarm spec]
+// lib/billing/plans.ts [ASSUMED structure - no official Sovra spec]
 export const PLANS = {
   free:       { name: 'Free',       agents: 2,  apiCalls: 1000,  storage: 100 },
   pro:        { name: 'Pro',        agents: 20, apiCalls: 50000, storage: 10000 },
@@ -494,8 +494,8 @@ jobs:
       - uses: pnpm/action-setup@v4
         with: { version: 9 }
       - run: pnpm install --frozen-lockfile
-      - run: pnpm --filter @byteswarm/web test
-      - run: pnpm --filter @byteswarm/web typecheck
+      - run: pnpm --filter @sovra/web test
+      - run: pnpm --filter @sovra/web typecheck
 ```
 
 Docker build caching via `type=gha` (GitHub Actions cache) reduces build time 60-80%.
@@ -587,14 +587,14 @@ export async function getCustomerPortalUrl(lsSubscriptionId: string) {
 ```json
 // platform/aws/task-definition.web.json [ASSUMED standard ECS structure]
 {
-  "family": "byteswarm-web",
+  "family": "sovra-web",
   "networkMode": "awsvpc",
   "requiresCompatibilities": ["FARGATE"],
   "cpu": "512",
   "memory": "1024",
   "containerDefinitions": [{
     "name": "web",
-    "image": "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/byteswarm-web:${VERSION}",
+    "image": "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/sovra-web:${VERSION}",
     "portMappings": [{ "containerPort": 3000 }],
     "environment": [
       { "name": "NODE_ENV", "value": "production" }
@@ -616,12 +616,12 @@ export async function getCustomerPortalUrl(lsSubscriptionId: string) {
 apiVersion: serving.knative.dev/v1
 kind: Service
 metadata:
-  name: byteswarm-web
+  name: sovra-web
 spec:
   template:
     spec:
       containers:
-        - image: gcr.io/${PROJECT_ID}/byteswarm-web:${VERSION}
+        - image: gcr.io/${PROJECT_ID}/sovra-web:${VERSION}
           ports:
             - containerPort: 3000
           env:
@@ -709,25 +709,25 @@ spec:
 |----------|-------|
 | Framework | Vitest (already configured in `packages/web`) |
 | Config file | `packages/web/vitest.config.ts` (inferred from existing tests) |
-| Quick run command | `pnpm --filter @byteswarm/web test` |
-| Full suite command | `pnpm --filter @byteswarm/web test --reporter=verbose` |
+| Quick run command | `pnpm --filter @sovra/web test` |
+| Full suite command | `pnpm --filter @sovra/web test --reporter=verbose` |
 
 ### Phase Requirements to Test Map
 
 | Req ID | Behavior | Test Type | Automated Command | File Exists? |
 |--------|----------|-----------|-------------------|-------------|
-| BILL-05 | Webhook signature verification accepts valid, rejects invalid | unit | `pnpm --filter @byteswarm/web test lib/billing` | No - Wave 0 |
-| BILL-02 | Plan limits config is correct shape | unit | `pnpm --filter @byteswarm/web test lib/billing` | No - Wave 0 |
-| APIK-01 | Key generation produces `bsk_` prefix, unique hash | unit | `pnpm --filter @byteswarm/web test lib/api-keys` | No - Wave 0 |
-| APIK-02 | Key authentication rejects expired/revoked keys | unit | `pnpm --filter @byteswarm/web test lib/api-keys` | No - Wave 0 |
-| APIK-03 | Rate limiter returns 429 after limit exceeded | unit (mock Redis) | `pnpm --filter @byteswarm/web test lib/api-keys` | No - Wave 0 |
-| APIK-05 | Expired key returns 401 | unit | `pnpm --filter @byteswarm/web test lib/api-keys` | No - Wave 0 |
+| BILL-05 | Webhook signature verification accepts valid, rejects invalid | unit | `pnpm --filter @sovra/web test lib/billing` | No - Wave 0 |
+| BILL-02 | Plan limits config is correct shape | unit | `pnpm --filter @sovra/web test lib/billing` | No - Wave 0 |
+| APIK-01 | Key generation produces `bsk_` prefix, unique hash | unit | `pnpm --filter @sovra/web test lib/api-keys` | No - Wave 0 |
+| APIK-02 | Key authentication rejects expired/revoked keys | unit | `pnpm --filter @sovra/web test lib/api-keys` | No - Wave 0 |
+| APIK-03 | Rate limiter returns 429 after limit exceeded | unit (mock Redis) | `pnpm --filter @sovra/web test lib/api-keys` | No - Wave 0 |
+| APIK-05 | Expired key returns 401 | unit | `pnpm --filter @sovra/web test lib/api-keys` | No - Wave 0 |
 | MON-03 | `/api/health` returns 200 with `{"status":"ok"}` | smoke | `curl http://localhost:3000/api/health` | No - Wave 0 |
-| ADMIN-01 | Admin layout redirects non-admin users | unit | `pnpm --filter @byteswarm/web test lib/admin` | No - Wave 0 |
+| ADMIN-01 | Admin layout redirects non-admin users | unit | `pnpm --filter @sovra/web test lib/admin` | No - Wave 0 |
 
 ### Sampling Rate
-- **Per task commit:** `pnpm --filter @byteswarm/web test --run`
-- **Per wave merge:** `pnpm --filter @byteswarm/web test --reporter=verbose && pnpm --filter @byteswarm/web typecheck`
+- **Per task commit:** `pnpm --filter @sovra/web test --run`
+- **Per wave merge:** `pnpm --filter @sovra/web test --reporter=verbose && pnpm --filter @sovra/web typecheck`
 - **Phase gate:** Full suite green + `go test ./...` in worker before `/gsd-verify-work`
 
 ### Wave 0 Gaps

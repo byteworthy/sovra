@@ -1,15 +1,15 @@
 {
-  "family": "byteswarm-web",
+  "family": "sovra-web",
   "networkMode": "awsvpc",
   "requiresCompatibilities": ["FARGATE"],
   "cpu": "512",
   "memory": "1024",
   "executionRoleArn": "arn:aws:iam::${AWS_ACCOUNT_ID}:role/ecsTaskExecutionRole",
-  "taskRoleArn": "arn:aws:iam::${AWS_ACCOUNT_ID}:role/byteswarm-web-task-role",
+  "taskRoleArn": "arn:aws:iam::${AWS_ACCOUNT_ID}:role/sovra-web-task-role",
   "containerDefinitions": [
     {
-      "name": "byteswarm-web",
-      "image": "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/byteswarm-web:${IMAGE_TAG}",
+      "name": "sovra-web",
+      "image": "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/sovra-web:${IMAGE_TAG}",
       "essential": true,
       "portMappings": [
         {
@@ -34,31 +34,31 @@
       "secrets": [
         {
           "name": "NEXT_PUBLIC_SUPABASE_URL",
-          "valueFrom": "arn:aws:secretsmanager:${AWS_REGION}:${AWS_ACCOUNT_ID}:secret:byteswarm/NEXT_PUBLIC_SUPABASE_URL"
+          "valueFrom": "arn:aws:secretsmanager:${AWS_REGION}:${AWS_ACCOUNT_ID}:secret:sovra/NEXT_PUBLIC_SUPABASE_URL"
         },
         {
           "name": "NEXT_PUBLIC_SUPABASE_ANON_KEY",
-          "valueFrom": "arn:aws:secretsmanager:${AWS_REGION}:${AWS_ACCOUNT_ID}:secret:byteswarm/NEXT_PUBLIC_SUPABASE_ANON_KEY"
+          "valueFrom": "arn:aws:secretsmanager:${AWS_REGION}:${AWS_ACCOUNT_ID}:secret:sovra/NEXT_PUBLIC_SUPABASE_ANON_KEY"
         },
         {
           "name": "SUPABASE_SERVICE_ROLE_KEY",
-          "valueFrom": "arn:aws:secretsmanager:${AWS_REGION}:${AWS_ACCOUNT_ID}:secret:byteswarm/SUPABASE_SERVICE_ROLE_KEY"
+          "valueFrom": "arn:aws:secretsmanager:${AWS_REGION}:${AWS_ACCOUNT_ID}:secret:sovra/SUPABASE_SERVICE_ROLE_KEY"
         },
         {
           "name": "OPENAI_API_KEY",
-          "valueFrom": "arn:aws:secretsmanager:${AWS_REGION}:${AWS_ACCOUNT_ID}:secret:byteswarm/OPENAI_API_KEY"
+          "valueFrom": "arn:aws:secretsmanager:${AWS_REGION}:${AWS_ACCOUNT_ID}:secret:sovra/OPENAI_API_KEY"
         },
         {
           "name": "ANTHROPIC_API_KEY",
-          "valueFrom": "arn:aws:secretsmanager:${AWS_REGION}:${AWS_ACCOUNT_ID}:secret:byteswarm/ANTHROPIC_API_KEY"
+          "valueFrom": "arn:aws:secretsmanager:${AWS_REGION}:${AWS_ACCOUNT_ID}:secret:sovra/ANTHROPIC_API_KEY"
         },
         {
           "name": "STRIPE_SECRET_KEY",
-          "valueFrom": "arn:aws:secretsmanager:${AWS_REGION}:${AWS_ACCOUNT_ID}:secret:byteswarm/STRIPE_SECRET_KEY"
+          "valueFrom": "arn:aws:secretsmanager:${AWS_REGION}:${AWS_ACCOUNT_ID}:secret:sovra/STRIPE_SECRET_KEY"
         },
         {
           "name": "STRIPE_WEBHOOK_SECRET",
-          "valueFrom": "arn:aws:secretsmanager:${AWS_REGION}:${AWS_ACCOUNT_ID}:secret:byteswarm/STRIPE_WEBHOOK_SECRET"
+          "valueFrom": "arn:aws:secretsmanager:${AWS_REGION}:${AWS_ACCOUNT_ID}:secret:sovra/STRIPE_WEBHOOK_SECRET"
         }
       ],
       "healthCheck": {
@@ -74,7 +74,7 @@
       "logConfiguration": {
         "logDriver": "awslogs",
         "options": {
-          "awslogs-group": "/ecs/byteswarm-web",
+          "awslogs-group": "/ecs/sovra-web",
           "awslogs-region": "${AWS_REGION}",
           "awslogs-stream-prefix": "ecs"
         }

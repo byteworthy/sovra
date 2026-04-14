@@ -9,7 +9,7 @@ import { MotionProvider } from '@/components/providers/MotionProvider';
 import { SkipToContent } from '@/components/ui/skip-to-content';
 
 export const metadata: Metadata = {
-  title: 'ByteSwarm - AI-Native SaaS Boilerplate',
+  title: 'Sovra - AI-Native SaaS Boilerplate',
   description:
     'Production-ready open-source boilerplate for building multi-tenant AI applications with MCP, vector database, and multi-agent collaboration.',
   keywords: ['AI', 'MCP', 'multi-tenant', 'SaaS', 'boilerplate', 'Next.js', 'Go'],

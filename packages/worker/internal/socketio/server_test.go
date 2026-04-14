@@ -3,7 +3,7 @@ package socketio_test
 import (
 	"testing"
 
-	"github.com/byteswarm/worker/internal/socketio"
+	"github.com/byteworthy/sovra-worker/internal/socketio"
 )
 
 func TestMountSocketIO_ReturnsNonNilServer(t *testing.T) {

@@ -86,7 +86,7 @@ metrics:
 **1. [Rule 1 - Bug] Fixed metadata type mismatch in embed route**
 - **Found during:** Task 1 (caught by tsc --noEmit)
 - **Issue:** `Record<string, unknown>` from zod schema not assignable to Supabase `Json` type
-- **Fix:** Import `Json` type from `@byteswarm/shared/types/database` and cast metadata through it
+- **Fix:** Import `Json` type from `@sovra/shared/types/database` and cast metadata through it
 - **Files modified:** packages/web/app/api/documents/embed/route.ts
 - **Commit:** 9d07bcb (included in Task 2 commit)
 

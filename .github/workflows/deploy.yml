@@ -16,8 +16,8 @@ concurrency:
 
 env:
   REGISTRY: ghcr.io
-  WEB_IMAGE: ghcr.io/${{ github.repository }}/byteswarm-web
-  WORKER_IMAGE: ghcr.io/${{ github.repository }}/byteswarm-worker
+  WEB_IMAGE: ghcr.io/${{ github.repository }}/sovra-web
+  WORKER_IMAGE: ghcr.io/${{ github.repository }}/sovra-worker
 
 jobs:
   build-and-push:

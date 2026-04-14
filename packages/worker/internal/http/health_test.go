@@ -6,7 +6,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	workerhttp "github.com/byteswarm/worker/internal/http"
+	workerhttp "github.com/byteworthy/sovra-worker/internal/http"
 )
 
 func TestHealthEndpoint(t *testing.T) {

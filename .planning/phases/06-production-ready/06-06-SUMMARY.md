@@ -35,7 +35,7 @@ decisions:
   - Stripe used for billing env vars (STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, STRIPE_PRICE_ID_PRO, STRIPE_PRICE_ID_ENTERPRISE) per project constraints, not Lemon Squeezy as written in plan
   - GCP Cloud Run services set ingress internal for worker, all for web
   - runAsNonRoot securityContext added to GCP service specs (Rule 2 - security)
-  - pnpm --filter @byteswarm/web test used (monorepo pattern) rather than bare pnpm test
+  - pnpm --filter @sovra/web test used (monorepo pattern) rather than bare pnpm test
 metrics:
   duration_minutes: 18
   completed_date: "2026-04-12T16:18:51Z"
@@ -71,20 +71,20 @@ Railway, AWS ECS Fargate, and GCP Cloud Run configs plus GitHub Actions CI/CD an
 - `railway.worker.toml` - Go worker service with healthcheckPath `/health`, watchPaths for packages/worker and packages/shared
 
 **AWS ECS Fargate** (`platform/aws/`):
-- `task-definition.web.json` - family byteswarm-web, 512 CPU/1024 MB, port 3000, health check `curl -f http://localhost:3000/api/health`, secrets via Secrets Manager ARNs
-- `task-definition.worker.json` - family byteswarm-worker, 512 CPU/1024 MB, ports 8080+50051, health check via wget
+- `task-definition.web.json` - family sovra-web, 512 CPU/1024 MB, port 3000, health check `curl -f http://localhost:3000/api/health`, secrets via Secrets Manager ARNs
+- `task-definition.worker.json` - family sovra-worker, 512 CPU/1024 MB, ports 8080+50051, health check via wget
 - `ecs-service.json` - service definitions for both services with deployment circuit breaker and rollback enabled
 
 **GCP Cloud Run** (`platform/gcp/`):
-- `service.web.yaml` - Knative v1 service byteswarm-web, 1 CPU/1Gi memory, port 3000, `runAsNonRoot: true`, secrets from Secret Manager
-- `service.worker.yaml` - Knative v1 service byteswarm-worker, internal ingress only, 1 CPU/1Gi memory, port 8080
+- `service.web.yaml` - Knative v1 service sovra-web, 1 CPU/1Gi memory, port 3000, `runAsNonRoot: true`, secrets from Secret Manager
+- `service.worker.yaml` - Knative v1 service sovra-worker, internal ingress only, 1 CPU/1Gi memory, port 8080
 - `cloudbuild.yaml` - 6-step pipeline: build web, build worker, push web, push worker, deploy web, deploy worker; `E2_HIGHCPU_8` machine
 
 ### CI/CD Workflows (Task 2)
 
 **`.github/workflows/ci.yml`**:
 - Triggers on pull_request with path filters: packages/web/\*\*, packages/shared/\*\*, packages/worker/\*\*
-- Jobs: test-web (pnpm --filter @byteswarm/web test + typecheck), lint (pnpm --filter @byteswarm/web lint), test-worker (go test ./...)
+- Jobs: test-web (pnpm --filter @sovra/web test + typecheck), lint (pnpm --filter @sovra/web lint), test-worker (go test ./...)
 - pnpm 9, Node 20, Go version from go.mod, concurrency cancel-in-progress
 
 **`.github/workflows/deploy.yml`**:

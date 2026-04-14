@@ -1,6 +1,6 @@
-# Contributing to ByteSwarm
+# Contributing to Sovra
 
-Thanks for your interest in contributing! ByteSwarm is an open-source project and we welcome contributions of all kinds.
+Thanks for your interest in contributing! Sovra is an open-source project and we welcome contributions of all kinds.
 
 ## Getting Started
 
@@ -16,8 +16,8 @@ Thanks for your interest in contributing! ByteSwarm is an open-source project an
 
 ```bash
 # Clone the repo
-git clone https://github.com/byteswarm/byteswarm.git
-cd byteswarm
+git clone https://github.com/byteworthy/sovra.git
+cd sovra
 
 # Install dependencies
 pnpm install
@@ -40,7 +40,7 @@ cd packages/worker && go run ./cmd/worker
 ### Project Structure
 
 ```
-byteswarm/
+sovra/
   packages/
     web/          # Next.js 15 frontend + API routes
     worker/       # Go agent worker (MCP, Socket.IO)
@@ -95,7 +95,7 @@ cd packages/web && pnpm tsc --noEmit
 
 ### Good First Issues
 
-Look for issues labeled [`good first issue`](https://github.com/byteswarm/byteswarm/labels/good%20first%20issue).
+Look for issues labeled [`good first issue`](https://github.com/byteworthy/sovra/labels/good%20first%20issue).
 
 ### Areas We Need Help
 

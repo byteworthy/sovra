@@ -165,7 +165,7 @@ body {
 ```
 
 **Page-specific assignments:**
-- Auth card heading ("Sign in to ByteSwarm"): Heading lg - `text-2xl font-semibold tracking-tight`
+- Auth card heading ("Sign in to Sovra"): Heading lg - `text-2xl font-semibold tracking-tight`
 - Auth card sub-copy: Body - `text-sm text-muted-foreground`
 - Brand panel headline: Display - `text-3xl font-semibold tracking-tighter`
 - Form labels: Label - `text-sm font-semibold`
@@ -201,7 +201,7 @@ Mobile auth card: no glass - solid bg-card, rounded-xl, no horizontal padding (e
 
 **Brand panel details:**
 - Background: `bg-zinc-900` with subtle dot grid overlay (CSS `background-image: radial-gradient(circle, #27272A 1px, transparent 1px); background-size: 24px 24px;`)
-- Top-left: Logo (`Bot` icon + "ByteSwarm" wordmark, white)
+- Top-left: Logo (`Bot` icon + "Sovra" wordmark, white)
 - Center: Headline "Ship AI products. Not infrastructure." at Display size
 - Below headline: 3 feature bullets with check icons in `text-primary`:
   1. "Multi-tenant auth and RBAC out of the box"
@@ -494,7 +494,7 @@ After account creation, before accessing the dashboard, show a 3-step wizard:
 Step 1: Create workspace
   ├── "Name your workspace" heading
   ├── Workspace name input (autofocused)
-  ├── Slug preview: "your-app.byteswarm.dev" or "/t/your-app"
+  ├── Slug preview: "your-app.sovra.dev" or "/t/your-app"
   └── "Create workspace →" CTA
 
 Step 2: Invite your team (optional)
@@ -686,7 +686,7 @@ CTA:       "Create workspace" - Button default
 | Onboarding step 2 CTA | Send invites |
 | Onboarding step 2 skip | Skip invites for now |
 | Onboarding step 3 heading | You're ready to build |
-| Onboarding step 3 body | **{workspace name}** is live. Create your first AI agent and see what ByteSwarm can do. |
+| Onboarding step 3 body | **{workspace name}** is live. Create your first AI agent and see what Sovra can do. |
 | Onboarding step 3 CTA | Open your dashboard |
 | Tenant creation dialog heading | New workspace |
 | Tenant creation CTA | Create workspace |

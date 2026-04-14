@@ -4,7 +4,7 @@ import { getProvider, initProviders } from '@/lib/ai/registry'
 import { getMcpClient } from '@/lib/mcp/client'
 import { buildAiToolsFromMcp, getAgentTools } from '@/lib/mcp/tool-registry'
 import { getChatLimiter, checkSessionRateLimit, rateLimitResponse } from '@/lib/rate-limit'
-import type { Json } from '@byteswarm/shared/types/database'
+import type { Json } from '@sovra/shared/types/database'
 
 const TOOL_COSTS: Record<string, number> = {
   web_search: 0.001,

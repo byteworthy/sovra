@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
-import type { Json } from '@byteswarm/shared/types/database'
+import type { Json } from '@sovra/shared/types/database'
 import { createSupabaseServerClient } from '@/lib/auth/server'
 import { embedText } from '@/lib/vector/embed'
 import { getEmbedLimiter, checkSessionRateLimit, rateLimitResponse } from '@/lib/rate-limit'
