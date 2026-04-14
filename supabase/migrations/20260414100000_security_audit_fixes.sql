@@ -179,6 +179,7 @@ create policy "Tenant admins can manage roles" on roles
   );
 
 -- Also allow all members to READ roles (needed for UI)
+drop policy if exists "Tenant members can read roles" on roles;
 create policy "Tenant members can read roles" on roles
   for select using (tenant_id in (select public.get_user_tenant_ids()));
 

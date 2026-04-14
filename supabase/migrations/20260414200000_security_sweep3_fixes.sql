@@ -17,6 +17,8 @@
 -- Replace with a policy that requires knowing the token (via RPC) or service role.
 -- =============================================
 drop policy if exists "Read pending invitation by token" on invitations;
+drop policy if exists "Tenant members can read invitations" on invitations;
+drop policy if exists "Tenant members can manage invitations" on invitations;
 
 -- Only the invitation creator (via tenant membership) can list invitations
 create policy "Tenant members can read own invitations" on invitations
@@ -101,6 +103,7 @@ create policy "Tenant members can read subscriptions" on subscriptions
 -- F10: Fix role_permissions SELECT policy
 -- =============================================
 drop policy if exists "role_permissions_select" on role_permissions;
+drop policy if exists "Tenant members can read role_permissions" on role_permissions;
 drop policy if exists "Tenant admins can manage role_permissions" on role_permissions;
 
 create policy "Tenant members can read role_permissions" on role_permissions
