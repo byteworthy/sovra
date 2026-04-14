@@ -3,29 +3,24 @@ node_modules/
 .pnp/
 .pnp.js
 
-# Testing
-coverage/
-
-# Next.js
+# Build outputs
 .next/
 out/
 build/
 dist/
+*.tsbuildinfo
 
-# Production
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+# Testing
+coverage/
 
-# Local env files
+# Environment files
 .env
 .env.local
-.env.development.local
-.env.test.local
-.env.production.local
+.env*.local
+.env.supabase
 
-# Debug logs
+# Logs
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
@@ -40,40 +35,30 @@ yarn-error.log*
 .DS_Store
 Thumbs.db
 
-# Secrets (never commit!)
+# Secrets
 *.pem
 *.key
 credentials.json
 service-account-key.json
 
-# Build outputs
-*.tsbuildinfo
-.next/
-
-# Supabase
-.env.supabase
-
 # Go
-/vendor/
+vendor/
+**/vendor/
 *.exe
 
-# Docker
-.dockerignore
-
-# Planning (optional - uncomment if using local-only planning)
-# .planning/
-
-# Go binaries
+# Go binaries and hot reload
 packages/worker/bin/
 packages/worker/tmp/
-
-# Air hot reload
 /tmp/air/
+
+# Internal planning and tooling (not for GitHub)
+.planning/
+.claude/
+.code-review-graph/
+design-system/
+docs/plans/
 
 # Supabase local
 .supabase/
-
-# Environment
-.env
-.env.local
-.env*.local
+supabase/.branches/
+supabase/.temp/
