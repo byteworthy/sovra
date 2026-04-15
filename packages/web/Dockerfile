@@ -21,6 +21,9 @@ COPY packages/shared ./packages/shared
 COPY packages/web ./packages/web
 COPY pnpm-workspace.yaml package.json pnpm-lock.yaml ./
 
+# Ensure runtime COPY doesn't fail when the app has no committed public assets.
+RUN mkdir -p /app/packages/web/public
+
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV NODE_ENV=production
 
