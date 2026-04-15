@@ -40,6 +40,63 @@ describe('generateApiKey', () => {
   })
 })
 
+// ─── Hash tests ───────────────────────────────────────────────────────────────
+
+describe('hashApiKey', () => {
+  const env = process.env as Record<string, string | undefined>
+  const originalNodeEnv = process.env.NODE_ENV
+  const originalSecret = process.env.API_KEY_HASH_SECRET
+
+  beforeEach(() => {
+    vi.resetModules()
+    delete env.API_KEY_HASH_SECRET
+    env.NODE_ENV = 'test'
+  })
+
+  afterEach(() => {
+    vi.resetModules()
+    env.NODE_ENV = originalNodeEnv
+    if (originalSecret === undefined) {
+      delete env.API_KEY_HASH_SECRET
+    } else {
+      env.API_KEY_HASH_SECRET = originalSecret
+    }
+  })
+
+  it('returns a deterministic 64-char hex hash for the same key and secret', async () => {
+    env.API_KEY_HASH_SECRET = 'a'.repeat(32)
+    const { hashApiKey } = await import('../hash')
+
+    const first = hashApiKey('bsk_same_key')
+    const second = hashApiKey('bsk_same_key')
+
+    expect(first).toBe(second)
+    expect(first).toMatch(/^[0-9a-f]{64}$/)
+  })
+
+  it('produces different hashes when the secret changes', async () => {
+    env.API_KEY_HASH_SECRET = 'a'.repeat(32)
+    const { hashApiKey } = await import('../hash')
+    const first = hashApiKey('bsk_same_key')
+
+    env.API_KEY_HASH_SECRET = 'b'.repeat(32)
+    const second = hashApiKey('bsk_same_key')
+
+    expect(first).not.toBe(second)
+  })
+
+  it('throws in production when API_KEY_HASH_SECRET is missing', async () => {
+    env.NODE_ENV = 'production'
+    delete env.API_KEY_HASH_SECRET
+
+    const { hashApiKey } = await import('../hash')
+
+    expect(() => hashApiKey('bsk_prod_key')).toThrow(
+      'API_KEY_HASH_SECRET must be set to at least 32 characters in production'
+    )
+  })
+})
+
 // ─── Authenticator tests ──────────────────────────────────────────────────────
 
 function makeSupabaseForAuth(
@@ -316,4 +373,3 @@ describe('withApiKeyAuth', () => {
     expect(handler).not.toHaveBeenCalled()
   })
 })
-
