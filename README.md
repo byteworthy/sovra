@@ -14,6 +14,10 @@
 </p>
 
 <p align="center">
+  <sub>A <a href="https://byteworthy.io"><b>ByteWorthy</b></a> product · <a href="https://byteworthy.io">byteworthy.io</a></sub>
+</p>
+
+<p align="center">
   <a href="#-quick-start">Quick Start</a>&nbsp;&nbsp;|&nbsp;&nbsp;
   <a href="#-what-you-get">Features</a>&nbsp;&nbsp;|&nbsp;&nbsp;
   <a href="#-the-stack">Stack</a>&nbsp;&nbsp;|&nbsp;&nbsp;
@@ -261,12 +265,16 @@ All required and optional variables are documented in [`.env.example`](.env.exam
 
 ## &#x1f91d; Built on Sovra
 
-Sovra is the open-source AI platform foundation. If you need a ready-made **agency vertical** on top — white-label client portals, per-client branding, custom domains, Stripe Billing Meters, project tracking, onboarding automation — use [**Klienta**](https://github.com/byteworthy/klienta).
+Sovra is the open-source AI platform foundation.
+
+- Need a ready-made **agency vertical** on top (white-label portals, custom domains, metered billing)? Use [**Klienta**](https://github.com/ByteWorthyLLC/klienta).
+- Need a ready-made **healthcare vertical** (FHIR R4, HL7 v2, X12 EDI, PHI controls, compliance scaffolding)? Use [**Clynova**](https://github.com/ByteWorthyLLC/clynova).
 
 | You're building... | Use |
 |-------------------|-----|
 | A product for end users | **Sovra** (this repo, free, MIT) |
-| An agency with multiple paying clients | [**Klienta**](https://github.com/byteworthy/klienta) (paid, built on Sovra) |
+| An agency with multiple paying clients | [**Klienta**](https://github.com/ByteWorthyLLC/klienta) (paid, built on Sovra) |
+| A healthcare AI product with interoperability/compliance requirements | [**Clynova**](https://github.com/ByteWorthyLLC/clynova) (paid, built after Sovra foundations) |
 
 <br/>
 
