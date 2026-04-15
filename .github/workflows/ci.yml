@@ -9,6 +9,7 @@ on:
       - "packages/shared/**"
       - "packages/worker/**"
       - ".github/dependabot.yml"
+      - ".github/workflows/**"
       - ".github/workflows/security.yml"
       - ".github/workflows/ci.yml"
 
