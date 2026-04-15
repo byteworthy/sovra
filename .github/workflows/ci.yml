@@ -5,6 +5,9 @@ on:
     branches: [master, main]
   pull_request:
     paths:
+      - "package.json"
+      - "pnpm-lock.yaml"
+      - "pnpm-workspace.yaml"
       - "packages/web/**"
       - "packages/shared/**"
       - "packages/worker/**"
