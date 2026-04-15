@@ -30,7 +30,7 @@
     }
   },
   "devDependencies": {
-    "lefthook": "^1.8.0"
+    "lefthook": "^2.1.5"
   },
   "keywords": [
     "ai-agents",
