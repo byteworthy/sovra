@@ -1,0 +1,35 @@
+pre-commit:
+  parallel: true
+  commands:
+    lint:
+      glob: "packages/web/**/*.{ts,tsx,js,jsx}"
+      run: pnpm --filter @sovra/web exec next lint --file {staged_files}
+    typecheck:
+      glob: "packages/web/**/*.{ts,tsx}"
+      run: pnpm --filter @sovra/web type-check
+    go-vet:
+      glob: "packages/worker/**/*.go"
+      run: cd packages/worker && go vet ./...
+    gitleaks:
+      run: |
+        if command -v gitleaks >/dev/null 2>&1; then
+          gitleaks protect --staged --no-banner --redact
+        else
+          echo "gitleaks not installed - skipping (install with: brew install gitleaks)"
+        fi
+
+pre-push:
+  commands:
+    test:
+      run: pnpm --filter @sovra/web test
+
+commit-msg:
+  commands:
+    conventional:
+      run: |
+        grep -qE '^(feat|fix|chore|refactor|test|docs|perf|ci|build|style|revert)(\(.+\))?!?: .{1,}' {1} || {
+          echo "ERROR: Commit message must follow Conventional Commits format:"
+          echo "  type(scope): message"
+          echo "  types: feat, fix, chore, refactor, test, docs, perf, ci, build, style, revert"
+          exit 1
+        }

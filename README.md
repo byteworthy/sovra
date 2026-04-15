@@ -246,7 +246,7 @@ All required and optional variables are documented in [`.env.example`](.env.exam
 
 - **Indie hackers** building AI-powered SaaS — skip 3 months of infrastructure work
 - **Startups** that need multi-tenant AI agents on day one
-- **Agencies** building white-label AI solutions with tenant isolation
+- **Agencies** building white-label AI solutions with tenant isolation — see also [**Klienta**](https://github.com/byteworthy/klienta), a paid agency-vertical boilerplate built on Sovra
 - **Enterprise teams** evaluating self-hosted alternatives to closed-source agent platforms
 - **Open-source contributors** looking for a solid, extensible AI platform foundation
 
@@ -255,6 +255,18 @@ All required and optional variables are documented in [`.env.example`](.env.exam
 - Simple chatbot wrapper? Use [OpenWebUI](https://github.com/open-webui/open-webui)
 - Agent framework only (no SaaS)? Use [LangGraph](https://github.com/langchain-ai/langgraph) or [CrewAI](https://github.com/crewAIInc/crewAI)
 - Need a hosted solution? Sovra is self-hosted only
+- Running an **AI agency** with multiple paying clients and need per-client branding, custom domains, and usage-based billing? → Use [**Klienta**](https://github.com/byteworthy/klienta) (paid boilerplate built on Sovra)
+
+<br/>
+
+## &#x1f91d; Built on Sovra
+
+Sovra is the open-source AI platform foundation. If you need a ready-made **agency vertical** on top — white-label client portals, per-client branding, custom domains, Stripe Billing Meters, project tracking, onboarding automation — use [**Klienta**](https://github.com/byteworthy/klienta).
+
+| You're building... | Use |
+|-------------------|-----|
+| A product for end users | **Sovra** (this repo, free, MIT) |
+| An agency with multiple paying clients | [**Klienta**](https://github.com/byteworthy/klienta) (paid, built on Sovra) |
 
 <br/>
 

@@ -58,6 +58,16 @@ packages/worker/tmp/
 design-system/
 docs/plans/
 
+# Transient audit / review artifacts
+PASS-*.md
+*-AUDIT.md
+*-FINDINGS.md
+CODE-REVIEW.md
+FINAL-VERIFICATION.md
+POLISH-REPORT.md
+RUNTIME-BURN-DOWN.md
+GAPS.md
+
 # Supabase local
 .supabase/
 supabase/.branches/

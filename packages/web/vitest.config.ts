@@ -17,5 +17,16 @@ export default defineConfig({
     globals: true,
     setupFiles: [],
     include: ['src/**/*.test.{ts,tsx}', '**/*.test.{ts,tsx}'],
+    coverage: {
+      provider: 'v8',
+      reporter: ['text', 'lcov', 'html'],
+      include: ['lib/**/*.{ts,tsx}', 'app/**/*.{ts,tsx}'],
+      exclude: [
+        '**/__tests__/**',
+        '**/*.test.{ts,tsx}',
+        '**/__mocks__/**',
+        '**/*.d.ts',
+      ],
+    },
   },
 })
