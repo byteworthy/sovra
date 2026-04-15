@@ -44,6 +44,13 @@ updates:
     labels:
       - dependencies
       - ci
+    groups:
+      github-actions:
+        patterns:
+          - "*"
+        update-types:
+          - patch
+          - minor
 
   - package-ecosystem: docker
     directory: "/packages/web"
