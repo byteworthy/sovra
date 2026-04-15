@@ -61,6 +61,8 @@ export default withSentryConfig(nextConfig, {
   project: process.env.SENTRY_PROJECT,
   // Suppress source map upload output when not in CI
   silent: !process.env.CI,
-  // Disable automatic releases — let the CI pipeline manage this
-  autoInstrumentServerFunctions: false,
+  webpack: {
+    // Disable deprecated server function auto-instrumentation toggle.
+    autoInstrumentServerFunctions: false,
+  },
 })
