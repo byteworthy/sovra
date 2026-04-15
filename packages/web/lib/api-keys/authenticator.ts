@@ -1,5 +1,6 @@
-import { createHash, timingSafeEqual } from 'crypto'
+import { timingSafeEqual } from 'crypto'
 import type { SupabaseClient } from '@supabase/supabase-js'
+import { hashApiKey } from './hash'
 
 export type ApiKeyAuthResult =
   | { valid: true; tenantId: string; permissions: string[] }
@@ -14,7 +15,7 @@ export async function authenticateApiKey(
   }
 
   const prefix = rawKey.slice(0, 12)
-  const hash = createHash('sha256').update(rawKey).digest('hex')
+  const hash = hashApiKey(rawKey)
 
   const { data, error } = await supabase
     .from('api_keys')

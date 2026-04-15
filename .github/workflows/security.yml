@@ -14,6 +14,7 @@ concurrency:
 permissions:
   actions: read
   contents: read
+  pull-requests: read
   security-events: write
 
 env:
@@ -50,6 +51,7 @@ jobs:
           fetch-depth: 0
       - uses: gitleaks/gitleaks-action@v2
         env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITLEAKS_LICENSE: ${{ secrets.GITLEAKS_LICENSE }}
 
   dependency-scan:
@@ -86,7 +88,10 @@ jobs:
   dependency-review:
     name: Dependency Review
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request'
+    # This action requires GitHub Dependency Graph to be enabled.
+    # Gate it behind a repository variable so repos without that feature
+    # do not fail the whole security workflow.
+    if: github.event_name == 'pull_request' && vars.ENABLE_DEPENDENCY_REVIEW == 'true'
     steps:
       - uses: actions/checkout@v4
       - uses: actions/dependency-review-action@v4

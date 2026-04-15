@@ -1,4 +1,5 @@
-import { randomBytes, createHash } from 'crypto'
+import { randomBytes } from 'crypto'
+import { hashApiKey } from './hash'
 
 export interface GeneratedApiKey {
   raw: string
@@ -9,6 +10,6 @@ export interface GeneratedApiKey {
 export function generateApiKey(): GeneratedApiKey {
   const raw = 'bsk_' + randomBytes(32).toString('base64url')
   const prefix = raw.slice(0, 12)
-  const hash = createHash('sha256').update(raw).digest('hex')
+  const hash = hashApiKey(raw)
   return { raw, hash, prefix }
 }

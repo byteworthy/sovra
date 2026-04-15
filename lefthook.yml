@@ -3,7 +3,12 @@ pre-commit:
   commands:
     lint:
       glob: "packages/web/**/*.{ts,tsx,js,jsx}"
-      run: pnpm --filter @sovra/web exec next lint --file {staged_files}
+      run: |
+        files=$(printf '%s\n' {staged_files} | sed -n 's#^packages/web/##p' | tr '\n' ' ')
+        if [ -z "$files" ]; then
+          exit 0
+        fi
+        pnpm --filter @sovra/web exec next lint --file $files
     typecheck:
       glob: "packages/web/**/*.{ts,tsx}"
       run: pnpm --filter @sovra/web type-check
