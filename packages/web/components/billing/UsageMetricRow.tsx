@@ -65,8 +65,8 @@ export function UsageMetricRow({ label, used, limit, unit }: UsageMetricRowProps
           <div className="relative group">
             <div className="w-[160px] h-2 rounded-full bg-surface-3 overflow-hidden">
               <div
-                className={cn('h-full rounded-full transition-all duration-[600ms] ease-out', getBarColor(pct))}
-                style={{ width: `${barWidth}%` }}
+                className={cn('h-full rounded-full transition-all ease-out', getBarColor(pct))}
+                style={{ width: `${barWidth}%`, transitionDuration: '600ms' }}
               />
             </div>
             {/* Tooltip */}
