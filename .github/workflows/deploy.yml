@@ -56,7 +56,7 @@ jobs:
             ${{ env.WEB_IMAGE }}:${{ github.sha }}
             ${{ env.WEB_IMAGE }}:latest
           cache-from: type=gha,scope=web
-          cache-to: type=gha,mode=max,scope=web
+          cache-to: type=gha,mode=min,scope=web
 
       - name: Build and push worker image
         uses: docker/build-push-action@v7
@@ -68,7 +68,7 @@ jobs:
             ${{ env.WORKER_IMAGE }}:${{ github.sha }}
             ${{ env.WORKER_IMAGE }}:latest
           cache-from: type=gha,scope=worker
-          cache-to: type=gha,mode=max,scope=worker
+          cache-to: type=gha,mode=min,scope=worker
 
       - name: Output image digests
         run: |
