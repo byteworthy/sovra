@@ -4,17 +4,6 @@ on:
   push:
     branches: [master, main]
   pull_request:
-    paths:
-      - "package.json"
-      - "pnpm-lock.yaml"
-      - "pnpm-workspace.yaml"
-      - "packages/web/**"
-      - "packages/shared/**"
-      - "packages/worker/**"
-      - ".github/dependabot.yml"
-      - ".github/workflows/**"
-      - ".github/workflows/security.yml"
-      - ".github/workflows/ci.yml"
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
