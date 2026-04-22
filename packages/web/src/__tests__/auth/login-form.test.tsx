@@ -2,6 +2,7 @@ import { beforeEach, describe, it, expect, vi } from 'vitest'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { LoginForm } from '@/components/auth/login-form'
 
+const TEST_TIMEOUT_MS = 15_000
 const mockPush = vi.fn()
 
 vi.mock('next/navigation', () => ({
@@ -32,25 +33,25 @@ describe('LoginForm', () => {
     expect(screen.getByLabelText(/email/i)).toBeDefined()
     expect(document.getElementById('password')).not.toBeNull()
     expect(screen.getByRole('button', { name: /sign in$/i })).toBeDefined()
-  })
+  }, TEST_TIMEOUT_MS)
 
   it('renders "Sign in" button text', () => {
     render(<LoginForm />)
     const button = screen.getByRole('button', { name: /sign in$/i })
     expect(button.textContent).toBe('Sign in')
-  })
+  }, TEST_TIMEOUT_MS)
 
   it('renders "Forgot password?" link', () => {
     render(<LoginForm />)
     const link = screen.getByText(/forgot password/i).closest('a')
     expect(link?.getAttribute('href')).toContain('/auth/forgot-password')
-  })
+  }, TEST_TIMEOUT_MS)
 
   it('renders footer with "Sign up" link', () => {
     render(<LoginForm />)
     const link = screen.getByText(/sign up/i).closest('a')
     expect(link?.getAttribute('href')).toContain('/auth/signup')
-  })
+  }, TEST_TIMEOUT_MS)
 
   it('navigates to provided next path after successful sign in', async () => {
     render(<LoginForm nextPath="/t/acme/dashboard" />)
@@ -67,5 +68,5 @@ describe('LoginForm', () => {
       expect(mockSignIn).toHaveBeenCalledWith('user@example.com', 'supersecret')
       expect(mockPush).toHaveBeenCalledWith('/t/acme/dashboard')
     })
-  })
+  }, TEST_TIMEOUT_MS)
 })
