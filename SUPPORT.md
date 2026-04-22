@@ -1,29 +1,48 @@
 # Support
 
-Sovra is free, MIT-licensed, community-supported open source.
+Sovra is MIT-licensed open source with community-first support.
 
-## Getting Help
+## Community support
 
-- **GitHub Discussions** — questions, ideas, and show-and-tell.
-  <https://github.com/byteworthy/sovra/discussions>
-- **GitHub Issues** — reproducible bugs only. Use the bug report template.
-- **Documentation** — `docs/` in this repo covers architecture, deployment, and environment variables.
+- **GitHub Discussions**: questions, architecture ideas, and implementation guidance.
+  <https://github.com/ByteWorthyLLC/sovra/discussions>
+- **GitHub Issues**: reproducible bugs and actionable feature requests.
+- **Documentation**: see `README.md` and `docs/` for deployment/ops references.
 
-Community support is best-effort. Patches welcome — open a PR and we will review.
+Community support is best-effort.
 
-## Commercial Support and White-Label
+## Priority support (commercial)
 
-[ByteWorthy](https://byteworthy.io) offers:
+[ByteWorthy](https://byteworthy.io) offers optional paid support for teams running Sovra in production:
 
-- Priority support contracts
-- Custom development and integrations
-- White-label deployment (see [Klienta](https://github.com/byteworthy/klienta), the commercial client-portal derivative)
-- Architecture reviews and security audits
+- Priority incident response
+- Architecture and security reviews
+- Custom integrations and implementation assistance
+- Migration planning and release hardening
 
-Contact: <https://byteworthy.io> or hello@byteworthy.io.
+Contact: **support@byteworthy.io**.
 
-## Security Issues
+## Incident priority matrix
 
-Do not use GitHub Issues or Discussions for security vulnerabilities.
+Use these labels in your support request subject line:
 
-See `SECURITY.md` for the coordinated disclosure process.
+| Priority | Typical impact | Example |
+|---|---|---|
+| `P1` | Production outage, security incident, or cross-tenant risk | Service unavailable, isolation failure |
+| `P2` | Major degradation with business impact | Realtime/MCP unavailable for many tenants |
+| `P3` | Functional bug with workaround | Feature regression in one workflow |
+| `P4` | Low-impact issue or guidance request | Documentation clarity, non-blocking enhancement |
+
+## What to include in support requests
+
+- Sovra version/commit SHA
+- Deployment target (`Docker`, `Railway`, `Cloud Run`, etc.)
+- Reproduction steps
+- Affected routes/endpoints
+- Relevant logs and timestamps (with timezone)
+- For incidents, current mitigation status
+
+## Security issues
+
+Do not use issues/discussions for vulnerabilities.
+Use `security@byteworthy.io` and follow `SECURITY.md`.

@@ -2,7 +2,10 @@ package socketio
 
 import (
 	"crypto/subtle"
+	"log"
 	"net/http"
+	"os"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 	"github.com/zishang520/socket.io/v2/socket"
@@ -40,10 +43,17 @@ func (h *BroadcastHandler) Handle(c *gin.Context) {
 }
 
 // InternalAuthMiddleware validates the Authorization header against a shared secret.
-// If no secret is configured, all requests are allowed (local dev mode).
+// If no secret is configured, requests are only allowed in non-production.
 func InternalAuthMiddleware(secret string) gin.HandlerFunc {
+	isProduction := strings.EqualFold(strings.TrimSpace(os.Getenv("GO_ENV")), "production")
 	return func(c *gin.Context) {
 		if secret == "" {
+			if isProduction {
+				c.JSON(http.StatusUnauthorized, gin.H{"error": "server auth misconfigured: INTERNAL_API_SECRET is required"})
+				c.Abort()
+				return
+			}
+			log.Println("WARNING: INTERNAL_API_SECRET is empty; allowing unauthenticated /internal routes in non-production")
 			c.Next()
 			return
 		}

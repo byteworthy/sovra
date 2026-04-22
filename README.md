@@ -28,6 +28,9 @@
 
 <p align="center">
   <a href="https://github.com/ByteWorthyLLC/sovra/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue?style=flat-square" alt="MIT License" /></a>
+  <a href="https://github.com/ByteWorthyLLC/sovra/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/ByteWorthyLLC/sovra/ci.yml?branch=main&style=flat-square&label=ci" alt="CI Status" /></a>
+  <a href="https://github.com/ByteWorthyLLC/sovra/actions/workflows/security.yml"><img src="https://img.shields.io/github/actions/workflow/status/ByteWorthyLLC/sovra/security.yml?branch=main&style=flat-square&label=security" alt="Security Status" /></a>
+  <a href="https://scorecard.dev/viewer/?uri=github.com/ByteWorthyLLC/sovra"><img src="https://api.scorecard.dev/projects/github.com/ByteWorthyLLC/sovra/badge" alt="OpenSSF Scorecard" /></a>
   <a href="https://github.com/ByteWorthyLLC/sovra/issues"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen?style=flat-square" alt="PRs Welcome" /></a>
   <a href="https://github.com/ByteWorthyLLC/sovra"><img src="https://img.shields.io/github/stars/ByteWorthyLLC/sovra?style=flat-square" alt="GitHub Stars" /></a>
   <a href="https://github.com/ByteWorthyLLC/sovra"><img src="https://img.shields.io/github/last-commit/ByteWorthyLLC/sovra?style=flat-square" alt="Last Commit" /></a>
@@ -68,7 +71,7 @@ cd packages/web && pnpm dev # Open http://localhost:3000
 
 ### Prerequisites
 
-- [Node.js](https://nodejs.org/) 18+ and [pnpm](https://pnpm.io/) 8+
+- [Node.js](https://nodejs.org/) 20+ and [pnpm](https://pnpm.io/) 10+
 - [Go](https://go.dev/) 1.22+ (for the agent worker service)
 - [Docker](https://www.docker.com/) (for local Supabase)
 - [Supabase CLI](https://supabase.com/docs/guides/cli/getting-started)
@@ -132,6 +135,7 @@ The part nobody else ships:
 | &#x1f9e9; | **MCP native** | Full Model Context Protocol client AND server. Your agents use tools the ecosystem way. |
 | &#x1f50d; | **Vector search** | pgvector inside your existing Postgres. Semantic search, hybrid search, tenant-scoped. |
 | &#x1f916; | **Agent runtime** | Custom models, system prompts, tool assignments. Streaming via Vercel AI SDK. |
+| &#x1f917; | **Hugging Face open models** | Optional third provider via HF router (`router.huggingface.co/v1`) with routing policies (`fastest`/`cheapest`/`preferred`). |
 | &#x1f91d; | **Multi-agent workspaces** | 5 collaboration modes (round-robin, hierarchical, democratic, parallel, debate). Shared memory. Conflict resolution. |
 | &#x1f9e0; | **Memory strategies** | Full history, summary compression, vector retrieval, or hybrid. |
 | &#x1f6e0; | **Built-in tools** | File ops, web search, URL fetch, DB query, semantic search. All MCP-compliant. All tenant-scoped. |
@@ -242,6 +246,10 @@ All required and optional variables are documented in [`.env.example`](.env.exam
 | `DATABASE_URL` | Worker | Direct Postgres connection for Go worker |
 | `STRIPE_SECRET_KEY` | No | Enables billing features |
 | `OPENAI_API_KEY` | No | Enables AI agent chat |
+| `ANTHROPIC_API_KEY` | No | Enables Claude model provider |
+| `HUGGINGFACE_API_KEY` | No | Enables Hugging Face provider models |
+| `HUGGINGFACE_BASE_URL` | No | Optional HF router override (default `https://router.huggingface.co/v1`) |
+| `HUGGINGFACE_ROUTING_POLICY` | No | Optional default model suffix (`fastest`, `cheapest`, `preferred`, provider name) |
 | `SENTRY_DSN` | No | Enables error tracking |
 
 <br/>
@@ -278,13 +286,41 @@ Sovra is the open-source AI platform foundation.
 
 <br/>
 
+## &#x1f4dc; Docs
+
+| Document | Description |
+|----------|-------------|
+| [`docs/architecture.md`](docs/architecture.md) | Service boundaries, request flow, and isolation model |
+| [`docs/auth-framework.md`](docs/auth-framework.md) | Middleware/auth guard model, redirect safety, and API auth behavior |
+| [`docs/huggingface-integration.md`](docs/huggingface-integration.md) | HF provider routing model, env setup, and production operating guidance |
+| [`docs/worker.md`](docs/worker.md) | Go worker ports, auth model, shutdown behavior, and tool surface |
+| [`docs/deployment.md`](docs/deployment.md) | Docker, Railway, GCP, and AWS deployment paths |
+| [`docs/environment-variables.md`](docs/environment-variables.md) | Full env var reference with production requirements |
+| [`docs/testing.md`](docs/testing.md) | Test strategy and required quality gates |
+| [`docs/premium-benchmark.md`](docs/premium-benchmark.md) | Quality framework benchmarked against leading OSS templates and security/governance standards |
+| [`docs/operations-runbook.md`](docs/operations-runbook.md) | Daily/weekly/monthly production operations checklist |
+| [`docs/production-readiness.md`](docs/production-readiness.md) | Pre-release checklist for production promotion |
+| [`docs/release-process.md`](docs/release-process.md) | Versioning, release, and rollback protocol |
+
+<br/>
+
+## Trust & Support
+
+| Document | Description |
+|----------|-------------|
+| [`SECURITY.md`](SECURITY.md) | Vulnerability disclosure policy and operator hardening baseline |
+| [`SUPPORT.md`](SUPPORT.md) | Support channels, incident priorities, and escalation guidance |
+| [`CHANGELOG.md`](CHANGELOG.md) | Release history and in-flight changes |
+
+<br/>
+
 ## &#x1f4cb; Roadmap
 
 | Phase | Status | What Ships |
 |-------|:------:|-----------|
 | Foundation | &#x2705; | Monorepo, database schema, Docker, dev environment |
 | Core Infrastructure | &#x2705; | Supabase auth, multi-tenancy, RBAC, invitations |
-| Agent Core | &#x2705; | Agent CRUD, chat interface, streaming, AI provider adapters |
+| Agent Core | &#x2705; | Agent CRUD, chat interface, streaming, OpenAI/Anthropic/Hugging Face adapters |
 | AI Features | &#x2705; | MCP client/server, built-in tools, vector storage, tool tracking |
 | Multi-Agent | &#x2705; | Workspaces, 5 collab modes, 4 memory strategies, Socket.IO |
 | Production Ready | &#x2705; | Stripe billing, admin dashboard, API keys, Sentry + PostHog, CI/CD |
@@ -310,6 +346,7 @@ Sovra ships with automated maintenance reminders via GitHub Actions:
 
 - **Weekly health check**: monitors latest `CI`, `Security`, `Deploy` runs and open security alert counts; opens an issue automatically if the repo is unhealthy.
 - **Monthly checklist**: opens a recurring issue with a maintainer checklist for dependency reviews, security posture, and routine validation.
+- **Weekly OpenSSF Scorecard**: computes supply-chain security posture and publishes SARIF results to code scanning.
 
 You can also run the cadence workflow manually from the Actions tab (`Maintenance Cadence`).
 

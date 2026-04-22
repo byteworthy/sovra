@@ -68,11 +68,16 @@ describe('PROVIDER_MODELS', () => {
   it('anthropic includes claude-sonnet-4-6', () => {
     expect(PROVIDER_MODELS.anthropic).toContain('claude-sonnet-4-6')
   })
+
+  it('huggingface includes openai/gpt-oss-120b', () => {
+    expect(PROVIDER_MODELS.huggingface).toContain('openai/gpt-oss-120b')
+  })
 })
 
 describe('SUPPORTED_PROVIDERS', () => {
-  it('includes openai and anthropic', () => {
+  it('includes openai, anthropic, and huggingface', () => {
     expect(SUPPORTED_PROVIDERS).toContain('openai')
     expect(SUPPORTED_PROVIDERS).toContain('anthropic')
+    expect(SUPPORTED_PROVIDERS).toContain('huggingface')
   })
 })

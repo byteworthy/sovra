@@ -13,46 +13,31 @@ permissions:
   contents: read
 
 jobs:
-  test-web:
-    name: Test Web
+  workflow-lint:
+    name: Workflow Lint (actionlint)
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout
-        uses: actions/checkout@v5
+      - uses: actions/checkout@v6
+      - uses: actions/setup-go@v6
+        with:
+          go-version: "1.22.x"
+      - name: Lint GitHub Actions workflows
+        run: go run github.com/rhysd/actionlint/cmd/actionlint@latest
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v5
+  web:
+    name: Web (Node 20)
+    runs-on: ubuntu-latest
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v6
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v6
         with:
           node-version: "20"
-          cache: "pnpm"
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Run tests
-        run: pnpm --filter @sovra/web test
-
-      - name: Type check
-        run: pnpm --filter @sovra/web typecheck
-
-  lint:
-    name: Lint
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v5
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v5
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v6
-        with:
-          node-version: "20"
-          cache: "pnpm"
+          cache: pnpm
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -60,19 +45,46 @@ jobs:
       - name: Lint
         run: pnpm --filter @sovra/web lint
 
-  test-worker:
-    name: Test Worker
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v5
+      - name: Type check
+        run: pnpm --filter @sovra/web typecheck
 
-      - name: Setup Go
-        uses: actions/setup-go@v6
+      - name: Test
+        run: pnpm --filter @sovra/web test
+
+      - name: Audit (production)
+        run: pnpm audit --prod --audit-level moderate
+        continue-on-error: true
+
+      - name: Build
+        run: pnpm --filter @sovra/web build
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: https://placeholder.supabase.co
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: placeholder
+          NEXT_PUBLIC_POSTHOG_KEY: placeholder
+          NEXT_PUBLIC_POSTHOG_HOST: https://app.posthog.com
+          SENTRY_ORG: placeholder
+          SENTRY_PROJECT: placeholder
+
+  worker:
+    name: Worker (Go)
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-go@v6
         with:
           go-version-file: packages/worker/go.mod
           cache-dependency-path: packages/worker/go.sum
 
-      - name: Run tests
+      - name: Vet
+        working-directory: packages/worker
+        run: go vet ./...
+
+      - name: Test
         working-directory: packages/worker
         run: go test ./...
+
+      - name: Build
+        working-directory: packages/worker
+        run: go build ./cmd/worker

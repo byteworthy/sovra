@@ -1,6 +1,7 @@
 package http
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"net/http"
@@ -39,12 +40,18 @@ func healthHandler(pool *pgxpool.Pool) gin.HandlerFunc {
 }
 
 // StartHealthServer starts the HTTP health server on the given port.
-// Blocks until the server fails.
-func StartHealthServer(port int, pool *pgxpool.Pool) {
+// Returns a shutdown function for graceful termination.
+func StartHealthServer(port int, pool *pgxpool.Pool) func(context.Context) error {
 	router := NewRouter(pool)
 	addr := fmt.Sprintf(":%d", port)
-	log.Printf("health server listening on %s", addr)
-	if err := router.Run(addr); err != nil {
-		log.Fatalf("health server failed: %v", err)
-	}
+	srv := &http.Server{Addr: addr, Handler: router}
+
+	go func() {
+		log.Printf("health server listening on %s", addr)
+		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+			log.Fatalf("health server failed: %v", err)
+		}
+	}()
+
+	return srv.Shutdown
 }

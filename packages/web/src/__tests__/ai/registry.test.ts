@@ -22,6 +22,12 @@ describe('AI Provider Registry', () => {
     expect(adapter.provider).toBe('anthropic')
   })
 
+  it('getProvider returns huggingface adapter after initProviders', () => {
+    registryModule.initProviders()
+    const adapter = registryModule.getProvider('huggingface')
+    expect(adapter.provider).toBe('huggingface')
+  })
+
   it('getProvider throws for unknown provider', () => {
     registryModule.initProviders()
     expect(() => registryModule.getProvider('unknown')).toThrow(

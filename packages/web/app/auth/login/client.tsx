@@ -6,15 +6,20 @@ import { Separator } from '@/components/ui/separator'
 import { LoginForm } from '@/components/auth/login-form'
 import { SupabaseAuthAdapter } from '@/lib/auth/supabase-adapter'
 import { createSupabaseBrowserClient } from '@/lib/auth/client'
+import { buildAuthCallbackUrl } from '@/lib/auth/redirect'
 
-export function LoginPageClient() {
+interface LoginPageClientProps {
+  nextPath: string
+}
+
+export function LoginPageClient({ nextPath }: LoginPageClientProps) {
   const [oauthLoading, setOauthLoading] = useState<'google' | 'github' | null>(null)
 
   async function handleOAuth(provider: 'google' | 'github') {
     setOauthLoading(provider)
     const supabase = createSupabaseBrowserClient()
     const adapter = new SupabaseAuthAdapter(supabase)
-    await adapter.signInWithOAuth(provider, window.location.origin + '/auth/callback')
+    await adapter.signInWithOAuth(provider, buildAuthCallbackUrl(window.location.origin, nextPath))
   }
 
   return (
@@ -38,7 +43,7 @@ export function LoginPageClient() {
         <Separator text="or" />
       </div>
 
-      <LoginForm />
+      <LoginForm nextPath={nextPath} />
     </>
   )
 }

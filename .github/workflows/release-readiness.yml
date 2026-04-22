@@ -1,0 +1,108 @@
+name: Release Readiness
+
+on:
+  pull_request:
+    branches: [main, master]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: release-readiness-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  docs-and-trust:
+    name: Docs + Trust Integrity
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Run release-readiness checks
+        run: ./scripts/ci/release-readiness-checks.sh
+
+  web:
+    name: Web Quality Gates (Node 20)
+    runs-on: ubuntu-latest
+    needs: docs-and-trust
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "20"
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint
+        run: pnpm --filter @sovra/web lint
+
+      - name: Type check
+        run: pnpm --filter @sovra/web typecheck
+
+      - name: Test
+        run: pnpm --filter @sovra/web test
+
+      - name: Build
+        run: pnpm --filter @sovra/web build
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: https://placeholder.supabase.co
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: placeholder
+          NEXT_PUBLIC_POSTHOG_KEY: placeholder
+          NEXT_PUBLIC_POSTHOG_HOST: https://app.posthog.com
+          SENTRY_ORG: placeholder
+          SENTRY_PROJECT: placeholder
+
+  worker:
+    name: Worker Quality Gates (Go)
+    runs-on: ubuntu-latest
+    needs: docs-and-trust
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: packages/worker/go.mod
+          cache-dependency-path: packages/worker/go.sum
+
+      - name: Vet
+        working-directory: packages/worker
+        run: go vet ./...
+
+      - name: Test
+        working-directory: packages/worker
+        run: go test ./...
+
+      - name: Build
+        working-directory: packages/worker
+        run: go build ./cmd/worker
+
+  release-readiness:
+    name: Release Readiness Gate
+    runs-on: ubuntu-latest
+    if: ${{ always() }}
+    needs: [docs-and-trust, web, worker]
+    steps:
+      - name: Assert all prerequisite jobs succeeded
+        env:
+          DOCS_RESULT: ${{ needs.docs-and-trust.result }}
+          WEB_RESULT: ${{ needs.web.result }}
+          WORKER_RESULT: ${{ needs.worker.result }}
+        run: |
+          echo "docs-and-trust=$DOCS_RESULT"
+          echo "web=$WEB_RESULT"
+          echo "worker=$WORKER_RESULT"
+          if [[ "$DOCS_RESULT" != "success" || "$WEB_RESULT" != "success" || "$WORKER_RESULT" != "success" ]]; then
+            echo "Release readiness gate failed."
+            exit 1
+          fi
+          echo "Release readiness gate passed."

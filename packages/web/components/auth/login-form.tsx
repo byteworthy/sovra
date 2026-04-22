@@ -14,6 +14,11 @@ import { PasswordInput } from './password-input'
 import { Alert } from '@/components/ui/alert'
 import { Spinner } from '@/components/ui/spinner'
 import { Button } from '@/components/ui/button'
+import {
+  appendNextParam,
+  buildAuthCallbackUrl,
+  sanitizeRedirectPath,
+} from '@/lib/auth/redirect'
 
 const loginSchema = z.object({
   email: z.string().email('Enter a valid email address'),
@@ -22,8 +27,13 @@ const loginSchema = z.object({
 
 type FieldErrors = Partial<Record<keyof z.infer<typeof loginSchema>, string>>
 
-export function LoginForm() {
+interface LoginFormProps {
+  nextPath?: string
+}
+
+export function LoginForm({ nextPath = '/onboarding' }: LoginFormProps) {
   const router = useRouter()
+  const safeNextPath = sanitizeRedirectPath(nextPath)
   const [loading, setLoading] = useState(false)
   const [magicLinkLoading, setMagicLinkLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -62,7 +72,7 @@ export function LoginForm() {
         return
       }
 
-      router.push('/onboarding')
+      router.push(safeNextPath)
     } finally {
       setLoading(false)
     }
@@ -81,7 +91,7 @@ export function LoginForm() {
       const adapter = new SupabaseAuthAdapter(supabase)
       const { error: linkError } = await adapter.signInWithMagicLink(
         email,
-        window.location.origin + '/auth/callback'
+        buildAuthCallbackUrl(window.location.origin, safeNextPath)
       )
 
       if (linkError) {
@@ -101,7 +111,10 @@ export function LoginForm() {
         {error && (
           <Alert variant="destructive" title="Incorrect email or password">
             Check your details or{' '}
-            <Link href="/forgot-password" className="font-semibold underline underline-offset-2">
+            <Link
+              href={appendNextParam('/auth/forgot-password', safeNextPath)}
+              className="font-semibold underline underline-offset-2"
+            >
               reset your password
             </Link>
           </Alert>
@@ -143,7 +156,7 @@ export function LoginForm() {
             {magicLinkLoading ? 'Sending...' : 'Sign in with magic link'}
           </button>
           <Link
-            href="/forgot-password"
+            href={appendNextParam('/auth/forgot-password', safeNextPath)}
             className="text-sm text-primary hover:text-primary/80 transition-colors"
           >
             Forgot password?
@@ -167,7 +180,10 @@ export function LoginForm() {
 
         <p className="text-sm text-muted-foreground text-center">
           Don&apos;t have an account?{' '}
-          <Link href="/signup" className="text-primary font-semibold hover:text-primary/80 transition-colors">
+          <Link
+            href={appendNextParam('/auth/signup', safeNextPath)}
+            className="text-primary font-semibold hover:text-primary/80 transition-colors"
+          >
             Sign up
           </Link>
         </p>
