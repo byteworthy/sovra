@@ -89,4 +89,45 @@ describe('workspace broadcast client', () => {
     expect(chunkBody.event).toBe('agent:chunk')
     expect(doneBody.event).toBe('agent:done')
   })
+
+  it('throws when worker URL is not configured', async () => {
+    delete process.env.WORKER_INTERNAL_URL
+    delete process.env.NEXT_PUBLIC_WORKER_URL
+    delete process.env.NEXT_PUBLIC_WORKER_SOCKET_URL
+
+    await expect(
+      broadcastToWorkspace('tenant-1', 'workspace-1', 'agent:status', {
+        status: 'running',
+      })
+    ).rejects.toThrow(/Worker broadcast URL is not configured/)
+  })
+
+  it('accepts NEXT_PUBLIC_WORKER_SOCKET_URL as fallback', async () => {
+    delete process.env.WORKER_INTERNAL_URL
+    delete process.env.NEXT_PUBLIC_WORKER_URL
+    process.env.NEXT_PUBLIC_WORKER_SOCKET_URL = 'https://worker-socket.example:3002/'
+
+    const fetchMock = vi
+      .spyOn(globalThis, 'fetch')
+      .mockResolvedValue(new Response('ok', { status: 200 }))
+
+    await broadcastToWorkspace('tenant-1', 'workspace-1', 'agent:status', {
+      status: 'running',
+    })
+
+    expect(fetchMock).toHaveBeenCalledWith(
+      'https://worker-socket.example:3002/internal/broadcast',
+      expect.any(Object)
+    )
+  })
+
+  it('rejects non-http worker URL protocols', async () => {
+    process.env.WORKER_INTERNAL_URL = 'file:///tmp/worker.sock'
+
+    await expect(
+      broadcastToWorkspace('tenant-1', 'workspace-1', 'agent:status', {
+        status: 'running',
+      })
+    ).rejects.toThrow(/Unsupported worker broadcast protocol/)
+  })
 })

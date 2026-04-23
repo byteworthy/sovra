@@ -6,7 +6,7 @@ function resolveWorkerBroadcastBaseUrl(): URL {
 
   if (!baseUrl) {
     throw new Error(
-      'Worker broadcast URL is not configured. Set WORKER_INTERNAL_URL or NEXT_PUBLIC_WORKER_URL.'
+      'Worker broadcast URL is not configured. Set WORKER_INTERNAL_URL, NEXT_PUBLIC_WORKER_URL, or NEXT_PUBLIC_WORKER_SOCKET_URL.'
     )
   }
 

@@ -53,6 +53,11 @@ export function useWorkspaceSocket(tenantId: string, workspaceId: string) {
     socket.on('disconnect', () => setConnectionStatus('disconnected'))
 
     socket.io.on('reconnect_attempt', () => setConnectionStatus('reconnecting'))
+    socket.io.on('reconnect_failed', () => setConnectionStatus('disconnected'))
+
+    socket.on('connect_error', () => {
+      setConnectionStatus(socket.active ? 'reconnecting' : 'disconnected')
+    })
 
     socket.on('workspace:joined', () => {
       // Room joined confirmation. Connection status already set on connect event.

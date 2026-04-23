@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/ByteWorthyLLC/sovra/main/.github/logo.svg" width="80" alt="Sovra — open-source AI agent platform" />
+  <img src="https://raw.githubusercontent.com/ByteWorthyLLC/sovra/master/.github/logo.svg" width="80" alt="Sovra — open-source AI agent platform" />
 </p>
 
 <h1 align="center">Sovra</h1>
@@ -20,6 +20,7 @@
 <p align="center">
   <a href="#-quick-start">Quick Start</a>&nbsp;&nbsp;|&nbsp;&nbsp;
   <a href="#-what-you-get">Features</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+  <a href="#-launch-paths">Launch Paths</a>&nbsp;&nbsp;|&nbsp;&nbsp;
   <a href="#-the-stack">Stack</a>&nbsp;&nbsp;|&nbsp;&nbsp;
   <a href="#-architecture">Architecture</a>&nbsp;&nbsp;|&nbsp;&nbsp;
   <a href="#-deploy">Deploy</a>&nbsp;&nbsp;|&nbsp;&nbsp;
@@ -27,9 +28,9 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/ByteWorthyLLC/sovra/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue?style=flat-square" alt="MIT License" /></a>
-  <a href="https://github.com/ByteWorthyLLC/sovra/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/ByteWorthyLLC/sovra/ci.yml?branch=main&style=flat-square&label=ci" alt="CI Status" /></a>
-  <a href="https://github.com/ByteWorthyLLC/sovra/actions/workflows/security.yml"><img src="https://img.shields.io/github/actions/workflow/status/ByteWorthyLLC/sovra/security.yml?branch=main&style=flat-square&label=security" alt="Security Status" /></a>
+  <a href="https://github.com/ByteWorthyLLC/sovra/blob/master/LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue?style=flat-square" alt="MIT License" /></a>
+  <a href="https://github.com/ByteWorthyLLC/sovra/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/ByteWorthyLLC/sovra/ci.yml?branch=master&style=flat-square&label=ci" alt="CI Status" /></a>
+  <a href="https://github.com/ByteWorthyLLC/sovra/actions/workflows/security.yml"><img src="https://img.shields.io/github/actions/workflow/status/ByteWorthyLLC/sovra/security.yml?branch=master&style=flat-square&label=security" alt="Security Status" /></a>
   <a href="https://scorecard.dev/viewer/?uri=github.com/ByteWorthyLLC/sovra"><img src="https://api.scorecard.dev/projects/github.com/ByteWorthyLLC/sovra/badge" alt="OpenSSF Scorecard" /></a>
   <a href="https://github.com/ByteWorthyLLC/sovra/issues"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen?style=flat-square" alt="PRs Welcome" /></a>
   <a href="https://github.com/ByteWorthyLLC/sovra"><img src="https://img.shields.io/github/stars/ByteWorthyLLC/sovra?style=flat-square" alt="GitHub Stars" /></a>
@@ -51,6 +52,20 @@ You want to build an AI agent product. So you start wiring up auth, multi-tenanc
 **Three months later, you still haven't shipped a single AI feature.**
 
 Sovra eliminates that. Clone it, run it, build on it. What takes teams 3+ months, you get in one `git clone`.
+
+### Start Free, Upgrade When Needed
+
+Sovra is a complete open-source base you can run in production under MIT.
+
+- Start with **Sovra** if you want a flexible foundation and full control.
+- Upgrade to **Klienta** when you need an agency-focused commercial stack (multi-client portals, white-label workflows, monetization defaults).
+- Upgrade to **Clynova** when you need healthcare-grade product scaffolding (interoperability, PHI-oriented controls, compliance-first architecture).
+
+<p>
+  <a href="https://github.com/ByteWorthyLLC/sovra"><b>Use Sovra (Free)</b></a> ·
+  <a href="https://github.com/ByteWorthyLLC/klienta"><b>Explore Klienta (Paid)</b></a> ·
+  <a href="https://github.com/ByteWorthyLLC/clynova"><b>Explore Clynova (Paid)</b></a>
+</p>
 
 <br/>
 
@@ -258,7 +273,7 @@ All required and optional variables are documented in [`.env.example`](.env.exam
 
 - **Indie hackers** building AI-powered SaaS — skip 3 months of infrastructure work
 - **Startups** that need multi-tenant AI agents on day one
-- **Agencies** building white-label AI solutions with tenant isolation — see also [**Klienta**](https://github.com/byteworthy/klienta), a paid agency-vertical boilerplate built on Sovra
+- **Agencies** building white-label AI solutions with tenant isolation — see [**Klienta**](https://github.com/ByteWorthyLLC/klienta), a paid agency-vertical boilerplate built on Sovra
 - **Enterprise teams** evaluating self-hosted alternatives to closed-source agent platforms
 - **Open-source contributors** looking for a solid, extensible AI platform foundation
 
@@ -267,15 +282,15 @@ All required and optional variables are documented in [`.env.example`](.env.exam
 - Simple chatbot wrapper? Use [OpenWebUI](https://github.com/open-webui/open-webui)
 - Agent framework only (no SaaS)? Use [LangGraph](https://github.com/langchain-ai/langgraph) or [CrewAI](https://github.com/crewAIInc/crewAI)
 - Need a hosted solution? Sovra is self-hosted only
-- Running an **AI agency** with multiple paying clients and need per-client branding, custom domains, and usage-based billing? → Use [**Klienta**](https://github.com/byteworthy/klienta) (paid boilerplate built on Sovra)
+- Running an **AI agency** with multiple paying clients and need per-client branding, custom domains, and usage-based billing? → Use [**Klienta**](https://github.com/ByteWorthyLLC/klienta) (paid boilerplate built on Sovra)
 
 <br/>
 
 ## &#x1f91d; Built on Sovra
 
-Sovra is the open-source AI platform foundation.
+Sovra is the open-source AI platform foundation and the shared base layer for ByteWorthy commercial verticals.
 
-- Need a ready-made **agency vertical** on top (white-label portals, custom domains, metered billing)? Use [**Klienta**](https://github.com/ByteWorthyLLC/klienta).
+- Need a ready-made **agency vertical** (white-label portals, custom domains, metered billing)? Use [**Klienta**](https://github.com/ByteWorthyLLC/klienta).
 - Need a ready-made **healthcare vertical** (FHIR R4, HL7 v2, X12 EDI, PHI controls, compliance scaffolding)? Use [**Clynova**](https://github.com/ByteWorthyLLC/clynova).
 
 | You're building... | Use |
@@ -283,6 +298,16 @@ Sovra is the open-source AI platform foundation.
 | A product for end users | **Sovra** (this repo, free, MIT) |
 | An agency with multiple paying clients | [**Klienta**](https://github.com/ByteWorthyLLC/klienta) (paid, built on Sovra) |
 | A healthcare AI product with interoperability/compliance requirements | [**Clynova**](https://github.com/ByteWorthyLLC/clynova) (paid, built after Sovra foundations) |
+
+## &#x1f680; Launch Paths
+
+| Path | Best For | What You Get Fastest |
+|------|----------|----------------------|
+| **Sovra (OSS)** | Builders who want maximum flexibility and source ownership | Full multi-tenant AI SaaS baseline, MCP-native runtime, and production deployment controls |
+| **Klienta (Paid)** | Agencies and consultants shipping client-facing AI products | Agency-first defaults, monetization accelerators, and white-label delivery patterns |
+| **Clynova (Paid)** | Healthcare teams shipping regulated AI workflows | Compliance-oriented architecture patterns and healthcare interoperability foundations |
+
+**Practical workflow:** start on Sovra, validate product demand, then move to Klienta/Clynova when vertical-specific speed matters more than custom build-out.
 
 <br/>
 
