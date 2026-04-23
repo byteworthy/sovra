@@ -57,7 +57,7 @@ export async function POST(req: NextRequest): Promise<Response> {
   }
 
   // Validate return URL to prevent open redirect
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000'
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? req.nextUrl.origin
   let returnUrl = appUrl
   const referer = req.headers.get('referer')
   if (referer) {

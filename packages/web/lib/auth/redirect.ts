@@ -1,4 +1,6 @@
 const DEFAULT_REDIRECT_PATH = '/onboarding'
+const REDIRECT_PARSE_ORIGIN = 'https://sovra.example'
+const REDIRECT_PARSE_HOST = 'sovra.example'
 
 export function sanitizeRedirectPath(
   raw: string | null | undefined,
@@ -9,8 +11,8 @@ export function sanitizeRedirectPath(
   }
 
   try {
-    const url = new URL(raw, 'http://localhost')
-    if (url.host !== 'localhost') {
+    const url = new URL(raw, REDIRECT_PARSE_ORIGIN)
+    if (url.host !== REDIRECT_PARSE_HOST) {
       return fallback
     }
 
@@ -22,7 +24,7 @@ export function sanitizeRedirectPath(
 
 export function appendNextParam(path: string, nextPath: string): string {
   const safeNext = sanitizeRedirectPath(nextPath)
-  const url = new URL(path, 'http://localhost')
+  const url = new URL(path, REDIRECT_PARSE_ORIGIN)
   url.searchParams.set('next', safeNext)
   return `${url.pathname}${url.search}`
 }
@@ -33,4 +35,3 @@ export function buildAuthCallbackUrl(origin: string, nextPath: string): string {
   callbackUrl.searchParams.set('next', safeNext)
   return callbackUrl.toString()
 }
-

@@ -14,8 +14,17 @@ export function useWorkspaceSocket(tenantId: string, workspaceId: string) {
   const clearChunks = useWorkspaceStore((state) => state.clearChunks)
 
   useEffect(() => {
+    const socketUrl =
+      process.env.NEXT_PUBLIC_WORKER_SOCKET_URL ||
+      process.env.NEXT_PUBLIC_WORKER_URL
+
+    if (!socketUrl) {
+      setConnectionStatus('disconnected')
+      return
+    }
+
     const socket = io(
-      process.env.NEXT_PUBLIC_WORKER_SOCKET_URL || 'http://localhost:3002',
+      socketUrl,
       {
         reconnection: true,
         reconnectionAttempts: 5,

@@ -1,0 +1,28 @@
+[tool.skylos]
+complexity = 12
+nesting = 4
+max_args = 6
+max_lines = 120
+duplicate_strings = 4
+exclude = ["pnpm-lock.yaml"]
+ignore = ["SKY-S101", "SKY-S102", "SKY-D216", "SKY-D230", "SKY-D253", "SKY-C303", "SKY-C304"]
+
+[tool.skylos.masking]
+names = []
+decorators = []
+bases = []
+
+[tool.skylos.whitelist]
+names = []
+
+[tool.skylos.whitelist.documented]
+
+[tool.skylos.whitelist.temporary]
+
+[tool.skylos.gate]
+fail_on_critical = true
+max_critical = 0
+max_high = 0
+max_security = 0
+max_quality = 150
+strict = false
