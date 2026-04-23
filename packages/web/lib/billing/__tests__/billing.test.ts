@@ -53,12 +53,39 @@ describe('getStripe', () => {
 })
 
 describe('GET /api/health', () => {
-  it('returns 200 with { status: ok }', async () => {
-    const { GET } = await import('@/app/api/health/route')
-    const response = await GET()
-    expect(response.status).toBe(200)
-    const body = await response.json()
-    expect(body).toEqual({ status: 'ok' })
+  it('returns 200 with structured readiness payload', async () => {
+    const original = {
+      NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+      WORKER_INTERNAL_URL: process.env.WORKER_INTERNAL_URL,
+      OPENAI_API_KEY: process.env.OPENAI_API_KEY,
+    }
+
+    try {
+      process.env.NEXT_PUBLIC_SUPABASE_URL = 'https://example.supabase.co'
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY = 'anon-key'
+      process.env.WORKER_INTERNAL_URL = 'http://worker.internal'
+      process.env.OPENAI_API_KEY = 'sk-test'
+
+      const { GET } = await import('@/app/api/health/route')
+      const response = await GET()
+      expect(response.status).toBe(200)
+      const body = await response.json()
+      expect(body).toEqual(
+        expect.objectContaining({
+          status: 'ok',
+          checks: expect.objectContaining({
+            supabase: 'configured',
+            worker: 'configured',
+          }),
+        })
+      )
+    } finally {
+      process.env.NEXT_PUBLIC_SUPABASE_URL = original.NEXT_PUBLIC_SUPABASE_URL
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY = original.NEXT_PUBLIC_SUPABASE_ANON_KEY
+      process.env.WORKER_INTERNAL_URL = original.WORKER_INTERNAL_URL
+      process.env.OPENAI_API_KEY = original.OPENAI_API_KEY
+    }
   })
 })
 

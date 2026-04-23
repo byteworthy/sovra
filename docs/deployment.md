@@ -7,7 +7,7 @@ Sovra can be deployed to any of three cloud platforms or self-hosted with Docker
 - Docker 24+
 - Git
 - A Supabase project (cloud or self-hosted)
-- API keys for the AI providers you want to use (OpenAI and/or Anthropic)
+- API keys for the AI providers you want to use (OpenAI, Anthropic, and/or Hugging Face)
 
 ## Platform Options
 
@@ -34,7 +34,7 @@ The simplest path. Runs both services on a single host.
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/your-org/sovra.git
+   git clone https://github.com/ByteWorthyLLC/sovra.git
    cd sovra
    ```
 
@@ -107,7 +107,8 @@ Railway offers zero-config deploys from a GitHub repo. Recommended for quick sta
 ### Notes
 
 - Railway injects `PORT` automatically. The web service reads it at startup.
-- Use Railway's service linking to pass `WORKER_URL` from the worker service to the web service.
+- Use Railway service linking/private networking and set `WORKER_INTERNAL_URL` in the web service to the worker's internal URL.
+- Set `INTERNAL_API_SECRET` and `SUPABASE_JWT_SECRET` in both web/worker environments before production traffic.
 
 ---
 
@@ -195,7 +196,8 @@ Serverless containers with automatic scaling. Ideal for GCP users.
 ### Notes
 
 - Cloud Run services are private by default (`--no-allow-unauthenticated`). Use Cloud IAM or an API gateway for public access.
-- Set `WORKER_URL` in the web service to the internal URL of the worker Cloud Run service.
+- Set `WORKER_INTERNAL_URL` in the web service to the internal URL of the worker Cloud Run service.
+- Set `INTERNAL_API_SECRET` and `SUPABASE_JWT_SECRET` as managed secrets in both services.
 - See `platform/gcp/service.web.yaml` and `platform/gcp/service.worker.yaml` for the full service specs.
 
 ---
@@ -318,7 +320,7 @@ Both services expose health endpoints used by all deployment platforms:
 
 | Service | Endpoint | Expected Response |
 |---|---|---|
-| Web | `GET /api/health` | `{"status":"ok"}` |
+| Web | `GET /api/health` | `{"status":"ok"|"degraded","checks":{...}}` |
 | Worker | `GET /health` | `{"status":"ok"}` |
 
 ---

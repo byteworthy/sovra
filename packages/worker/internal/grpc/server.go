@@ -20,8 +20,8 @@ import (
 // exclusively within a private Docker network (not exposed to the public internet).
 // Before any external exposure, replace insecure.NewCredentials() with
 // credentials.NewServerTLSFromFile("cert.pem", "cert.key").
-// Blocks until the server fails.
-func StartServer(port int, _ *pgxpool.Pool) {
+// Returns a stop function for graceful termination.
+func StartServer(port int, _ *pgxpool.Pool) func() {
 	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", port))
 	if err != nil {
 		log.Fatalf("grpc listen failed: %v", err)
@@ -35,8 +35,12 @@ func StartServer(port int, _ *pgxpool.Pool) {
 	grpc_health_v1.RegisterHealthServer(s, healthServer)
 	healthServer.SetServingStatus("", grpc_health_v1.HealthCheckResponse_SERVING)
 
-	log.Printf("grpc server listening on :%d", port)
-	if err := s.Serve(lis); err != nil {
-		log.Fatalf("grpc serve failed: %v", err)
-	}
+	go func() {
+		log.Printf("grpc server listening on :%d", port)
+		if err := s.Serve(lis); err != nil {
+			log.Fatalf("grpc serve failed: %v", err)
+		}
+	}()
+
+	return s.GracefulStop
 }

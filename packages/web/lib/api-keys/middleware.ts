@@ -11,10 +11,8 @@ export interface ApiKeyContext {
 
 type ApiKeyHandler = (request: Request, context: ApiKeyContext) => Promise<Response>
 
-function createServiceClient(): Pick<SupabaseClient, 'from'> {
-  // Lazily import to avoid Next.js server-only guard issues in tests
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const { createServerClient } = require('@supabase/ssr') as typeof import('@supabase/ssr')
+async function createServiceClient(): Promise<Pick<SupabaseClient, 'from'>> {
+  const { createServerClient } = await import('@supabase/ssr')
   return createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.SUPABASE_SERVICE_ROLE_KEY!,
@@ -43,7 +41,7 @@ export function withApiKeyAuth(
 
     const rawKey = authHeader.slice('Bearer '.length).trim()
 
-    const supabase = supabaseFactory ? supabaseFactory() : createServiceClient()
+    const supabase = supabaseFactory ? supabaseFactory() : await createServiceClient()
     const authResult = await authenticateApiKey(supabase, rawKey)
 
     if (!authResult.valid) {

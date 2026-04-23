@@ -1,11 +1,19 @@
 import { AuthCard } from '@/components/auth/auth-card'
 import { SignupPageClient } from './client'
+import { sanitizeRedirectPath } from '@/lib/auth/redirect'
 
 export const metadata = {
   title: 'Create account | Sovra',
 }
 
-export default function SignupPage() {
+interface SignupPageProps {
+  searchParams: Promise<{ next?: string }>
+}
+
+export default async function SignupPage({ searchParams }: SignupPageProps) {
+  const params = await searchParams
+  const nextPath = sanitizeRedirectPath(params.next)
+
   return (
     <AuthCard aria-label="Create account form">
       <div className="space-y-2 mb-6">
@@ -13,7 +21,7 @@ export default function SignupPage() {
         <p className="text-sm text-muted-foreground mt-2">Start building production AI apps today</p>
       </div>
 
-      <SignupPageClient />
+      <SignupPageClient nextPath={nextPath} />
     </AuthCard>
   )
 }

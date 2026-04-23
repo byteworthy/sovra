@@ -26,8 +26,8 @@ jobs:
           script: |
             const owner = context.repo.owner
             const repo = context.repo.repo
-            const branch = "master"
-            const workflows = ["CI", "Security", "Deploy"]
+            const branch = "main"
+            const workflows = ["CI", "Security", "Release Readiness", "Deploy"]
 
             const runs = await github.paginate(
               github.rest.actions.listWorkflowRunsForRepo,
@@ -157,7 +157,7 @@ jobs:
               "",
               "- [ ] Review open Dependabot PRs and merge safe updates",
               "- [ ] Confirm open alert counts are zero (Dependabot, code scanning, secret scanning)",
-              "- [ ] Validate latest `master` workflow status (`CI`, `Security`, `Deploy`)",
+              "- [ ] Validate latest `main` workflow status (`CI`, `Security`, `Release Readiness`, `Deploy`)",
               "- [ ] Review CI logs for new deprecations or warnings",
               "- [ ] Run local validation (`pnpm lint`, `pnpm test`, `pnpm typecheck`, `pnpm go:test`)",
               "- [ ] Confirm README/docs links and setup instructions remain accurate",

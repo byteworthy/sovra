@@ -1,5 +1,6 @@
 import { convertToModelMessages, streamText, type ToolSet, type UIMessage } from 'ai'
 import { createSupabaseServerClient } from '@/lib/auth/server'
+import { AIProviderNotConfiguredError } from '@/lib/ai/adapter'
 import { getProvider, initProviders } from '@/lib/ai/registry'
 import { getMcpClient } from '@/lib/mcp/client'
 import { buildAiToolsFromMcp, getAgentTools } from '@/lib/mcp/tool-registry'
@@ -78,19 +79,27 @@ export async function POST(req: Request) {
   await supabase.from('agents').update({ status: 'running' }).eq('id', agentId)
 
   initProviders()
-  let adapter
+  let model
   try {
-    adapter = getProvider(agent.model_provider)
-  } catch {
+    const adapter = getProvider(agent.model_provider)
+    model = adapter.getModel(agent.model_name)
+  } catch (error) {
+    const isKnownProviderIssue =
+      error instanceof AIProviderNotConfiguredError ||
+      (error instanceof Error && error.message.startsWith('Unknown provider:'))
+    if (!isKnownProviderIssue) {
+      return new Response(
+        JSON.stringify({ error: 'An error occurred while resolving the AI provider.' }),
+        { status: 500, headers: { 'Content-Type': 'application/json' } }
+      )
+    }
     return new Response(
       JSON.stringify({ error: `AI provider "${agent.model_provider}" is not configured. Check your API keys.` }),
       { status: 503, headers: { 'Content-Type': 'application/json' } }
     )
   }
-  const model = adapter.getModel(agent.model_name)
 
   // Load MCP tools with graceful degradation
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let agentTools: ToolSet = {}
   try {
     const mcpClient = await getMcpClient()

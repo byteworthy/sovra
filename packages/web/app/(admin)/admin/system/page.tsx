@@ -41,7 +41,7 @@ async function checkDatabase(): Promise<CheckResult> {
 
 async function checkWorker(): Promise<CheckResult> {
   const start = Date.now()
-  const workerUrl = process.env.NEXT_PUBLIC_WORKER_URL || 'http://localhost:8080'
+  const workerUrl = process.env.WORKER_HEALTH_URL || 'http://localhost:8080'
   try {
     const res = await fetch(`${workerUrl}/health`, { signal: AbortSignal.timeout(5000) })
     return { name: 'Go worker', status: res.ok ? 'healthy' : 'degraded', latencyMs: Date.now() - start }

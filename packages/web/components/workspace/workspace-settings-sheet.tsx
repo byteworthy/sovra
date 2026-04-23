@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import * as Tabs from '@radix-ui/react-tabs'
 import { X } from 'lucide-react'
@@ -79,6 +79,7 @@ export function WorkspaceSettingsSheet({
   const [compressionThreshold, setCompressionThreshold] = useState(workspace.compression_threshold)
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const wasOpenRef = useRef(open)
 
   const isDirty =
     name !== workspace.name ||
@@ -91,7 +92,8 @@ export function WorkspaceSettingsSheet({
 
   // Reset on open
   useEffect(() => {
-    if (open) {
+    const wasOpen = wasOpenRef.current
+    if (!wasOpen && open) {
       setName(workspace.name)
       setDescription(workspace.description ?? '')
       setSelectedAgentIds(assignedAgentIds)
@@ -103,7 +105,18 @@ export function WorkspaceSettingsSheet({
       setActiveTab('general')
       setError(null)
     }
-  }, [open]) // eslint-disable-line react-hooks/exhaustive-deps
+    wasOpenRef.current = open
+  }, [
+    open,
+    assignedAgentIds,
+    workspace.name,
+    workspace.description,
+    workspace.collaboration_mode,
+    workspace.conflict_resolution,
+    workspace.memory_strategy,
+    workspace.compression_enabled,
+    workspace.compression_threshold,
+  ])
 
   const tabDirection = activeTab > prevTab ? 1 : -1
 

@@ -1,61 +1,75 @@
 # Security Policy
 
-## Supported Versions
+## Supported versions
 
-Sovra follows semantic versioning. The latest minor release receives security patches.
+Sovra follows semantic versioning. The latest `1.x` minor receives security fixes.
 
 | Version | Supported |
-|---------|-----------|
-| 1.x     | ✅        |
-| < 1.0   | ❌        |
+|---|---|
+| 1.x | Yes |
+| < 1.0 | No |
 
-## Reporting a Vulnerability
+## Reporting a vulnerability
 
-**Do not open a public GitHub issue for security vulnerabilities.**
+Do not open public issues for vulnerabilities.
 
-Please use GitHub Security Advisories (preferred) or email **security@byteworthy.io** with:
+Report via:
 
-- A description of the vulnerability and its potential impact.
-- Steps to reproduce, proof-of-concept, or exploit code if available.
-- Affected version(s) and commit SHA if known.
-- Your preferred credit attribution (or request anonymity).
+- GitHub security advisory (preferred), or
+- email: `security@byteworthy.io`
 
-We commit to:
+Include:
 
-- Acknowledging your report within **48 hours**.
-- Providing a triage assessment within **7 days**.
-- Issuing a fix or mitigation guidance within **30 days** for high-severity issues.
-- Publishing a coordinated advisory via GitHub Security Advisories once a fix is available.
+- impact summary
+- reproduction steps / PoC
+- affected version or commit
+- suggested mitigation (if known)
+
+Response targets:
+
+- acknowledgment within 48 hours
+- triage update within 7 days
+- mitigation/fix guidance for high severity within 30 days
 
 ## Scope
 
 In scope:
 
-- Authentication, authorization, and tenant isolation (RLS) in `packages/web` and `packages/worker`.
-- SQL injection, XSS, CSRF, SSRF, path traversal, prototype pollution.
-- Supabase RLS policies shipped in `supabase/migrations/`.
-- Secret exposure in logs, client bundles, or build artifacts.
+- Authentication, authorization, and tenant isolation
+- RLS policy correctness in `supabase/migrations`
+- Worker internal auth boundaries (`/internal/broadcast`, `/mcp`)
+- Common web vulnerabilities (SQLi, XSS, CSRF, SSRF, path traversal)
+- Secret leakage in logs/build artifacts/client bundles
 
 Out of scope:
 
-- Third-party dependencies with published CVEs (report upstream; we track via Dependabot).
-- Denial-of-service through resource exhaustion on self-hosted instances (operator configuration).
-- Social engineering against ByteWorthy or its contributors.
-- Issues that require a compromised admin account to exploit.
+- CVEs in third-party dependencies without Sovra-specific exploit path
+- Social engineering attacks
+- Issues requiring compromised admin credentials to exploit
 
-## Hardening Checklist for Operators
+## Operator hardening checklist
 
-Before deploying Sovra to production:
+Before production deployment:
 
-- [ ] Set a strong, rotated `ENCRYPTION_KEY` (≥ 32 bytes, stored in a secret manager).
-- [ ] Enable Supabase Row-Level Security on all tables (verified by the shipped migrations).
-- [ ] Restrict service-role keys to server-only runtime; never expose to the browser.
-- [ ] Enable Upstash Redis rate limiting (`UPSTASH_REDIS_REST_URL`, `UPSTASH_REDIS_REST_TOKEN`).
-- [ ] Enable Sentry (`SENTRY_DSN`) and PostHog for observability.
-- [ ] Enforce HTTPS and HSTS at the edge.
-- [ ] Review `middleware.ts` CSP before enabling custom integrations.
-- [ ] Run `pnpm audit` on each upgrade.
+- [ ] Set strong `INTERNAL_API_SECRET` (web + worker).
+- [ ] Set `SUPABASE_JWT_SECRET` in worker.
+- [ ] Set explicit `SOCKETIO_ALLOWED_ORIGINS` (no wildcard in production).
+- [ ] Keep Supabase service-role credentials server-only.
+- [ ] Enable HTTPS/HSTS at ingress.
+- [ ] Enable Sentry and alert routing for production incidents.
+- [ ] Enable dependency/security scanning in CI.
+- [ ] Run release checks (`./scripts/ci/release-readiness-checks.sh`).
 
-## Cryptography
+## Dependency and code scanning
 
-Sovra encrypts sensitive fields at rest. Do not replace with custom crypto. If a new primitive is needed, prefer [Google Tink](https://github.com/google/tink) or [Themis](https://github.com/cossacklabs/themis) rather than hand-rolling.
+Sovra ships scheduled security checks for:
+
+- CodeQL
+- gitleaks
+- OSV dependency scan
+- `govulncheck`
+- semgrep
+- OpenSSF Scorecard
+
+See `.github/workflows/security.yml`.
+See `.github/workflows/scorecard.yml`.

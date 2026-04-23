@@ -7,8 +7,8 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/gin-gonic/gin"
 	"github.com/byteworthy/sovra-worker/internal/socketio"
+	"github.com/gin-gonic/gin"
 	"github.com/zishang520/socket.io/v2/socket"
 )
 
@@ -25,8 +25,8 @@ func TestBroadcastHandler_MissingFields(t *testing.T) {
 	router := newTestRouter(io)
 
 	tests := []struct {
-		name    string
-		body    map[string]any
+		name       string
+		body       map[string]any
 		wantStatus int
 	}{
 		{
@@ -72,8 +72,8 @@ func TestBroadcastHandler_EmptyTenantOrWorkspace(t *testing.T) {
 	router := newTestRouter(io)
 
 	tests := []struct {
-		name    string
-		body    map[string]any
+		name       string
+		body       map[string]any
 		wantStatus int
 	}{
 		{
@@ -131,5 +131,56 @@ func TestBroadcastHandler_ValidPayload(t *testing.T) {
 	}
 	if ok, _ := resp["ok"].(bool); !ok {
 		t.Errorf("expected {ok: true}, got %v", resp)
+	}
+}
+
+func TestInternalAuthMiddleware_ProductionRequiresSecret(t *testing.T) {
+	t.Setenv("GO_ENV", "production")
+
+	io, _ := socketio.MountSocketIO("*", &socketio.SocketAuth{})
+	gin.SetMode(gin.TestMode)
+	router := gin.New()
+	socketio.MountBroadcastRoutes(router, io, "")
+
+	body := map[string]any{
+		"tenant_id":    "tenant-abc",
+		"workspace_id": "workspace-xyz",
+		"event":        "agent:status",
+	}
+	bodyBytes, _ := json.Marshal(body)
+	req := httptest.NewRequest(http.MethodPost, "/internal/broadcast", bytes.NewReader(bodyBytes))
+	req.Header.Set("Content-Type", "application/json")
+	w := httptest.NewRecorder()
+
+	router.ServeHTTP(w, req)
+
+	if w.Code != http.StatusUnauthorized {
+		t.Fatalf("expected status 401, got %d (body: %s)", w.Code, w.Body.String())
+	}
+}
+
+func TestInternalAuthMiddleware_AcceptsValidBearerSecret(t *testing.T) {
+	t.Setenv("GO_ENV", "production")
+
+	io, _ := socketio.MountSocketIO("*", &socketio.SocketAuth{})
+	gin.SetMode(gin.TestMode)
+	router := gin.New()
+	socketio.MountBroadcastRoutes(router, io, "top-secret")
+
+	body := map[string]any{
+		"tenant_id":    "tenant-abc",
+		"workspace_id": "workspace-xyz",
+		"event":        "agent:status",
+	}
+	bodyBytes, _ := json.Marshal(body)
+	req := httptest.NewRequest(http.MethodPost, "/internal/broadcast", bytes.NewReader(bodyBytes))
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Authorization", "Bearer top-secret")
+	w := httptest.NewRecorder()
+
+	router.ServeHTTP(w, req)
+
+	if w.Code != http.StatusOK {
+		t.Fatalf("expected status 200, got %d (body: %s)", w.Code, w.Body.String())
 	}
 }

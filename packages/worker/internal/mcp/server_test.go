@@ -46,6 +46,43 @@ func TestHTTPHandler_MCPEndpointResponds(t *testing.T) {
 	}
 }
 
+func TestHTTPHandler_MCPAuthFailsClosedInProduction(t *testing.T) {
+	t.Setenv("GO_ENV", "production")
+
+	srv := mcpserver.NewMCPServer(nil, &config.Config{
+		AgentWorkspacePath: t.TempDir(),
+	})
+	handler := mcpserver.NewMCPHandler(srv, "")
+
+	req := httptest.NewRequest(http.MethodPost, "/mcp", nil)
+	req.Header.Set("Content-Type", "application/json")
+	w := httptest.NewRecorder()
+	handler.ServeHTTP(w, req)
+
+	if w.Code != http.StatusUnauthorized {
+		t.Fatalf("expected status 401, got %d", w.Code)
+	}
+}
+
+func TestHTTPHandler_MCPAuthAcceptsValidBearerSecret(t *testing.T) {
+	t.Setenv("GO_ENV", "production")
+
+	srv := mcpserver.NewMCPServer(nil, &config.Config{
+		AgentWorkspacePath: t.TempDir(),
+	})
+	handler := mcpserver.NewMCPHandler(srv, "mcp-secret")
+
+	req := httptest.NewRequest(http.MethodPost, "/mcp", nil)
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Authorization", "Bearer mcp-secret")
+	w := httptest.NewRecorder()
+	handler.ServeHTTP(w, req)
+
+	if w.Code == http.StatusUnauthorized || w.Code == http.StatusNotFound {
+		t.Fatalf("expected authenticated MCP route response, got %d", w.Code)
+	}
+}
+
 func TestConfigLoad_MCPPort_Default(t *testing.T) {
 	os.Unsetenv("MCP_PORT")
 	cfg := config.Load()

@@ -12,6 +12,7 @@ import { PasswordInput } from './password-input'
 import { Alert } from '@/components/ui/alert'
 import { Spinner } from '@/components/ui/spinner'
 import { Button } from '@/components/ui/button'
+import { appendNextParam, sanitizeRedirectPath } from '@/lib/auth/redirect'
 
 const signupSchema = z.object({
   fullName: z.string().min(1, 'Name is required'),
@@ -21,8 +22,13 @@ const signupSchema = z.object({
 
 type FieldErrors = Partial<Record<keyof z.infer<typeof signupSchema>, string>>
 
-export function SignupForm() {
+interface SignupFormProps {
+  nextPath?: string
+}
+
+export function SignupForm({ nextPath = '/onboarding' }: SignupFormProps) {
   const router = useRouter()
+  const safeNextPath = sanitizeRedirectPath(nextPath)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({})
@@ -61,7 +67,7 @@ export function SignupForm() {
         return
       }
 
-      router.push('/onboarding')
+      router.push(safeNextPath)
     } finally {
       setLoading(false)
     }
@@ -71,7 +77,10 @@ export function SignupForm() {
     <form onSubmit={handleSubmit} aria-busy={loading} className="space-y-4">
       {error === 'exists' ? (
         <Alert variant="destructive" title="An account with this email already exists">
-          <Link href="/auth/login" className="font-semibold underline underline-offset-2">
+          <Link
+            href={appendNextParam('/auth/login', safeNextPath)}
+            className="font-semibold underline underline-offset-2"
+          >
             Sign in instead
           </Link>
         </Alert>
@@ -130,7 +139,10 @@ export function SignupForm() {
 
       <p className="text-sm text-muted-foreground text-center">
         Already have an account?{' '}
-        <Link href="/auth/login" className="text-primary font-semibold hover:text-primary/80 transition-colors">
+        <Link
+          href={appendNextParam('/auth/login', safeNextPath)}
+          className="text-primary font-semibold hover:text-primary/80 transition-colors"
+        >
           Sign in
         </Link>
       </p>

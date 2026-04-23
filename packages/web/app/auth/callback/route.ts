@@ -1,16 +1,6 @@
 import { NextResponse } from 'next/server'
 import { createSupabaseServerClient } from '@/lib/auth/server'
-
-function sanitizeRedirectPath(raw: string | null): string {
-  if (!raw || !raw.startsWith('/') || raw.startsWith('//')) return '/onboarding'
-  try {
-    const url = new URL(raw, 'http://localhost')
-    if (url.host !== 'localhost') return '/onboarding'
-    return url.pathname + url.search
-  } catch {
-    return '/onboarding'
-  }
-}
+import { sanitizeRedirectPath } from '@/lib/auth/redirect'
 
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url)

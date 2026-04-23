@@ -5,7 +5,9 @@ import (
 	"log"
 	"os"
 	"os/signal"
+	"strings"
 	"syscall"
+	"time"
 
 	"github.com/byteworthy/sovra-worker/internal/config"
 	"github.com/byteworthy/sovra-worker/internal/db"
@@ -18,8 +20,27 @@ import (
 func main() {
 	cfg := config.Load()
 
-	if cfg.InternalAPISecret == "" {
-		log.Println("WARNING: INTERNAL_API_SECRET not set — internal endpoints are unauthenticated")
+	if err := cfg.ValidateAuthConfig(); err != nil {
+		log.Fatalf("FATAL: %v", err)
+	}
+
+	if !cfg.IsProduction() && cfg.InternalAPISecret == "" {
+		log.Println("WARNING: INTERNAL_API_SECRET not set — internal endpoints are unauthenticated in non-production")
+	}
+	if !cfg.IsProduction() && cfg.SupabaseJWTSecret == "" {
+		log.Println("WARNING: SUPABASE_JWT_SECRET not set — socket join auth is disabled in non-production")
+	}
+
+	// A wildcard origin in production allows any website to establish a WebSocket
+	// connection to this worker and receive real-time tenant data.
+	for _, origin := range strings.Split(cfg.SocketIOAllowedOrigins, ",") {
+		if strings.TrimSpace(origin) == "*" {
+			if cfg.IsProduction() {
+				log.Fatal("FATAL: SOCKETIO_ALLOWED_ORIGINS contains '*' — wildcard is not permitted in production")
+			}
+			log.Println("WARNING: SOCKETIO_ALLOWED_ORIGINS contains '*' — this is insecure outside local development")
+			break
+		}
 	}
 
 	log.Printf("starting sovra worker (env=%s)", cfg.Environment)
@@ -37,25 +58,38 @@ func main() {
 		defer pool.Close()
 	}
 
-	// Start HTTP health server in the background.
-	go workerhttp.StartHealthServer(cfg.HTTPPort, pool)
+	// Start all servers. Each returns a shutdown handle.
+	shutdownHealth := workerhttp.StartHealthServer(cfg.HTTPPort, pool)
+	stopGRPC := workergrpc.StartServer(cfg.GRPCPort, pool)
+	shutdownMCP := mcpserver.StartMCPServer(cfg.MCPPort, pool, cfg)
+	_, shutdownSocketIO := socketioserver.StartSocketIOServer(
+		cfg.SocketIOPort,
+		cfg.SocketIOAllowedOrigins,
+		cfg.InternalAPISecret,
+		cfg.SupabaseJWTSecret,
+		pool,
+	)
 
-	// Start gRPC server in the background.
-	go workergrpc.StartServer(cfg.GRPCPort, pool)
-
-	// Start MCP server in the background.
-	go mcpserver.StartMCPServer(cfg.MCPPort, pool, cfg)
-
-	// Start Socket.IO server for real-time workspace collaboration.
-	// Serves on cfg.SocketIOPort (default 3002). Includes /internal/broadcast endpoint.
-	// SECURITY: Never use "*" for allowed origins in production — use SOCKETIO_ALLOWED_ORIGINS env var.
-	go func() {
-		socketioserver.StartSocketIOServer(cfg.SocketIOPort, cfg.SocketIOAllowedOrigins, cfg.InternalAPISecret, cfg.SupabaseJWTSecret, pool)
-	}()
-
-	// Block until SIGINT or SIGTERM.
+	// Wait for SIGINT or SIGTERM, then stop services gracefully.
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
 	sig := <-quit
-	log.Printf("received signal %s, shutting down", sig)
+	log.Printf("received signal %s, shutting down gracefully (30s timeout)", sig)
+
+	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+	defer cancel()
+
+	if err := shutdownHealth(ctx); err != nil {
+		log.Printf("health server shutdown error: %v", err)
+	}
+	if err := shutdownMCP(ctx); err != nil {
+		log.Printf("mcp server shutdown error: %v", err)
+	}
+	if err := shutdownSocketIO(ctx); err != nil {
+		log.Printf("socket.io server shutdown error: %v", err)
+	}
+
+	stopGRPC()
+
+	log.Println("all servers stopped - exiting")
 }

@@ -42,6 +42,8 @@ vi.mock('@/lib/mcp/tool-registry', () => ({
 }))
 
 import { POST } from './route'
+import { getProvider } from '@/lib/ai/registry'
+import { AIProviderNotConfiguredError } from '@/lib/ai/adapter'
 
 function makeRequest(body: Record<string, unknown>): Request {
   return new Request('http://localhost/api/chat', {
@@ -271,5 +273,63 @@ describe('POST /api/chat', () => {
     // streamText should be called without tools (or tools undefined)
     const callArgs = mockStreamText.mock.calls[0][0]
     expect(callArgs.tools).toBeUndefined()
+  })
+
+  it('returns 503 when provider is unknown during model resolution', async () => {
+    vi.mocked(getProvider).mockImplementation(() => {
+      throw new Error('Unknown provider: unknown')
+    })
+
+    const req = makeRequest({
+      agentId: 'agent-1',
+      conversationId: 'conv-1',
+      messages: [{ role: 'user', content: 'hello' }],
+    })
+
+    const res = await POST(req)
+    expect(res.status).toBe(503)
+    await expect(res.json()).resolves.toEqual({
+      error: 'AI provider "openai" is not configured. Check your API keys.',
+    })
+  })
+
+  it('returns 503 when provider API key is missing during model resolution', async () => {
+    vi.mocked(getProvider).mockReturnValue({
+      getModel: () => {
+        throw new AIProviderNotConfiguredError('openai')
+      },
+    } as never)
+
+    const req = makeRequest({
+      agentId: 'agent-1',
+      conversationId: 'conv-1',
+      messages: [{ role: 'user', content: 'hello' }],
+    })
+
+    const res = await POST(req)
+    expect(res.status).toBe(503)
+    await expect(res.json()).resolves.toEqual({
+      error: 'AI provider "openai" is not configured. Check your API keys.',
+    })
+  })
+
+  it('returns 500 when provider resolution fails with an unexpected error', async () => {
+    vi.mocked(getProvider).mockReturnValue({
+      getModel: () => {
+        throw new Error('unexpected provider runtime failure')
+      },
+    } as never)
+
+    const req = makeRequest({
+      agentId: 'agent-1',
+      conversationId: 'conv-1',
+      messages: [{ role: 'user', content: 'hello' }],
+    })
+
+    const res = await POST(req)
+    expect(res.status).toBe(500)
+    await expect(res.json()).resolves.toEqual({
+      error: 'An error occurred while resolving the AI provider.',
+    })
   })
 })

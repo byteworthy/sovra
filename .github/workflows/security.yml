@@ -26,7 +26,7 @@ jobs:
       matrix:
         language: [javascript-typescript, go]
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v4
         with:
@@ -43,7 +43,7 @@ jobs:
     name: Secret scan (gitleaks)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - name: Install gitleaks CLI
@@ -53,7 +53,35 @@ jobs:
             | tar -xz gitleaks
           sudo install -m 0755 gitleaks /usr/local/bin/gitleaks
       - name: Run gitleaks
-        run: gitleaks git --redact --no-banner --exit-code 1
+        run: |
+          gitleaks git \
+            --redact \
+            --no-banner \
+            --exit-code 1 \
+            --report-format sarif \
+            --report-path gitleaks.sarif
+      - name: Upload gitleaks report
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: gitleaks-sarif
+          path: gitleaks.sarif
+          if-no-files-found: warn
+          retention-days: 30
+
+  pnpm-audit:
+    name: pnpm audit (prod)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "20"
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Audit (production)
+        run: pnpm audit --prod --audit-level moderate
 
   dependency-scan:
     name: Dependency scan (OSV)
@@ -75,7 +103,7 @@ jobs:
     name: govulncheck
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: actions/setup-go@v6
         with:
           go-version-file: packages/worker/go.mod
@@ -94,7 +122,34 @@ jobs:
     # do not fail the whole security workflow.
     if: github.event_name == 'pull_request' && vars.ENABLE_DEPENDENCY_REVIEW == 'true'
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: actions/dependency-review-action@v4
         with:
           fail-on-severity: high
+
+  semgrep:
+    name: SAST (semgrep)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install semgrep
+        run: pip install --disable-pip-version-check semgrep==1.86.0
+      - name: Run semgrep baseline scan
+        run: |
+          semgrep scan \
+            --config p/owasp-top-ten \
+            --config p/secrets \
+            --error \
+            --json \
+            --output semgrep-results.json
+      - name: Upload semgrep report
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: semgrep-results
+          path: semgrep-results.json
+          if-no-files-found: warn
+          retention-days: 30

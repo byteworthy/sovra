@@ -3,13 +3,26 @@ import { createServerClient } from '@supabase/ssr'
 import { createClient } from '@supabase/supabase-js'
 import { createTenantResolver } from '@/lib/tenant/resolver'
 import { PUBLIC_ROUTES } from '@/lib/rbac/constants'
+import { sanitizeRedirectPath } from '@/lib/auth/redirect'
 
 function setSecurityHeaders(res: NextResponse): void {
   res.headers.set('X-Frame-Options', 'DENY')
   res.headers.set('X-Content-Type-Options', 'nosniff')
   res.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin')
   res.headers.set('X-DNS-Prefetch-Control', 'on')
+  res.headers.set('X-Permitted-Cross-Domain-Policies', 'none')
+  res.headers.set('Cross-Origin-Opener-Policy', 'same-origin')
+  res.headers.set('Cross-Origin-Resource-Policy', 'same-origin')
+  res.headers.set('Origin-Agent-Cluster', '?1')
   res.headers.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=()')
+}
+
+function isApiRoute(pathname: string): boolean {
+  return pathname.startsWith('/api/')
+}
+
+function buildNextParam(pathname: string, search: string): string {
+  return sanitizeRedirectPath(`${pathname}${search}`)
 }
 
 function isPublicRoute(pathname: string): boolean {
@@ -21,7 +34,7 @@ function isPublicRoute(pathname: string): boolean {
 }
 
 export async function middleware(request: NextRequest) {
-  const { pathname } = request.nextUrl
+  const { pathname, search } = request.nextUrl
 
   // 1. Public routes: skip auth entirely for fast response
   if (isPublicRoute(pathname)) {
@@ -51,9 +64,12 @@ export async function middleware(request: NextRequest) {
       const { data: { user } } = await supabase.auth.getUser()
       // Redirect authenticated users away from login/signup
       if (user && (pathname === '/auth/login' || pathname === '/auth/signup')) {
-        const dashUrl = request.nextUrl.clone()
-        dashUrl.pathname = '/onboarding'
-        return NextResponse.redirect(dashUrl)
+        const redirectTo = sanitizeRedirectPath(request.nextUrl.searchParams.get('next'))
+        const redirectUrl = new URL(redirectTo, request.url)
+        const redirectResponse = NextResponse.redirect(redirectUrl)
+        setSecurityHeaders(redirectResponse)
+        redirectResponse.headers.set('Cache-Control', 'private, no-store')
+        return redirectResponse
       }
     }
 
@@ -96,10 +112,20 @@ export async function middleware(request: NextRequest) {
   // 6. Admin path guard: /admin/* requires is_platform_admin
   if (pathname.startsWith('/admin')) {
     if (!user) {
+      if (isApiRoute(pathname)) {
+        const apiResponse = NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+        apiResponse.headers.set('Cache-Control', 'private, no-store')
+        setSecurityHeaders(apiResponse)
+        return apiResponse
+      }
+
       const loginUrl = request.nextUrl.clone()
       loginUrl.pathname = '/auth/login'
-      loginUrl.searchParams.set('next', pathname)
-      return NextResponse.redirect(loginUrl)
+      loginUrl.searchParams.set('next', buildNextParam(pathname, search))
+      const redirectResponse = NextResponse.redirect(loginUrl)
+      setSecurityHeaders(redirectResponse)
+      redirectResponse.headers.set('Cache-Control', 'private, no-store')
+      return redirectResponse
     }
 
     const adminClient = createClient(
@@ -117,7 +143,10 @@ export async function middleware(request: NextRequest) {
     if (!userRow?.is_platform_admin) {
       const dashUrl = request.nextUrl.clone()
       dashUrl.pathname = '/onboarding'
-      return NextResponse.redirect(dashUrl)
+      const redirectResponse = NextResponse.redirect(dashUrl)
+      setSecurityHeaders(redirectResponse)
+      redirectResponse.headers.set('Cache-Control', 'private, no-store')
+      return redirectResponse
     }
 
     response.headers.set('Cache-Control', 'private, no-store')
@@ -127,10 +156,20 @@ export async function middleware(request: NextRequest) {
 
   // 7. Redirect unauthenticated users to login
   if (!user) {
+    if (isApiRoute(pathname)) {
+      const apiResponse = NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+      apiResponse.headers.set('Cache-Control', 'private, no-store')
+      setSecurityHeaders(apiResponse)
+      return apiResponse
+    }
+
     const loginUrl = request.nextUrl.clone()
     loginUrl.pathname = '/auth/login'
-    loginUrl.searchParams.set('next', pathname)
-    return NextResponse.redirect(loginUrl)
+    loginUrl.searchParams.set('next', buildNextParam(pathname, search))
+    const redirectResponse = NextResponse.redirect(loginUrl)
+    setSecurityHeaders(redirectResponse)
+    redirectResponse.headers.set('Cache-Control', 'private, no-store')
+    return redirectResponse
   }
 
   // 8. Forward resolved tenant slug to server components via header

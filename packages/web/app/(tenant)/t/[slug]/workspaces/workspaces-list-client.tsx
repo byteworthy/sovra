@@ -66,7 +66,6 @@ export function WorkspacesListClient({
       {/* Create dialog */}
       <CreateWorkspaceDialog
         tenantId={tenantId}
-        tenantSlug={tenantSlug}
         agents={agents}
         open={showCreate}
         onOpenChange={setShowCreate}

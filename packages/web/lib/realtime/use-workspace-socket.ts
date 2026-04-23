@@ -7,8 +7,11 @@ import { useWorkspaceStore } from './workspace-store'
 
 export function useWorkspaceSocket(tenantId: string, workspaceId: string) {
   const socketRef = useRef<Socket | null>(null)
-  const { setConnectionStatus, updateAgentStatus, addActivity, appendChunk, clearChunks } =
-    useWorkspaceStore()
+  const setConnectionStatus = useWorkspaceStore((state) => state.setConnectionStatus)
+  const updateAgentStatus = useWorkspaceStore((state) => state.updateAgentStatus)
+  const addActivity = useWorkspaceStore((state) => state.addActivity)
+  const appendChunk = useWorkspaceStore((state) => state.appendChunk)
+  const clearChunks = useWorkspaceStore((state) => state.clearChunks)
 
   useEffect(() => {
     const socket = io(
@@ -78,8 +81,15 @@ export function useWorkspaceSocket(tenantId: string, workspaceId: string) {
       socket.emit('workspace:leave', tenantId, workspaceId)
       socket.disconnect()
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [tenantId, workspaceId])
+  }, [
+    tenantId,
+    workspaceId,
+    setConnectionStatus,
+    updateAgentStatus,
+    addActivity,
+    appendChunk,
+    clearChunks,
+  ])
 
   return socketRef
 }

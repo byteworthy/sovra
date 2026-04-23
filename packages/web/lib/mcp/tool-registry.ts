@@ -38,8 +38,7 @@ function convertJsonSchemaToZod(
   return z.object(shape)
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type AiTool = ReturnType<typeof tool>
+type AiTool = ToolSet[string]
 
 export async function buildAiToolsFromMcp(
   client: Client

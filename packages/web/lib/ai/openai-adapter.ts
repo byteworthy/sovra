@@ -1,15 +1,20 @@
 import { createOpenAI } from '@ai-sdk/openai'
-import type { AIProviderAdapter } from './adapter'
+import { AIProviderNotConfiguredError, type AIProviderAdapter } from './adapter'
 
 export class OpenAIAdapter implements AIProviderAdapter {
   readonly provider = 'openai'
   private client: ReturnType<typeof createOpenAI>
+  private readonly apiKey: string
 
   constructor(apiKey?: string) {
-    this.client = createOpenAI({ apiKey: apiKey ?? process.env.OPENAI_API_KEY })
+    this.apiKey = apiKey ?? process.env.OPENAI_API_KEY ?? ''
+    this.client = createOpenAI({ apiKey: this.apiKey })
   }
 
   getModel(modelName: string) {
+    if (!this.apiKey) {
+      throw new AIProviderNotConfiguredError(this.provider)
+    }
     return this.client(modelName)
   }
 }

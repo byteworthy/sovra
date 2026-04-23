@@ -6,8 +6,8 @@ Thanks for your interest in contributing! Sovra is an open-source project and we
 
 ### Prerequisites
 
-- **Node.js** 18+ (recommend using [fnm](https://github.com/Schniz/fnm) or nvm)
-- **pnpm** 8+ (`npm install -g pnpm`)
+- **Node.js** 20+ (recommend using [fnm](https://github.com/Schniz/fnm) or nvm)
+- **pnpm** 10+ (`npm install -g pnpm`)
 - **Go** 1.22+ (for the worker service)
 - **Docker** (for local Supabase)
 - **Supabase CLI** (`brew install supabase/tap/supabase`)
@@ -16,7 +16,7 @@ Thanks for your interest in contributing! Sovra is an open-source project and we
 
 ```bash
 # Clone the repo
-git clone https://github.com/byteworthy/sovra.git
+git clone https://github.com/ByteWorthyLLC/sovra.git
 cd sovra
 
 # Install dependencies
@@ -95,7 +95,7 @@ cd packages/web && pnpm tsc --noEmit
 
 ### Good First Issues
 
-Look for issues labeled [`good first issue`](https://github.com/byteworthy/sovra/labels/good%20first%20issue).
+Look for issues labeled [`good first issue`](https://github.com/ByteWorthyLLC/sovra/labels/good%20first%20issue).
 
 ### Areas We Need Help
 

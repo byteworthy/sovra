@@ -32,6 +32,9 @@ At least one AI provider key is required for agent features to work.
 |---|---|---|---|
 | `OPENAI_API_KEY` | Conditional | - | OpenAI API key. Required if using OpenAI models. |
 | `ANTHROPIC_API_KEY` | Conditional | - | Anthropic API key. Required if using Claude models. |
+| `HUGGINGFACE_API_KEY` | Conditional | - | Hugging Face token for Inference Providers. Required if using Hugging Face models. |
+| `HUGGINGFACE_BASE_URL` | No | `https://router.huggingface.co/v1` | OpenAI-compatible Hugging Face endpoint for chat models. |
+| `HUGGINGFACE_ROUTING_POLICY` | No | `fastest` | Optional suffix applied to Hugging Face model IDs when no explicit suffix is provided. Examples: `fastest`, `cheapest`, `preferred`, provider names like `sambanova`. |
 
 ---
 
@@ -39,9 +42,18 @@ At least one AI provider key is required for agent features to work.
 
 | Name | Required | Default | Description |
 |---|---|---|---|
-| `WORKER_URL` | Yes | `http://localhost:8080` | Base URL of the Go worker service (used by the web service to call the worker) |
+| `NEXT_PUBLIC_WORKER_URL` | No | `http://localhost:3002` | Public Socket.IO/broadcast base URL used by the web app. |
+| `NEXT_PUBLIC_WORKER_SOCKET_URL` | No | `http://localhost:3002` | Public Socket.IO URL used by realtime clients. |
+| `WORKER_INTERNAL_URL` | No | - | Optional private/internal worker URL for server-side broadcast calls (recommended in production). |
+| `WORKER_HEALTH_URL` | No | `http://localhost:8080` | Optional private worker HTTP health URL used by admin system checks. |
+| `WORKER_MCP_URL` | No | `http://localhost:3001/mcp` | MCP HTTP endpoint used by web-side MCP clients. |
 | `HTTP_PORT` | No | `8080` | HTTP port the worker listens on |
 | `GRPC_PORT` | No | `50051` | gRPC port the worker listens on |
+| `MCP_PORT` | No | `3001` | MCP server port in the Go worker |
+| `SOCKETIO_PORT` | No | `3002` | Socket.IO + internal broadcast server port |
+| `SOCKETIO_ALLOWED_ORIGINS` | No | `http://localhost:3000` | Comma-separated allowed origins for Socket.IO CORS. `*` is rejected in production. |
+| `INTERNAL_API_SECRET` | Yes (production) | - | Shared bearer secret for internal worker routes (`/internal/broadcast`, `/mcp`). |
+| `SUPABASE_JWT_SECRET` | Yes (production) | - | JWT secret used by worker Socket.IO auth. |
 | `GO_ENV` | No | `development` | Go environment (`development` or `production`) |
 | `AGENT_WORKSPACE_PATH` | No | `/tmp/agent-workspace` | Filesystem path for agent workspace scratch space |
 
@@ -124,8 +136,8 @@ Optional. When absent, Brave Search tool is unavailable to agents.
 |---|---|---|
 | Supabase | 3 vars | - |
 | Database | 1 var | - |
-| AI Providers | 1+ vars | - |
-| Worker Service | `WORKER_URL` | 4 vars |
+| AI Providers | 1+ vars | 2 vars (`HUGGINGFACE_BASE_URL`, `HUGGINGFACE_ROUTING_POLICY`) |
+| Worker Service | `INTERNAL_API_SECRET` + `SUPABASE_JWT_SECRET` in production | 11 vars |
 | App | - | 2 vars |
 | Billing (Stripe) | - | 5 vars |
 | Rate Limiting (Upstash) | - | 2 vars |

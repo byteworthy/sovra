@@ -1,8 +1,10 @@
 package socketio
 
 import (
+	"context"
 	"fmt"
 	"log"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"github.com/jackc/pgx/v5/pgxpool"
@@ -44,8 +46,8 @@ func MountSocketIO(allowedOrigins string, auth *SocketAuth) (*socket.Server, *gi
 
 // StartSocketIOServer starts the Socket.IO server on the given port.
 // Mounts broadcast routes internally and starts listening in the background.
-// Returns the Socket.IO server instance for use by callers.
-func StartSocketIOServer(port int, allowedOrigins string, internalSecret string, jwtSecret string, pool *pgxpool.Pool) *socket.Server {
+// Returns the Socket.IO server instance and a shutdown function.
+func StartSocketIOServer(port int, allowedOrigins string, internalSecret string, jwtSecret string, pool *pgxpool.Pool) (*socket.Server, func(context.Context) error) {
 	auth := &SocketAuth{
 		JWTSecret: []byte(jwtSecret),
 		Pool:      pool,
@@ -54,12 +56,14 @@ func StartSocketIOServer(port int, allowedOrigins string, internalSecret string,
 	MountBroadcastRoutes(router, io, internalSecret)
 
 	addr := fmt.Sprintf(":%d", port)
+	srv := &http.Server{Addr: addr, Handler: router}
+
 	log.Printf("socket.io server listening on %s", addr)
 	go func() {
-		if err := router.Run(addr); err != nil {
-			log.Printf("socket.io server error: %v", err)
+		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+			log.Fatalf("socket.io server failed: %v", err)
 		}
 	}()
 
-	return io
+	return io, srv.Shutdown
 }
