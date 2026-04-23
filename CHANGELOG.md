@@ -48,6 +48,7 @@ The format is based on Keep a Changelog and this project follows Semantic Versio
 - README hero branding now uses a local repo asset to avoid broken external logo references.
 - Sitemap expanded to include multi-page marketing routes for stronger crawl coverage.
 - README, llms index, and Pages navigation now route to the launch foundation path.
+- Branch reference hygiene updated to use `master` consistently in release process docs and maintenance/release-readiness workflows.
 - Worker startup now validates auth secrets in production and rejects wildcard Socket.IO origins.
 - Worker servers (health, gRPC, MCP, Socket.IO) now support graceful shutdown with a 30 second drain window.
 - Internal worker routes (`/internal/broadcast`, `/mcp`) now fail closed in production when `INTERNAL_API_SECRET` is missing.

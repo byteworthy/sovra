@@ -4,8 +4,8 @@ This document defines how Sovra changes move from PR to production.
 
 ## Branch and merge model
 
-- `main` is the release branch.
-- Changes land through reviewed PRs.
+- `master` is the release branch.
+- Changes land through PRs with required status checks green.
 - Required checks: `CI`, `Security`, and `Release Readiness`.
 - Merge automation should only merge when all required checks are green.
 
@@ -67,4 +67,3 @@ If a critical regression is detected:
 4. Ship fix-forward patch with regression tests.
 
 Avoid destructive DB rollback. Prefer forward migrations restoring compatibility.
-

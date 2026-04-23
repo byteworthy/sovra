@@ -2,9 +2,9 @@ name: Release Readiness
 
 on:
   pull_request:
-    branches: [main, master]
+    branches: [master]
   push:
-    branches: [main]
+    branches: [master]
   workflow_dispatch:
 
 concurrency:

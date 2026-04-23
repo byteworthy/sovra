@@ -330,6 +330,6 @@ Both services expose health endpoints used by all deployment platforms:
 GitHub Actions workflows are provided in `.github/workflows/`:
 
 - `ci.yml` - Runs tests, type checks, and linting on pull requests
-- `deploy.yml` - Builds Docker images and pushes to GitHub Container Registry (GHCR) on every merge to main
+- `deploy.yml` - Builds Docker images and pushes to GitHub Container Registry (GHCR) on every merge to master
 
 Images are tagged with both the commit SHA and `latest`. To deploy a specific version, use the SHA tag.
