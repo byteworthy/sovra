@@ -8,14 +8,14 @@ type JsonSchemaProperty = {
 
 function convertJsonSchemaToZod(
   inputSchema?: { properties?: Record<string, JsonSchemaProperty>; required?: string[] }
-): z.ZodObject<Record<string, z.ZodTypeAny>> {
+): z.ZodObject<Record<string, z.ZodType<unknown>>> {
   if (!inputSchema?.properties) return z.object({})
 
-  const shape: Record<string, z.ZodTypeAny> = {}
+  const shape: Record<string, z.ZodType<unknown>> = {}
   const required = new Set(inputSchema.required ?? [])
 
   for (const [key, prop] of Object.entries(inputSchema.properties)) {
-    let fieldSchema: z.ZodTypeAny
+    let fieldSchema: z.ZodType<unknown>
 
     switch (prop.type) {
       case 'number':
@@ -26,7 +26,7 @@ function convertJsonSchemaToZod(
         fieldSchema = z.boolean()
         break
       case 'array':
-        fieldSchema = z.array(z.any())
+        fieldSchema = z.array(z.unknown())
         break
       default:
         fieldSchema = z.string()
