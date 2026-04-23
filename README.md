@@ -174,6 +174,7 @@ Production onboarding is documented end-to-end:
 - [`templates/migrations/cutover-checklist-template.md`](templates/migrations/cutover-checklist-template.md) for controlled cutovers
 - [`templates/upgrade/boilerplate-evaluation-template.md`](templates/upgrade/boilerplate-evaluation-template.md) for Sovra -> Klienta/Clynova upgrade decisions
 - [`templates/marketing/seo-aeo-geo-brief-template.md`](templates/marketing/seo-aeo-geo-brief-template.md) for discoverability-focused launch content planning
+- [`templates/growth/`](templates/growth/) for measurable weekly growth and launch-review operations
 
 <br/>
 
@@ -375,6 +376,7 @@ Sovra is optimized for search engines, answer engines, and generative discovery 
 - **Geo-intent coverage**: deployment-ready for US, EU, and APAC operator footprints via self-hosted infra choices and tenant isolation patterns.
 - **AI/GEO indexing document**: [`llms.txt`](llms.txt) provides canonical links for retrieval and answer synthesis.
 - **Publishing playbook**: [`docs/seo-aeo-geo-guidelines.md`](docs/seo-aeo-geo-guidelines.md) includes page standards, FAQ strategy, and metadata templates.
+- **Editorial style control**: [`docs/marketing-editorial-guidelines.md`](docs/marketing-editorial-guidelines.md) keeps user-facing messaging direct and proof-based.
 
 <br/>
 
@@ -393,6 +395,7 @@ Sovra is optimized for search engines, answer engines, and generative discovery 
 | [`docs/open-source-packaging.md`](docs/open-source-packaging.md) | OSS/commercial packaging boundaries and license/compatibility model |
 | [`docs/commercial-checkout-and-billing.md`](docs/commercial-checkout-and-billing.md) | Secure billing channel and Stripe secret handling policy |
 | [`docs/seo-aeo-geo-guidelines.md`](docs/seo-aeo-geo-guidelines.md) | SEO, AEO, and GEO publishing standards for discoverability |
+| [`docs/marketing-editorial-guidelines.md`](docs/marketing-editorial-guidelines.md) | Style and proof rules for user-facing marketing and docs copy |
 | [`llms.txt`](llms.txt) | Canonical AI retrieval index for LLM/GEO discoverability |
 | [`docs/environment-variables.md`](docs/environment-variables.md) | Full env var reference with production requirements |
 | [`docs/testing.md`](docs/testing.md) | Test strategy and required quality gates |
@@ -402,6 +405,7 @@ Sovra is optimized for search engines, answer engines, and generative discovery 
 | [`docs/release-process.md`](docs/release-process.md) | Versioning, release, and rollback protocol |
 | [`templates/marketing/seo-aeo-geo-brief-template.md`](templates/marketing/seo-aeo-geo-brief-template.md) | Reusable brief for discoverability-focused page planning |
 | [`templates/marketing/product-page-copy-template.md`](templates/marketing/product-page-copy-template.md) | Product page copy structure for launch and conversion |
+| [`templates/growth/`](templates/growth/) | Experiment briefs, KPI scorecard, and weekly growth-review templates |
 
 <br/>
 

@@ -30,6 +30,7 @@ Sovra is an open source AI SaaS boilerplate for multi tenant AI products.
 - Open source packaging and licensing: https://github.com/ByteWorthyLLC/sovra/blob/master/docs/open-source-packaging.md
 - Commercial checkout and billing: https://github.com/ByteWorthyLLC/sovra/blob/master/docs/commercial-checkout-and-billing.md
 - SEO AEO GEO guidelines: https://github.com/ByteWorthyLLC/sovra/blob/master/docs/seo-aeo-geo-guidelines.md
+- Marketing editorial guidelines: https://github.com/ByteWorthyLLC/sovra/blob/master/docs/marketing-editorial-guidelines.md
 
 ## Product line
 

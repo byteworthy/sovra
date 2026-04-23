@@ -1,0 +1,56 @@
+name: Growth experiment
+description: Propose and track a measurable discoverability or activation experiment.
+title: "[Growth]: "
+labels: [growth, experiment]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this form for measurable user-facing growth work.
+  - type: dropdown
+    id: funnel_stage
+    attributes:
+      label: Funnel stage
+      options:
+        - Discovery
+        - Consideration
+        - Conversion
+        - Activation
+        - Retention
+    validations:
+      required: true
+  - type: textarea
+    id: hypothesis
+    attributes:
+      label: Hypothesis
+      placeholder: If we change ___ for ___ users, metric ___ should improve by ___ because ___.
+    validations:
+      required: true
+  - type: textarea
+    id: primary_metric
+    attributes:
+      label: Primary metric
+      placeholder: Example: Quickstart page click-through rate
+    validations:
+      required: true
+  - type: textarea
+    id: guardrails
+    attributes:
+      label: Guardrail metrics
+      placeholder: Metrics that must not regress while the experiment runs.
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: Scope
+      placeholder: What pages, docs, templates, or site assets will change?
+    validations:
+      required: true
+  - type: textarea
+    id: rollout_window
+    attributes:
+      label: Rollout window
+      placeholder: Start date, end date, and decision date.
+    validations:
+      required: true

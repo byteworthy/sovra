@@ -54,6 +54,7 @@ sovra/
 
 ### Branching
 
+- `master` is the release branch.
 - `feature/short-desc` for new features
 - `fix/short-desc` for bug fixes
 - `chore/short-desc` for maintenance
@@ -108,11 +109,13 @@ Look for issues labeled [`good first issue`](https://github.com/ByteWorthyLLC/so
 
 ## Pull Request Process
 
-1. Fork the repo and create your branch from `main`
+1. Fork the repo and create your branch from `master`
 2. Make your changes with tests
 3. Ensure all tests pass and there are no TypeScript errors
 4. Update documentation if you changed any public APIs
 5. Open a PR with a clear description of what and why
+
+For discoverability and onboarding experiments, use the `Growth experiment` issue template.
 
 ## Code of Conduct
 

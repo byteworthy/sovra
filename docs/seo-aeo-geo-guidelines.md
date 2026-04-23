@@ -83,7 +83,9 @@ Keep language plain and specific. Do not use hype words without proof.
 
 - `templates/marketing/seo-aeo-geo-brief-template.md`
 - `templates/marketing/product-page-copy-template.md`
+- `templates/growth/`
 - `docs/launch-foundation.md`
+- `docs/marketing-editorial-guidelines.md`
 - `site/index.html`
 - `site/foundation.html`
 - `llms.txt`
