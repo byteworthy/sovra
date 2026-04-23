@@ -1,6 +1,7 @@
 'use server'
 
 import { createSupabaseServerClient } from '@/lib/auth/server'
+import type { Tables } from '@sovra/shared/types/database'
 
 interface ConversationInput {
   tenantId: string
@@ -9,7 +10,7 @@ interface ConversationInput {
 }
 
 interface ConversationResult {
-  conversation: Record<string, unknown> | null
+  conversation: Tables<'conversations'> | null
   error: string | null
 }
 
@@ -21,7 +22,7 @@ interface MessageInput {
 }
 
 interface MessageResult {
-  message: Record<string, unknown> | null
+  message: Tables<'messages'> | null
   error: string | null
 }
 

@@ -5,16 +5,13 @@ import { useRouter } from 'next/navigation'
 import { ConversationSidebar } from '@/components/chat/conversation-sidebar'
 import { ChatContainer } from '@/components/chat/chat-container'
 import type { UIMessage } from 'ai'
+import type { Tables } from '@sovra/shared/types/database'
 
-interface Conversation {
-  id: string
-  title: string | null
-  created_at: string
-  updated_at: string
-}
+type Conversation = Tables<'conversations'>
+type Agent = Pick<Tables<'agents'>, 'name' | 'status'>
 
 interface ChatPageClientProps {
-  agent: Record<string, unknown>
+  agent: Agent
   agentId: string
   tenantId: string
   tenantSlug: string
@@ -87,8 +84,8 @@ export function ChatPageClient({
         <ChatContainer
           agentId={agentId}
           conversationId={activeConversationId}
-          agentName={(agent.name as string) ?? 'Agent'}
-          agentStatus={(agent.status as string) ?? 'idle'}
+          agentName={agent.name ?? 'Agent'}
+          agentStatus={agent.status ?? 'idle'}
           initialMessages={messages}
           tenantId={tenantId}
         />

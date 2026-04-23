@@ -1,6 +1,7 @@
 import type { SupabaseClient } from '@supabase/supabase-js'
+import type { Database } from '@sovra/shared'
 
-export async function listAgents(supabase: SupabaseClient, tenantId: string) {
+export async function listAgents(supabase: SupabaseClient<Database>, tenantId: string) {
   return supabase
     .from('agents')
     .select('*')
@@ -8,7 +9,7 @@ export async function listAgents(supabase: SupabaseClient, tenantId: string) {
     .order('created_at', { ascending: false })
 }
 
-export async function getAgent(supabase: SupabaseClient, agentId: string) {
+export async function getAgent(supabase: SupabaseClient<Database>, agentId: string) {
   return supabase
     .from('agents')
     .select('*')

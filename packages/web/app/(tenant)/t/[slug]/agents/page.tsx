@@ -12,6 +12,17 @@ interface AgentsPageProps {
   params: Promise<{ slug: string }>
 }
 
+type AgentStatus = 'idle' | 'running' | 'error'
+
+function normalizeAgentStatus(status: string): AgentStatus {
+  if (status === 'running' || status === 'error') return status
+  return 'idle'
+}
+
+function normalizeAgentTools(tools: unknown): string[] {
+  return Array.isArray(tools) ? tools.filter((tool): tool is string => typeof tool === 'string') : []
+}
+
 export default async function AgentsPage({ params }: AgentsPageProps) {
   const { slug } = await params
   const supabase = await createSupabaseServerClient()
@@ -28,6 +39,11 @@ export default async function AgentsPage({ params }: AgentsPageProps) {
   }
 
   const { data: agents } = await listAgents(supabase, tenant.id)
+  const normalizedAgents = (agents ?? []).map((agent) => ({
+    ...agent,
+    status: normalizeAgentStatus(agent.status),
+    tools: normalizeAgentTools(agent.tools),
+  }))
 
-  return <AgentListClient agents={agents ?? []} tenantId={tenant.id} tenantSlug={slug} />
+  return <AgentListClient agents={normalizedAgents} tenantId={tenant.id} tenantSlug={slug} />
 }

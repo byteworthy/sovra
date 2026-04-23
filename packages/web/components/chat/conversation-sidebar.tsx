@@ -5,13 +5,9 @@ import { Plus, MoreHorizontal, Trash2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { createConversation, deleteConversation } from '@/lib/chat/actions'
+import type { Tables } from '@sovra/shared/types/database'
 
-interface Conversation {
-  id: string
-  title: string | null
-  created_at: string
-  updated_at: string
-}
+type Conversation = Tables<'conversations'>
 
 interface ConversationSidebarProps {
   conversations: Conversation[]
@@ -45,7 +41,7 @@ export function ConversationSidebar({
         title: 'New conversation',
       })
       if (conversation && !error) {
-        onCreated(conversation as unknown as Conversation)
+        onCreated(conversation)
       }
     })
   }

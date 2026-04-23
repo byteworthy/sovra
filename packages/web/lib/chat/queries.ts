@@ -1,7 +1,8 @@
 import type { SupabaseClient } from '@supabase/supabase-js'
+import type { Database } from '@sovra/shared'
 
 export async function listConversations(
-  supabase: SupabaseClient,
+  supabase: SupabaseClient<Database>,
   tenantId: string,
   agentId: string
 ) {
@@ -14,7 +15,7 @@ export async function listConversations(
 }
 
 export async function getMessages(
-  supabase: SupabaseClient,
+  supabase: SupabaseClient<Database>,
   conversationId: string
 ) {
   return supabase

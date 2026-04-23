@@ -22,7 +22,7 @@ export default async function ChatPage({ params }: ChatPageProps) {
   const { data: agent } = await getAgent(supabase, agentId)
   if (!agent) redirect(`/t/${slug}/agents`)
 
-  const tenantId = agent.tenant_id as string
+  const tenantId = agent.tenant_id
 
   const { data: conversations } = await listConversations(
     supabase,
