@@ -7,6 +7,9 @@ The format is based on Keep a Changelog and this project follows Semantic Versio
 ## [Unreleased]
 
 ### Added
+- Customer onboarding DX guide and reusable launch/cutover/upgrade templates (`docs/customer-onboarding-dx.md`, `templates/*`).
+- Migration and upgrade path documentation for Sovra -> Klienta/Clynova (`docs/migration-guides.md`, `docs/upgrade-paths.md`).
+- Open-source packaging/licensing boundary and compatibility contract documentation (`docs/open-source-packaging.md`).
 - Release-readiness gate workflow with docs/trust integrity checks.
 - Enterprise operations documentation set (`architecture`, `worker`, `testing`, `operations-runbook`, `production-readiness`, `release-process`).
 - Broadcast client tests for private worker URL routing and failure handling.
@@ -22,6 +25,11 @@ The format is based on Keep a Changelog and this project follows Semantic Versio
 - Environment validation tests for worker/Hugging Face config schemas (`packages/web/lib/env.test.ts`).
 
 ### Changed
+- Security workflow now pins `govulncheck` to an explicit version and runs Semgrep via a digest-pinned container image.
+- CI actionlint invocation now pins tool version (`v1.7.12`) instead of floating `latest`.
+- Workflow token permissions are scoped more tightly (top-level read defaults, job-level write only where required).
+- Dockerfiles now pin base images by digest for reproducible and safer supply-chain builds.
+- README expanded with onboarding DX, migration, upgrade-path, and packaging references.
 - Worker startup now validates auth secrets in production and rejects wildcard Socket.IO origins.
 - Worker servers (health, gRPC, MCP, Socket.IO) now support graceful shutdown with a 30 second drain window.
 - Internal worker routes (`/internal/broadcast`, `/mcp`) now fail closed in production when `INTERNAL_API_SECRET` is missing.

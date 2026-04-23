@@ -19,6 +19,7 @@
 
 <p align="center">
   <a href="#-quick-start">Quick Start</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+  <a href="#-customer-onboarding-dx">Onboarding DX</a>&nbsp;&nbsp;|&nbsp;&nbsp;
   <a href="#-what-you-get">Features</a>&nbsp;&nbsp;|&nbsp;&nbsp;
   <a href="#-launch-paths">Launch Paths</a>&nbsp;&nbsp;|&nbsp;&nbsp;
   <a href="#-the-stack">Stack</a>&nbsp;&nbsp;|&nbsp;&nbsp;
@@ -123,6 +124,18 @@ go run ./cmd/worker
 See [`.env.example`](.env.example) for all options. Only Supabase keys are required — Stripe, Sentry, PostHog, and Upstash are optional and gracefully disabled when not configured.
 
 </details>
+
+<br/>
+
+## &#x1f91d; Customer Onboarding DX
+
+Production onboarding is documented end-to-end:
+
+- [`docs/customer-onboarding-dx.md`](docs/customer-onboarding-dx.md) for a repeatable launch process
+- [`docs/migration-guides.md`](docs/migration-guides.md) for migration tracks and rollback rules
+- [`templates/onboarding/customer-launch-plan-template.md`](templates/onboarding/customer-launch-plan-template.md) for implementation planning
+- [`templates/migrations/cutover-checklist-template.md`](templates/migrations/cutover-checklist-template.md) for controlled cutovers
+- [`templates/upgrade/boilerplate-evaluation-template.md`](templates/upgrade/boilerplate-evaluation-template.md) for Sovra -> Klienta/Clynova upgrade decisions
 
 <br/>
 
@@ -309,6 +322,11 @@ Sovra is the open-source AI platform foundation and the shared base layer for By
 
 **Practical workflow:** start on Sovra, validate product demand, then move to Klienta/Clynova when vertical-specific speed matters more than custom build-out.
 
+Upgrade/packaging references:
+
+- [`docs/upgrade-paths.md`](docs/upgrade-paths.md)
+- [`docs/open-source-packaging.md`](docs/open-source-packaging.md)
+
 <br/>
 
 ## &#x1f4dc; Docs
@@ -320,6 +338,10 @@ Sovra is the open-source AI platform foundation and the shared base layer for By
 | [`docs/huggingface-integration.md`](docs/huggingface-integration.md) | HF provider routing model, env setup, and production operating guidance |
 | [`docs/worker.md`](docs/worker.md) | Go worker ports, auth model, shutdown behavior, and tool surface |
 | [`docs/deployment.md`](docs/deployment.md) | Docker, Railway, GCP, and AWS deployment paths |
+| [`docs/customer-onboarding-dx.md`](docs/customer-onboarding-dx.md) | Fast customer onboarding path, secure launch gates, and MCP operating guidance |
+| [`docs/migration-guides.md`](docs/migration-guides.md) | Migration tracks into Sovra and from Sovra to paid vertical products |
+| [`docs/upgrade-paths.md`](docs/upgrade-paths.md) | Sovra -> Klienta/Clynova decision matrix and rollout checklists |
+| [`docs/open-source-packaging.md`](docs/open-source-packaging.md) | OSS/commercial packaging boundaries and license/compatibility model |
 | [`docs/environment-variables.md`](docs/environment-variables.md) | Full env var reference with production requirements |
 | [`docs/testing.md`](docs/testing.md) | Test strategy and required quality gates |
 | [`docs/premium-benchmark.md`](docs/premium-benchmark.md) | Quality framework benchmarked against leading OSS templates and security/governance standards |
