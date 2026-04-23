@@ -1,0 +1,112 @@
+:root {
+  --bg: #f5f7fb;
+  --text: #111827;
+  --muted: #4b5563;
+  --brand: #0f766e;
+  --brand-dark: #115e59;
+  --card: #ffffff;
+  --border: #d1d5db;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Sora", "Manrope", "Avenir Next", "Segoe UI", sans-serif;
+  background: radial-gradient(circle at top right, #d1fae5, transparent 40%), var(--bg);
+  color: var(--text);
+}
+
+.container {
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 2rem 1rem 3rem;
+}
+
+.hero {
+  background: linear-gradient(145deg, #ffffff 0%, #ecfeff 100%);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+}
+
+.eyebrow {
+  margin: 0.75rem 0 0;
+  text-transform: uppercase;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  color: var(--brand-dark);
+  font-weight: 700;
+}
+
+h1 {
+  margin: 0.4rem 0 0;
+  font-size: clamp(1.9rem, 4vw, 2.7rem);
+  line-height: 1.12;
+}
+
+.lede {
+  color: var(--muted);
+  font-size: 1.05rem;
+  max-width: 66ch;
+}
+
+.cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+  margin-top: 1rem;
+}
+
+.btn {
+  display: inline-block;
+  text-decoration: none;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0.62rem 0.92rem;
+  color: var(--text);
+  background: #fff;
+  font-weight: 600;
+}
+
+.btn-primary {
+  background: var(--brand);
+  border-color: var(--brand);
+  color: #fff;
+}
+
+section {
+  margin-top: 1rem;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 1rem 1.1rem;
+}
+
+h2 {
+  margin-top: 0;
+}
+
+p,
+li {
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+a {
+  color: var(--brand-dark);
+}
+
+@media (max-width: 640px) {
+  .container {
+    padding-top: 1.2rem;
+  }
+
+  .hero,
+  section {
+    padding: 0.95rem;
+  }
+}
