@@ -14,6 +14,7 @@
     />
     <meta name="robots" content="index,follow,max-image-preview:large" />
     <link rel="canonical" href="https://byteworthyllc.github.io/sovra/" />
+    <link rel="icon" href="favicon.ico" sizes="any" />
     <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
 
     <meta property="og:type" content="website" />
@@ -23,10 +24,7 @@
       content="Ship AI products faster with a production ready multi tenant foundation, MCP tooling, and battle tested release workflows."
     />
     <meta property="og:url" content="https://byteworthyllc.github.io/sovra/" />
-    <meta
-      property="og:image"
-      content="https://byteworthyllc.github.io/sovra/assets/sovra-social-card.svg"
-    />
+    <meta property="og:image" content="https://byteworthyllc.github.io/sovra/assets/sovra-social-card.svg" />
 
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Sovra | Open Source AI SaaS Boilerplate" />
@@ -34,10 +32,7 @@
       name="twitter:description"
       content="Multi tenant AI product foundation by ByteWorthy. Next.js, Go, MCP, Supabase, and production controls in one repo."
     />
-    <meta
-      name="twitter:image"
-      content="https://byteworthyllc.github.io/sovra/assets/sovra-social-card.svg"
-    />
+    <meta name="twitter:image" content="https://byteworthyllc.github.io/sovra/assets/sovra-social-card.svg" />
 
     <script type="application/ld+json">
       {
@@ -106,81 +101,119 @@
       <header class="hero" id="top">
         <nav class="top-nav" aria-label="Primary">
           <a class="logo-link" href="https://github.com/ByteWorthyLLC/sovra">
-            <img src="https://raw.githubusercontent.com/ByteWorthyLLC/sovra/master/.github/logo.svg" alt="Sovra logo" width="34" height="34" />
-            <span>Sovra</span>
+            <img src="assets/brand-mark.svg" alt="Sovra" width="184" height="48" />
           </a>
           <div class="top-links">
             <a href="#quickstart">Quickstart</a>
-            <a href="#product-line">Product Line</a>
+            <a href="#platform">Platform</a>
+            <a href="#product-line">Product line</a>
             <a href="#resources">Resources</a>
             <a href="https://byteworthy.io">ByteWorthy</a>
           </div>
         </nav>
 
-        <p class="eyebrow">Open Source AI SaaS Boilerplate</p>
-        <h1>Ship AI products faster with a production grade foundation.</h1>
-        <p class="lede">
-          Build with multi tenant auth, MCP tooling, vector search, billing, and release controls from day one.
-          Sovra is built for teams that want ownership, speed, and clean upgrade paths.
-        </p>
-
-        <div class="cta-row">
-          <a class="btn btn-primary" href="https://github.com/ByteWorthyLLC/sovra">Use Sovra Free</a>
-          <a class="btn" href="https://github.com/ByteWorthyLLC/klienta">Explore Klienta</a>
-          <a class="btn" href="https://github.com/ByteWorthyLLC/clynova">Explore Clynova</a>
+        <div class="hero-grid">
+          <section class="hero-copy">
+            <p class="eyebrow">Open source AI SaaS boilerplate</p>
+            <h1>Ship the product. Skip the infrastructure quarter.</h1>
+            <p class="lede">
+              Sovra gives you a production-grade base for multi tenant AI products with authentication, billing,
+              MCP tool wiring, vector retrieval, and release controls already in place.
+            </p>
+            <div class="cta-row">
+              <a class="btn btn-primary" href="https://github.com/ByteWorthyLLC/sovra">Use Sovra free</a>
+              <a class="btn" href="https://github.com/ByteWorthyLLC/klienta">Explore Klienta</a>
+              <a class="btn" href="https://github.com/ByteWorthyLLC/clynova">Explore Clynova</a>
+            </div>
+            <ul class="hero-metrics" aria-label="Platform highlights">
+              <li><strong>50</strong><span>Test files</span></li>
+              <li><strong>356</strong><span>Passing tests</span></li>
+              <li><strong>MIT</strong><span>Open source license</span></li>
+              <li><strong>MCP</strong><span>Current API patterns</span></li>
+            </ul>
+          </section>
+          <aside class="launch-rail" aria-label="Launch sequence">
+            <p class="rail-eyebrow">Launch sequence</p>
+            <ol>
+              <li>
+                <h3>Bootstrap</h3>
+                <p>Run setup script, start Supabase, and get local auth plus workspace flows online.</p>
+              </li>
+              <li>
+                <h3>Validate</h3>
+                <p>Pass CI, security checks, and production readiness docs before rollout.</p>
+              </li>
+              <li>
+                <h3>Launch</h3>
+                <p>Deploy web and worker services with tenant-safe secrets and observability enabled.</p>
+              </li>
+            </ol>
+            <a class="rail-link" href="https://github.com/ByteWorthyLLC/sovra/blob/master/docs/customer-onboarding-dx.md">
+              Read onboarding guide
+            </a>
+          </aside>
         </div>
-
-        <ul class="hero-metrics" aria-label="Platform highlights">
-          <li><strong>50</strong><span>Test files</span></li>
-          <li><strong>356</strong><span>Passing tests</span></li>
-          <li><strong>MIT</strong><span>Open source license</span></li>
-          <li><strong>MCP</strong><span>Current API patterns</span></li>
-        </ul>
       </header>
 
       <section class="panel" id="quickstart">
         <div class="panel-head">
           <h2>Quickstart in minutes</h2>
-          <p>Use the bootstrap script, start local Supabase, then run the web app.</p>
+          <p>One command for prerequisites, dependencies, and app startup path.</p>
         </div>
-        <pre><code>git clone https://github.com/ByteWorthyLLC/sovra.git
+        <div class="quick-grid">
+          <pre><code>git clone https://github.com/ByteWorthyLLC/sovra.git
 cd sovra
 pnpm setup:local:start</code></pre>
-        <p class="supporting">
-          Full setup and production onboarding docs live in the repository README and docs folder.
-        </p>
+          <ul class="checklist">
+            <li>Tenant aware auth and workspace flows</li>
+            <li>Worker runtime with MCP tool orchestration</li>
+            <li>Supabase RLS plus pgvector retrieval</li>
+            <li>Release readiness and security workflows</li>
+          </ul>
+        </div>
       </section>
 
-      <section class="grid-two">
-        <article class="panel">
-          <div class="panel-head">
-            <h2>Architecture built for launch</h2>
-            <p>Web app and worker stay independently deployable with tenant safe contracts.</p>
-          </div>
-          <img src="assets/platform-map.svg" alt="Sovra architecture map with web app, worker, and data services" class="diagram" />
-        </article>
+      <section class="panel" id="platform">
+        <div class="panel-head">
+          <h2>Platform architecture</h2>
+          <p>Clear service boundaries with deploy-anywhere flexibility.</p>
+        </div>
+        <div class="platform-grid">
+          <article>
+            <img src="assets/platform-map.svg" alt="Sovra architecture map with web app, worker, and data services" class="diagram" />
+          </article>
+          <article class="platform-points">
+            <h3>What you get on day one</h3>
+            <ul>
+              <li>Multi tenant authentication and permission model</li>
+              <li>Worker service for real time and tool execution pathways</li>
+              <li>Secure defaults for billing and internal API routes</li>
+              <li>MCP aligned interfaces with schema validated inputs</li>
+            </ul>
+          </article>
+        </div>
+      </section>
 
-        <article class="panel" id="product-line">
-          <div class="panel-head">
-            <h2>Product line by ByteWorthy</h2>
-            <p>Start with open source, upgrade only when vertical speed becomes your bottleneck.</p>
-          </div>
-          <ul class="product-list">
-            <li>
-              <h3>Sovra</h3>
-              <p>Open source base for multi tenant AI SaaS apps.</p>
-            </li>
-            <li>
-              <h3>Klienta</h3>
-              <p>Paid agency vertical for white label client delivery and monetization defaults.</p>
-            </li>
-            <li>
-              <h3>Clynova</h3>
-              <p>Paid healthcare vertical with interoperability and compliance oriented scaffolding.</p>
-            </li>
-          </ul>
-          <img src="assets/product-funnel.svg" alt="Upgrade funnel from Sovra to Klienta and Clynova" class="diagram" />
-        </article>
+      <section class="panel" id="product-line">
+        <div class="panel-head">
+          <h2>ByteWorthy product line</h2>
+          <p>Start open source, then move to vertical accelerators only when needed.</p>
+        </div>
+        <div class="products-grid">
+          <article class="product-card">
+            <h3>Sovra</h3>
+            <p>Open source base for teams that want full ownership and flexible architecture control.</p>
+          </article>
+          <article class="product-card">
+            <h3>Klienta</h3>
+            <p>Paid agency vertical with white label and client delivery workflows already packaged.</p>
+          </article>
+          <article class="product-card">
+            <h3>Clynova</h3>
+            <p>Paid healthcare vertical with interoperability and compliance focused scaffolding.</p>
+          </article>
+        </div>
+        <img src="assets/product-funnel.svg" alt="Upgrade path from Sovra to Klienta and Clynova" class="diagram" />
       </section>
 
       <section class="panel" id="resources">
@@ -212,7 +245,7 @@ pnpm setup:local:start</code></pre>
           <dt>Can I keep full infrastructure ownership?</dt>
           <dd>Yes. Sovra is self hosted and supports multiple cloud providers.</dd>
           <dt>How do I keep migrations safe?</dt>
-          <dd>Use staged cutovers, snapshots, rollback owners, and the migration templates in this repo.</dd>
+          <dd>Use staged cutovers, snapshots, rollback owners, and migration templates in this repo.</dd>
         </dl>
       </section>
 
