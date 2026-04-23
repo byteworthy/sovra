@@ -27,11 +27,11 @@ on:
     types: [created]
 
 permissions:
-  contents: write
-  pull-requests: write
+  contents: read
+  pull-requests: read
   checks: read
   statuses: read
-  issues: write
+  issues: read
 
 concurrency:
   group: merge-after-green-${{ github.repository }}-${{ github.event.issue.number || inputs.pr || github.event.client_payload.pr || github.event.client_payload.pr_number || github.run_id }}
@@ -50,7 +50,7 @@ jobs:
     steps:
       - name: Resolve request payload
         id: resolve
-        uses: actions/github-script@v7
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b
         with:
           script: |
             const event = context.eventName;
@@ -108,6 +108,12 @@ jobs:
     needs: resolve-request
     if: needs.resolve-request.result == 'success'
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      checks: read
+      statuses: read
+      issues: write
     env:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       PR_NUMBER: ${{ needs.resolve-request.outputs.pr }}

@@ -15,27 +15,30 @@ permissions:
   actions: read
   contents: read
   pull-requests: read
-  security-events: write
 
 jobs:
   codeql:
     name: CodeQL (${{ matrix.language }})
     runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
     strategy:
       fail-fast: false
       matrix:
         language: [javascript-typescript, go]
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
       - name: Initialize CodeQL
-        uses: github/codeql-action/init@v4
+        uses: github/codeql-action/init@95e58e9a2cdfd71adc6e0353d5c52f41a045d225
         with:
           languages: ${{ matrix.language }}
           queries: security-and-quality
       - name: Autobuild
-        uses: github/codeql-action/autobuild@v4
+        uses: github/codeql-action/autobuild@95e58e9a2cdfd71adc6e0353d5c52f41a045d225
       - name: Analyze
-        uses: github/codeql-action/analyze@v4
+        uses: github/codeql-action/analyze@95e58e9a2cdfd71adc6e0353d5c52f41a045d225
         with:
           category: /language:${{ matrix.language }}
 
@@ -43,7 +46,7 @@ jobs:
     name: Secret scan (gitleaks)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
         with:
           fetch-depth: 0
       - name: Install gitleaks CLI
@@ -62,7 +65,7 @@ jobs:
             --report-path gitleaks.sarif
       - name: Upload gitleaks report
         if: always()
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
           name: gitleaks-sarif
           path: gitleaks.sarif
@@ -73,9 +76,9 @@ jobs:
     name: pnpm audit (prod)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v6
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+      - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1
+      - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e
         with:
           node-version: "20"
           cache: pnpm
@@ -85,7 +88,7 @@ jobs:
 
   dependency-scan:
     name: Dependency scan (OSV)
-    uses: google/osv-scanner-action/.github/workflows/osv-scanner-reusable.yml@v2.3.5
+    uses: google/osv-scanner-action/.github/workflows/osv-scanner-reusable.yml@c51854704019a247608d928f370c98740469d4b5
     permissions:
       actions: read
       contents: read
@@ -103,13 +106,13 @@ jobs:
     name: govulncheck
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-go@v6
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+      - uses: actions/setup-go@4a3601121dd01d1626a1e23e37211e3254c1c06c
         with:
           go-version-file: packages/worker/go.mod
           cache: false
       - name: Install govulncheck
-        run: go install golang.org/x/vuln/cmd/govulncheck@latest
+        run: go install golang.org/x/vuln/cmd/govulncheck@v1.3.0
       - name: Run govulncheck
         working-directory: packages/worker
         run: govulncheck ./...
@@ -122,8 +125,8 @@ jobs:
     # do not fail the whole security workflow.
     if: github.event_name == 'pull_request' && vars.ENABLE_DEPENDENCY_REVIEW == 'true'
     steps:
-      - uses: actions/checkout@v6
-      - uses: actions/dependency-review-action@v4
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+      - uses: actions/dependency-review-action@2031cfc080254a8a887f58cffee85186f0e49e48
         with:
           fail-on-severity: high
 
@@ -131,15 +134,14 @@ jobs:
     name: SAST (semgrep)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-      - name: Install semgrep
-        run: pip install --disable-pip-version-check semgrep==1.86.0
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
       - name: Run semgrep baseline scan
         run: |
-          semgrep scan \
+          docker run --rm \
+            -v "${GITHUB_WORKSPACE}:/src" \
+            -w /src \
+            returntocorp/semgrep@sha256:11be9038036e2e0ad072cabd08c1241920ebef1489b8a0b1696487c8264a7e65 \
+            semgrep scan \
             --config p/owasp-top-ten \
             --config p/secrets \
             --error \
@@ -147,7 +149,7 @@ jobs:
             --output semgrep-results.json
       - name: Upload semgrep report
         if: always()
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
           name: semgrep-results
           path: semgrep-results.json
