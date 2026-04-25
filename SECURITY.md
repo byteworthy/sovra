@@ -2,54 +2,75 @@
 
 ## Supported versions
 
-We support the latest minor version on the `main` branch. Security fixes are backported to the most recent tagged release.
+Sovra follows semantic versioning. The latest `1.x` minor receives security fixes.
+
+| Version | Supported |
+|---|---|
+| 1.x | Yes |
+| < 1.0 | No |
 
 ## Reporting a vulnerability
 
-**Please do NOT open a public GitHub Issue for security vulnerabilities.**
+Do not open public issues for vulnerabilities.
 
-Email **security@byteworthy.io** with:
-- Description of the vulnerability
-- Steps to reproduce
-- Potential impact
-- Your contact information for follow-up
+Report via:
 
-You'll receive an acknowledgment within 48 hours and a status update within 7 days.
+- GitHub security advisory (preferred), or
+- email: `security@byteworthy.io`
 
-## Disclosure policy
+Include:
 
-We follow **coordinated disclosure**:
+- impact summary
+- reproduction steps / PoC
+- affected version or commit
+- suggested mitigation (if known)
 
-1. We acknowledge receipt within 48 hours
-2. We confirm the issue and determine severity within 7 days
-3. We develop a fix and release it (typically within 30-90 days)
-4. We disclose the issue publicly once a fix is available
-5. We credit the reporter (unless they prefer anonymity)
+Response targets:
 
-Critical vulnerabilities (RCE, auth bypass, PHI exposure for healthcare products) are prioritized.
-
-## Bug bounty
-
-ByteWorthy does not currently run a formal bug bounty program. We do offer:
-- Public credit (in our security advisories and release notes)
-- ByteWorthy product credits / Pioneer tier access
-- Paid bounties for impactful findings on healthcare products (Clynova) — case-by-case
+- acknowledgment within 48 hours
+- triage update within 7 days
+- mitigation/fix guidance for high severity within 30 days
 
 ## Scope
 
 In scope:
-- Authentication and authorization issues
-- Data exposure (PHI, billing info, customer data)
-- Injection vulnerabilities (SQL, XSS, SSRF, etc.)
-- Cryptographic issues
-- Dependency vulnerabilities with active exploitation paths
+
+- Authentication, authorization, and tenant isolation
+- RLS policy correctness in `supabase/migrations`
+- Worker internal auth boundaries (`/internal/broadcast`, `/mcp`)
+- Common web vulnerabilities (SQLi, XSS, CSRF, SSRF, path traversal)
+- Secret leakage in logs/build artifacts/client bundles
 
 Out of scope:
-- Self-XSS requiring user complicity
-- Social engineering of ByteWorthy employees
-- Issues requiring physical access to a victim's device
-- Vulnerabilities in third-party services we depend on (report to those vendors)
 
-## Built by ByteWorthy
+- CVEs in third-party dependencies without Sovra-specific exploit path
+- Social engineering attacks
+- Issues requiring compromised admin credentials to exploit
 
-> Maintained by [Kevin Richards](https://byteworthy.io). Security issues are P0 — they get faster responses than feature requests, even on the free tier.
+## Operator hardening checklist
+
+Before production deployment:
+
+- [ ] Set strong `INTERNAL_API_SECRET` (web + worker).
+- [ ] Set `SUPABASE_JWT_SECRET` in worker.
+- [ ] Set explicit `SOCKETIO_ALLOWED_ORIGINS` (no wildcard in production).
+- [ ] Keep Supabase service-role credentials server-only.
+- [ ] Enable HTTPS/HSTS at ingress.
+- [ ] Enable Sentry and alert routing for production incidents.
+- [ ] Enable dependency/security scanning in CI.
+- [ ] Run release checks (`./scripts/ci/release-readiness-checks.sh`).
+
+## Dependency and code scanning
+
+Sovra ships scheduled security checks for:
+
+- CodeQL
+- gitleaks
+- OSV dependency scan
+- `govulncheck`
+- semgrep
+- Go fuzzing targets (`.github/workflows/fuzz.yml`)
+- OpenSSF Scorecard
+
+See `.github/workflows/security.yml`.
+See `.github/workflows/scorecard.yml`.
