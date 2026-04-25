@@ -267,7 +267,7 @@ For AI product founders pre-seed to Series A who are about to (or already have) 
 
 ## Release process
 
-Tagged releases. See [`docs/release-process.md`](./docs/release-process.md) for the full release workflow + version-bump policy.
+Tagged releases. See [`docs/release-process.md`](./docs/release-process.md) for the full release workflow + version-bump policy. Service-level commitments are documented in [`docs/service-levels.md`](./docs/service-levels.md).
 
 ## Contributing
 
