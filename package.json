@@ -28,6 +28,7 @@
   },
   "pnpm": {
     "overrides": {
+      "postcss": "^8.5.10",
       "jsondiffpatch@<0.7.2": ">=0.7.2",
       "hono": "4.12.14"
     }
