@@ -265,6 +265,19 @@ For AI product founders pre-seed to Series A who are about to (or already have) 
 - **Open-source MIT license** - self-host freely; no per-seat or per-tenant tax
 - **Maintained by ByteWorthy** - a dedicated solo developer ships on a public roadmap, not a roadmap roulette wheel
 
+## Documentation
+
+Production-readiness, security, and operational docs:
+
+- [Release process](./docs/release-process.md) - release workflow + version-bump policy
+- [Auth framework](./docs/auth-framework.md) - tenant context propagation + RLS hardening
+- [Hugging Face integration](./docs/huggingface-integration.md) - model loading + caching
+- [Premium benchmark](./docs/premium-benchmark.md) - performance characteristics by tier
+- [Operations runbook](./docs/operations-runbook.md) - incident response procedures
+- [Production readiness](./docs/production-readiness.md) - go-live checklist
+- [Security policy](./SECURITY.md) - vulnerability disclosure
+- [Support](./SUPPORT.md) - how to get help
+
 ## Release process
 
 Tagged releases. See [`docs/release-process.md`](./docs/release-process.md) for the full release workflow + version-bump policy. Service-level commitments are documented in [`docs/service-levels.md`](./docs/service-levels.md).
