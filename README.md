@@ -1,10 +1,5 @@
 <div align="center">
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="./public/brand/hero-light.png">
-  <img alt="Sovra - open-source multi-tenant AI infrastructure" src="./public/brand/hero-light.png" width="100%">
-</picture>
-
 # Sovra
 
 **Open-source multi-tenant infrastructure for AI products. Auth, billing, MCP tools, vector search - one platform.**
