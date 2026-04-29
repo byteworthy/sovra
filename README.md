@@ -128,12 +128,7 @@ const result = await sovra.agents.run({
 
 ## Why this exists for AI product builders
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="./public/brand/sections/why.png">
-  <img alt="Why Sovra exists" src="./public/brand/sections/why.png" width="100%">
-</picture>
-
-AI products repeatedly rebuild the same plumbing: tenant scoping, agent state, tool registry, vector search, billing. Each rebuild takes 6-8 weeks before any user-facing feature ships. Sovra is the foundation that ships those seven layers solved — so engineering time goes to the features that differentiate the product.
+AI products repeatedly rebuild the same plumbing: tenant scoping, agent state, tool registry, vector search, billing. Each rebuild takes 6-8 weeks before any user-facing feature ships. Sovra is the foundation that ships those seven layers solved, so engineering time goes to the features that differentiate the product.
 
 The tradeoff: you don't get to "build it your way" for the boring parts. You get to ship the parts that actually differentiate your product.
 
@@ -314,9 +309,9 @@ MIT - see [`LICENSE`](./LICENSE).
 
 <div align="center">
 
-> **Part of the ByteWorthy stack** — [Klienta](https://github.com/byteworthyllc/klienta) · [Sovra](https://github.com/byteworthyllc/sovra) · [Clynova](https://github.com/byteworthyllc/clynova) · [Defend](https://github.com/byteworthyllc/byteworthy-defend) · [Lead Portfolio](https://github.com/byteworthyllc/byteworthy-lead-portfolio)
+> **Part of the ByteWorthy stack**: [Klienta](https://github.com/byteworthyllc/klienta) · [Sovra](https://github.com/byteworthyllc/sovra) · [Clynova](https://github.com/byteworthyllc/clynova) · [Defend](https://github.com/byteworthyllc/byteworthy-defend) · [Lead Portfolio](https://github.com/byteworthyllc/byteworthy-lead-portfolio)
 
-[**Self-host Sovra →**](https://github.com/byteworthyllc/sovra#quick-start) &nbsp;·&nbsp; [**Sovra Cloud waitlist →**](https://byteworthy.io/sovra/managed?utm_source=github&utm_medium=readme&utm_campaign=sovra&utm_content=footer-cta) &nbsp;·&nbsp; [**Star the repo →**](https://github.com/byteworthyllc/sovra/stargazers)
+[**Self-host Sovra →**](https://github.com/byteworthyllc/sovra#quick-start) &nbsp;·&nbsp; [**Sovra Cloud waitlist →**](https://byteworthy.io/sovra/managed?utm_source=github&utm_medium=readme&utm_campaign=sovra&utm_content=footer-cta)
 
 </div>
 
