@@ -16,7 +16,7 @@
   "dependencies": {
     "@ai-sdk/anthropic": "3.0.73",
     "@ai-sdk/openai": "3.0.55",
-    "@ai-sdk/react": "2.0.175",
+    "@ai-sdk/react": "3.0.174",
     "@modelcontextprotocol/sdk": "^1.0.0",
     "@radix-ui/react-dialog": "^1.1.2",
     "@radix-ui/react-dropdown-menu": "^2.1.2",
