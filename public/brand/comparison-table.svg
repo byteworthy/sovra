@@ -1,0 +1,120 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 310" width="900" height="310">
+  <defs>
+    <linearGradient id="bg3" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#020817"/>
+      <stop offset="100%" stop-color="#0A1628"/>
+    </linearGradient>
+    <linearGradient id="sovraCol" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#0F1E35"/>
+      <stop offset="100%" stop-color="#0A1525"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="310" fill="url(#bg3)"/>
+
+  <!-- Header -->
+  <text x="450" y="34" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="12" font-weight="600" fill="#475569" text-anchor="middle" letter-spacing="2">SOVRA vs THE ALTERNATIVES</text>
+
+  <!-- Column headers -->
+  <!-- Feature column -->
+  <rect x="0" y="44" width="250" height="32" fill="#0A1628"/>
+  <text x="20" y="65" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="11" font-weight="600" fill="#475569" letter-spacing="0.5">FEATURE</text>
+
+  <!-- Sovra column (highlighted) -->
+  <rect x="250" y="44" width="180" height="32" fill="#0F1E35"/>
+  <rect x="250" y="44" width="180" height="3" fill="#2563EB"/>
+  <text x="340" y="65" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="12" font-weight="700" fill="#93C5FD" text-anchor="middle">Sovra</text>
+
+  <!-- Glue column -->
+  <rect x="430" y="44" width="230" height="32" fill="#0A1628"/>
+  <text x="545" y="65" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="11" font-weight="600" fill="#475569" text-anchor="middle">Auth0+Stripe+Pinecone+glue</text>
+
+  <!-- Scratch column -->
+  <rect x="660" y="44" width="240" height="32" fill="#0A1628"/>
+  <text x="780" y="65" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="11" font-weight="600" fill="#475569" text-anchor="middle">Build from scratch</text>
+
+  <!-- Row 1: Vendors -->
+  <rect x="0" y="76" width="250" height="30" fill="#0D1829"/>
+  <rect x="250" y="76" width="180" height="30" fill="#0F1E35"/>
+  <rect x="430" y="76" width="230" height="30" fill="#0D1829"/>
+  <rect x="660" y="76" width="240" height="30" fill="#0D1829"/>
+  <text x="20" y="96" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="11" fill="#94A3B8">Vendors to manage</text>
+  <text x="340" y="96" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="13" font-weight="700" fill="#4ADE80" text-anchor="middle">1</text>
+  <text x="545" y="96" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="11" fill="#EF4444" text-anchor="middle">4+</text>
+  <text x="780" y="96" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="11" fill="#94A3B8" text-anchor="middle">many</text>
+
+  <!-- Row 2: Multi-tenant context -->
+  <rect x="0" y="106" width="250" height="30" fill="#091422"/>
+  <rect x="250" y="106" width="180" height="30" fill="#0F1E35"/>
+  <rect x="430" y="106" width="230" height="30" fill="#091422"/>
+  <rect x="660" y="106" width="240" height="30" fill="#091422"/>
+  <text x="20" y="126" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="11" fill="#94A3B8">Multi-tenant context</text>
+  <text x="340" y="126" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="11" fill="#4ADE80" text-anchor="middle">✓ built-in</text>
+  <text x="545" y="126" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="11" fill="#F59E0B" text-anchor="middle">requires custom</text>
+  <text x="780" y="126" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="11" fill="#F59E0B" text-anchor="middle">requires custom</text>
+
+  <!-- Row 3: MCP tool registry -->
+  <rect x="0" y="136" width="250" height="30" fill="#0D1829"/>
+  <rect x="250" y="136" width="180" height="30" fill="#0F1E35"/>
+  <rect x="430" y="136" width="230" height="30" fill="#0D1829"/>
+  <rect x="660" y="136" width="240" height="30" fill="#0D1829"/>
+  <text x="20" y="156" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="11" fill="#94A3B8">MCP tool registry</text>
+  <text x="340" y="156" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="11" fill="#4ADE80" text-anchor="middle">✓ native</text>
+  <text x="545" y="156" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="11" fill="#EF4444" text-anchor="middle">✗</text>
+  <text x="780" y="156" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="11" fill="#F59E0B" text-anchor="middle">requires custom</text>
+
+  <!-- Row 4: Vector search -->
+  <rect x="0" y="166" width="250" height="30" fill="#091422"/>
+  <rect x="250" y="166" width="180" height="30" fill="#0F1E35"/>
+  <rect x="430" y="166" width="230" height="30" fill="#091422"/>
+  <rect x="660" y="166" width="240" height="30" fill="#091422"/>
+  <text x="20" y="186" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="11" fill="#94A3B8">Vector search</text>
+  <text x="340" y="186" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="11" fill="#4ADE80" text-anchor="middle">pgvector built-in</text>
+  <text x="545" y="186" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="10" fill="#94A3B8" text-anchor="middle">Pinecone (extra billing)</text>
+  <text x="780" y="186" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="11" fill="#94A3B8" text-anchor="middle">depends</text>
+
+  <!-- Row 5: Self-hosted + Open source -->
+  <rect x="0" y="196" width="250" height="30" fill="#0D1829"/>
+  <rect x="250" y="196" width="180" height="30" fill="#0F1E35"/>
+  <rect x="430" y="196" width="230" height="30" fill="#0D1829"/>
+  <rect x="660" y="196" width="240" height="30" fill="#0D1829"/>
+  <text x="20" y="216" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="11" fill="#94A3B8">Self-hosted · Open source</text>
+  <text x="340" y="216" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="11" fill="#4ADE80" text-anchor="middle">✓ MIT</text>
+  <text x="545" y="216" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="11" fill="#EF4444" text-anchor="middle">partial · ✗</text>
+  <text x="780" y="216" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="11" fill="#4ADE80" text-anchor="middle">✓ (yours)</text>
+
+  <!-- Row 6: Real-time -->
+  <rect x="0" y="226" width="250" height="30" fill="#091422"/>
+  <rect x="250" y="226" width="180" height="30" fill="#0F1E35"/>
+  <rect x="430" y="226" width="230" height="30" fill="#091422"/>
+  <rect x="660" y="226" width="240" height="30" fill="#091422"/>
+  <text x="20" y="246" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="11" fill="#94A3B8">Real-time agent state</text>
+  <text x="340" y="246" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="11" fill="#4ADE80" text-anchor="middle">Socket.IO</text>
+  <text x="545" y="246" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="11" fill="#F59E0B" text-anchor="middle">requires custom</text>
+  <text x="780" y="246" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="11" fill="#F59E0B" text-anchor="middle">requires custom</text>
+
+  <!-- Row 7: Per-tenant billing -->
+  <rect x="0" y="256" width="250" height="30" fill="#0D1829"/>
+  <rect x="250" y="256" width="180" height="30" fill="#0F1E35"/>
+  <rect x="430" y="256" width="230" height="30" fill="#0D1829"/>
+  <rect x="660" y="256" width="240" height="30" fill="#0D1829"/>
+  <text x="20" y="276" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="11" fill="#94A3B8">Per-tenant billing</text>
+  <text x="340" y="276" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="11" fill="#4ADE80" text-anchor="middle">✓ built-in</text>
+  <text x="545" y="276" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="11" fill="#F59E0B" text-anchor="middle">requires Stripe wiring</text>
+  <text x="780" y="276" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="11" fill="#F59E0B" text-anchor="middle">requires custom</text>
+
+  <!-- Sovra column border highlight -->
+  <rect x="250" y="44" width="180" height="242" fill="none" stroke="#2563EB" stroke-width="1" stroke-opacity="0.4"/>
+
+  <!-- Column dividers -->
+  <line x1="250" y1="44" x2="250" y2="286" stroke="#1E293B" stroke-width="1"/>
+  <line x1="430" y1="44" x2="430" y2="286" stroke="#1E293B" stroke-width="1"/>
+  <line x1="660" y1="44" x2="660" y2="286" stroke="#1E293B" stroke-width="1"/>
+
+  <!-- Bottom note -->
+  <text x="450" y="304" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="10" fill="#334155" text-anchor="middle">Sovra replaces 4+ vendors with one coherent open-source platform · MIT licensed · self-host freely</text>
+
+  <!-- Bottom rule -->
+  <rect x="0" y="307" width="900" height="3" fill="#1E293B"/>
+</svg>
