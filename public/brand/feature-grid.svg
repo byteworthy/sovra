@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 200" width="900" height="200">
+  <defs>
+    <linearGradient id="bg2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#020817"/>
+      <stop offset="100%" stop-color="#0F172A"/>
+    </linearGradient>
+    <linearGradient id="card1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e2d3e"/>
+      <stop offset="100%" stop-color="#0F1C2E"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="200" fill="url(#bg2)"/>
+
+  <!-- Section label -->
+  <text x="450" y="30" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="11" font-weight="600" fill="#475569" text-anchor="middle" letter-spacing="2">SEVEN LAYERS · ZERO GLUE</text>
+
+  <!-- Feature Card 1: Auth -->
+  <rect x="20" y="44" width="116" height="130" rx="10" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+  <rect x="20" y="44" width="116" height="4" rx="2" fill="#2563EB"/>
+  <text x="78" y="72" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="22" text-anchor="middle">🔐</text>
+  <text x="78" y="96" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="12" font-weight="700" fill="#F1F5F9" text-anchor="middle">Auth</text>
+  <text x="78" y="113" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="9.5" fill="#64748B" text-anchor="middle">Supabase Auth</text>
+  <text x="78" y="128" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="9.5" fill="#64748B" text-anchor="middle">+ RLS tenant</text>
+  <text x="78" y="148" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="9" fill="#2563EB" text-anchor="middle">context prop.</text>
+  <text x="78" y="165" font-family="ui-monospace,Consolas,monospace" font-size="8" fill="#334155" text-anchor="middle">layer 1 of 7</text>
+
+  <!-- Feature Card 2: Tenant Context -->
+  <rect x="148" y="44" width="116" height="130" rx="10" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+  <rect x="148" y="44" width="116" height="4" rx="2" fill="#7C3AED"/>
+  <text x="206" y="72" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="22" text-anchor="middle">🏢</text>
+  <text x="206" y="96" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="12" font-weight="700" fill="#F1F5F9" text-anchor="middle">Tenant Ctx</text>
+  <text x="206" y="113" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="9.5" fill="#64748B" text-anchor="middle">Middleware that</text>
+  <text x="206" y="128" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="9.5" fill="#64748B" text-anchor="middle">scopes queries</text>
+  <text x="206" y="148" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="9" fill="#7C3AED" text-anchor="middle">per-tenant scope</text>
+  <text x="206" y="165" font-family="ui-monospace,Consolas,monospace" font-size="8" fill="#334155" text-anchor="middle">layer 2 of 7</text>
+
+  <!-- Feature Card 3: MCP Registry -->
+  <rect x="276" y="44" width="116" height="130" rx="10" fill="#111827" stroke="#2563EB" stroke-width="1" stroke-opacity="0.5"/>
+  <rect x="276" y="44" width="116" height="4" rx="2" fill="#0EA5E9"/>
+  <text x="334" y="72" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="22" text-anchor="middle">🔧</text>
+  <text x="334" y="96" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="12" font-weight="700" fill="#F1F5F9" text-anchor="middle">MCP Registry</text>
+  <text x="334" y="113" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="9.5" fill="#64748B" text-anchor="middle">Register, version,</text>
+  <text x="334" y="128" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="9.5" fill="#64748B" text-anchor="middle">rate-limit tools</text>
+  <text x="334" y="148" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="9" fill="#0EA5E9" text-anchor="middle">MCP-native</text>
+  <text x="334" y="165" font-family="ui-monospace,Consolas,monospace" font-size="8" fill="#334155" text-anchor="middle">layer 3 of 7</text>
+
+  <!-- Feature Card 4: Agent Runtime (HIGHLIGHTED) -->
+  <rect x="404" y="38" width="120" height="142" rx="10" fill="#0F1E35" stroke="#2563EB" stroke-width="1.5"/>
+  <rect x="404" y="38" width="120" height="4" rx="2" fill="#2563EB"/>
+  <text x="464" y="68" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="22" text-anchor="middle">⚡</text>
+  <text x="464" y="93" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="12" font-weight="700" fill="#DBEAFE" text-anchor="middle">Agent Runtime</text>
+  <text x="464" y="111" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="9.5" fill="#93C5FD" text-anchor="middle">Go · parallel exec</text>
+  <text x="464" y="126" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="9.5" fill="#93C5FD" text-anchor="middle">cancellation +</text>
+  <text x="464" y="141" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="9.5" fill="#93C5FD" text-anchor="middle">observability</text>
+  <text x="464" y="158" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="9" fill="#2563EB" text-anchor="middle">retry + tool tracing</text>
+  <text x="464" y="172" font-family="ui-monospace,Consolas,monospace" font-size="8" fill="#1D4ED8" text-anchor="middle">layer 4 of 7</text>
+
+  <!-- Feature Card 5: pgvector -->
+  <rect x="536" y="44" width="116" height="130" rx="10" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+  <rect x="536" y="44" width="116" height="4" rx="2" fill="#10B981"/>
+  <text x="594" y="72" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="22" text-anchor="middle">🗄️</text>
+  <text x="594" y="96" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="12" font-weight="700" fill="#F1F5F9" text-anchor="middle">Vector Search</text>
+  <text x="594" y="113" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="9.5" fill="#64748B" text-anchor="middle">pgvector per-</text>
+  <text x="594" y="128" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="9.5" fill="#64748B" text-anchor="middle">tenant namespaces</text>
+  <text x="594" y="148" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="9" fill="#10B981" text-anchor="middle">no extra vendor</text>
+  <text x="594" y="165" font-family="ui-monospace,Consolas,monospace" font-size="8" fill="#334155" text-anchor="middle">layer 5 of 7</text>
+
+  <!-- Feature Card 6: Realtime -->
+  <rect x="664" y="44" width="116" height="130" rx="10" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+  <rect x="664" y="44" width="116" height="4" rx="2" fill="#F59E0B"/>
+  <text x="722" y="72" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="22" text-anchor="middle">⚡</text>
+  <text x="722" y="96" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="12" font-weight="700" fill="#F1F5F9" text-anchor="middle">Real-time</text>
+  <text x="722" y="113" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="9.5" fill="#64748B" text-anchor="middle">Socket.IO live</text>
+  <text x="722" y="128" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="9.5" fill="#64748B" text-anchor="middle">agent state</text>
+  <text x="722" y="148" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="9" fill="#F59E0B" text-anchor="middle">collab cursors</text>
+  <text x="722" y="165" font-family="ui-monospace,Consolas,monospace" font-size="8" fill="#334155" text-anchor="middle">layer 6 of 7</text>
+
+  <!-- Feature Card 7: Billing -->
+  <rect x="764" y="44" width="116" height="130" rx="10" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+  <rect x="764" y="44" width="116" height="4" rx="2" fill="#EF4444"/>
+  <text x="822" y="72" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="22" text-anchor="middle">💳</text>
+  <text x="822" y="96" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="12" font-weight="700" fill="#F1F5F9" text-anchor="middle">Per-tenant</text>
+  <text x="822" y="111" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="12" font-weight="700" fill="#F1F5F9" text-anchor="middle">Billing</text>
+  <text x="822" y="128" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="9.5" fill="#64748B" text-anchor="middle">Stripe metered</text>
+  <text x="822" y="148" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="9" fill="#EF4444" text-anchor="middle">per tool · overage</text>
+  <text x="822" y="165" font-family="ui-monospace,Consolas,monospace" font-size="8" fill="#334155" text-anchor="middle">layer 7 of 7</text>
+
+  <!-- Bottom rule -->
+  <rect x="0" y="197" width="900" height="3" rx="0" fill="#1E293B"/>
+</svg>
